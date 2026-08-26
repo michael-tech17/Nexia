@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexia - Quiz</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0&display=swap">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- ========================================== -->
+    <!-- ÉCRAN 1 : SAISIE DU NOM UTILISATEUR        -->
+    <!-- ========================================== -->
+    <div id="login-screen" class="screen">
+        <div class="login-header">
+            <span class="material-symbols-outlined login-icon">school</span>
+            <h1>Nexia</h1>
+            <p>Entrez votre nom pour commencer et tenter d'entrer dans le classement</p>
+        </div>
+        <input type="text" id="username-input" placeholder="Votre nom..." autocomplete="off">
+        <button id="start-btn" disabled>Commencer le Quiz</button>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- ÉCRAN 1.5 : SÉLECTION DU PAYS D'ORIGINE   -->
+    <!-- ========================================== -->
+    <div id="country-screen" class="screen">
+        <div class="country-header">
+            <span class="material-symbols-outlined country-header-icon">public</span>
+            <h2>Votre pays d'origine</h2>
+            <p>Sélectionnez votre pays pour l'afficher dans le classement</p>
+        </div>
+
+        <!-- Recherche -->
+        <div class="country-search-wrapper">
+            <span class="material-symbols-outlined country-search-icon">search</span>
+            <input type="text" id="country-search" placeholder="Rechercher un pays..." autocomplete="off">
+        </div>
+
+        <!-- Onglets continents -->
+        <div class="continent-tabs" id="continent-tabs">
+            <button class="continent-tab active" data-continent="all">
+                <span class="material-symbols-outlined">language</span> Tous
+            </button>
+            <button class="continent-tab" data-continent="Afrique">
+                <span class="material-symbols-outlined">travel_explore</span> Afrique
+            </button>
+            <button class="continent-tab" data-continent="Amériques">
+                <span class="material-symbols-outlined">map</span> Amériques
+            </button>
+            <button class="continent-tab" data-continent="Asie">
+                <span class="material-symbols-outlined">temple_buddhist</span> Asie
+            </button>
+            <button class="continent-tab" data-continent="Europe">
+                <span class="material-symbols-outlined">castle</span> Europe
+            </button>
+            <button class="continent-tab" data-continent="Océanie">
+                <span class="material-symbols-outlined">water</span> Océanie
+            </button>
+        </div>
+
+        <!-- Grille des pays -->
+        <div class="country-grid" id="country-grid"></div>
+
+        <button id="country-confirm-btn" disabled>
+            <span class="material-symbols-outlined">check_circle</span>
+            Confirmer mon pays
+        </button>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- ÉCRAN 1.5 : SÉLECTION DE L'AVATAR         -->
+    <!-- ========================================== -->
+    <div id="avatar-screen" class="screen">
+        <div class="avatar-header">
+            <span class="material-symbols-outlined avatar-header-icon">face</span>
+            <h2>Choisissez votre avatar</h2>
+            <p id="avatar-welcome-msg">Bienvenue ! Sélectionnez un avatar qui vous représente</p>
+        </div>
+        <div class="avatar-grid" id="avatar-grid"></div>
+        <button id="avatar-confirm-btn" disabled>
+            <span class="material-symbols-outlined">check_circle</span>
+            Confirmer mon avatar
+        </button>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- ÉCRAN 2 : SÉLECTION DES 5 GRANDS DOMAINES -->
+    <!-- ========================================== -->
+    <div id="menu-screen" class="screen">
+        <h2>Choisissez un domaine</h2>
+        <div class="domains-list">
+
+            <button class="domain-card" data-domain="informatique">
+                <img class="card-img" src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&auto=format&fit=crop&q=80" alt="Informatique">
+                <span class="btn-icone material-symbols-outlined">computer</span>
+                <span class="btn-text">
+                    <span class="btn-titre">Informatique</span>
+                    <span class="btn-sous">Développement Web & Mobile, Réseaux, Sécurité, Systèmes</span>
+                </span>
+                <span class="material-symbols-outlined btn-arrow">chevron_right</span>
+            </button>
+
+            <button class="domain-card" data-domain="droit">
+                <img class="card-img" src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=600&auto=format&fit=crop&q=80" alt="Droit">
+                <span class="btn-icone material-symbols-outlined">gavel</span>
+                <span class="btn-text">
+                    <span class="btn-titre">Droit</span>
+                    <span class="btn-sous">Droit civil, Contrats, Pénal, Affaires</span>
+                </span>
+                <span class="material-symbols-outlined btn-arrow">chevron_right</span>
+            </button>
+
+            <button class="domain-card" data-domain="medecine">
+                <img class="card-img" src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=600&auto=format&fit=crop&q=80" alt="Médecine">
+                <span class="btn-icone material-symbols-outlined">medical_services</span>
+                <span class="btn-text">
+                    <span class="btn-titre">Médecine</span>
+                    <span class="btn-sous">Anatomie, Pathologies, Pharmacologie</span>
+                </span>
+                <span class="material-symbols-outlined btn-arrow">chevron_right</span>
+            </button>
+
+            <button class="domain-card" data-domain="capitales_pays">
+                <img class="card-img" src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=600&auto=format&fit=crop&q=80" alt="Capitales et pays">
+                <span class="btn-icone material-symbols-outlined">public</span>
+                <span class="btn-text">
+                    <span class="btn-titre">Capitales et pays du monde</span>
+                    <span class="btn-sous">Drapeaux, Capitales, Géographie mondiale</span>
+                </span>
+                <span class="material-symbols-outlined btn-arrow">chevron_right</span>
+            </button>
+
+            <button class="domain-card" data-domain="culture_generale">
+                <img class="card-img" src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=600&auto=format&fit=crop&q=80" alt="Culture générale">
+                <span class="btn-icone material-symbols-outlined">auto_stories</span>
+                <span class="btn-text">
+                    <span class="btn-titre">Culture générale</span>
+                    <span class="btn-sous">Histoire, Arts, Sciences, Sport, Société</span>
+                </span>
+                <span class="material-symbols-outlined btn-arrow">chevron_right</span>
+            </button>
+
+            <button class="domain-card" data-domain="langues">
+                <img class="card-img" src="https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=600&auto=format&fit=crop&q=80" alt="Langues & Linguistique">
+                <span class="btn-icone material-symbols-outlined">translate</span>
+                <span class="btn-text">
+                    <span class="btn-titre">Langues & Linguistique</span>
+                    <span class="btn-sous">Français & Anglais — Grammaire, Orthographe, Conjugaison & Prononciation</span>
+                </span>
+                <span class="material-symbols-outlined btn-arrow">chevron_right</span>
+            </button>
+
+            <button class="domain-card" data-domain="psychologie">
+                <img class="card-img" src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&auto=format&fit=crop&q=80" alt="Psychologie & Comportement">
+                <span class="btn-icone material-symbols-outlined">psychology</span>
+                <span class="btn-text">
+                    <span class="btn-titre">Psychologie & Comportement</span>
+                    <span class="btn-sous">Biais cognitifs, Expériences célèbres, Théories & Personnalité</span>
+                </span>
+                <span class="material-symbols-outlined btn-arrow">chevron_right</span>
+            </button>
+
+            <button class="domain-card" data-domain="astronomie">
+                <img class="card-img" src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=600&auto=format&fit=crop&q=80" alt="Astronomie & Espace">
+                <span class="btn-icone material-symbols-outlined">rocket_launch</span>
+                <span class="btn-text">
+                    <span class="btn-titre">Astronomie & Espace</span>
+                    <span class="btn-sous">Planètes & Système solaire, Galaxies, Phénomènes célestes & Exploration spatiale</span>
+                </span>
+                <span class="material-symbols-outlined btn-arrow">chevron_right</span>
+            </button>
+
+        </div>
+        <p class="menu-footer">20 questions par domaine • 4 choix • Ordre aléatoire</p>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- ÉCRAN 2.1 : SOUS-DOMAINES INFORMATIQUE     -->
+    <!-- ========================================== -->
+    <div id="sub-informatique-screen" class="screen">
+        <h2>Informatique — Choisissez une catégorie</h2>
+        <div class="domains-list">
+
+            <button class="domain-card" data-sub="programmation">
+                <img class="card-img" src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&auto=format&fit=crop&q=80" alt="Développement Web & Mobile">
+                <span class="btn-icone material-symbols-outlined">web</span>
+                <span class="btn-text">
+                    <span class="btn-titre">Développement Web & Mobile</span>
+                    <span class="btn-sous">HTML, CSS, JS, PHP, Frameworks, Git, BDD, SQL & Algorithmes</span>
+                </span>
+                <span class="material-symbols-outlined btn-arrow">chevron_right</span>
+            </button>
+
+            <button class="domain-card" data-sub="reseaux">
+                <img class="card-img" src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=600&auto=format&fit=crop&q=80" alt="Réseaux">
+                <span class="btn-icone material-symbols-outlined">hub</span>
+                <span class="btn-text">
+                    <span class="btn-titre">Réseaux & Systèmes</span>
+                    <span class="btn-sous">Réseaux, Cybersécurité, Systèmes d'exploitation</span>
+                </span>
+                <span class="material-symbols-outlined btn-arrow">chevron_right</span>
+            </button>
+
+        </div>
+        <button class="back-btn">
+            <span class="material-symbols-outlined">arrow_back</span> Retour aux domaines
+        </button>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- ÉCRAN 2.2 : SOUS-DOMAINES CAPITALES & PAYS -->
+    <!-- ========================================== -->
+    <div id="sub-capitales-screen" class="screen">
+        <h2>Capitales & Pays — Choisissez une catégorie</h2>
+        <div class="domains-list">
+
+            <button class="domain-card" data-sub="pays">
+                <img class="card-img" src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=600&auto=format&fit=crop&q=80" alt="Drapeaux">
+                <span class="btn-icone material-symbols-outlined">flag</span>
+                <span class="btn-text">
+                    <span class="btn-titre">Drapeaux du monde</span>
+                    <span class="btn-sous">Identifiez le pays à partir de son drapeau</span>
+                </span>
+                <span class="material-symbols-outlined btn-arrow">chevron_right</span>
+            </button>
+
+            <button class="domain-card" data-sub="capitales">
+                <img class="card-img" src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=600&auto=format&fit=crop&q=80" alt="Capitales">
+                <span class="btn-icone material-symbols-outlined">location_city</span>
+                <span class="btn-text">
+                    <span class="btn-titre">Capitales du monde</span>
+                    <span class="btn-sous">Retrouvez la capitale de chaque pays</span>
+                </span>
+                <span class="material-symbols-outlined btn-arrow">chevron_right</span>
+            </button>
+
+        </div>
+        <button class="back-btn">
+            <span class="material-symbols-outlined">arrow_back</span> Retour aux domaines
+        </button>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- ÉCRAN 2.3 : SOUS-DOMAINES LANGUES          -->
+    <!-- ========================================== -->
+    <div id="sub-langues-screen" class="screen">
+        <h2>Langues & Linguistique — Choisissez une langue</h2>
+        <div class="domains-list">
+
+            <button class="domain-card" data-sub="francais">
+                <img class="card-img" src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&auto=format&fit=crop&q=80" alt="Langue française">
+                <span class="btn-icone material-symbols-outlined">format_quote</span>
+                <span class="btn-text">
+                    <span class="btn-titre">Langue française</span>
+                    <span class="btn-sous">Grammaire, Orthographe, Conjugaison & Prononciation</span>
+                </span>
+                <span class="material-symbols-outlined btn-arrow">chevron_right</span>
+            </button>
+
+            <button class="domain-card" data-sub="anglais">
+                <img class="card-img" src="https://images.unsplash.com/photo-1543269865-cbf427effbad?w=600&auto=format&fit=crop&q=80" alt="Langue anglaise">
+                <span class="btn-icone material-symbols-outlined">language</span>
+                <span class="btn-text">
+                    <span class="btn-titre">Langue anglaise</span>
+                    <span class="btn-sous">Grammar, Spelling, Vocabulary & Pronunciation</span>
+                </span>
+                <span class="material-symbols-outlined btn-arrow">chevron_right</span>
+            </button>
+
+        </div>
+        <button class="back-btn">
+            <span class="material-symbols-outlined">arrow_back</span> Retour aux domaines
+        </button>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- ÉCRAN 2.4 : SÉLECTION DU NIVEAU            -->
+    <!-- ========================================== -->
+    <div id="level-screen" class="screen">
+        <div class="level-header">
+            <span class="material-symbols-outlined level-icon">military_tech</span>
+            <h2>Choisissez votre niveau</h2>
+            <p id="level-domain-label" class="level-domain-label">Domaine sélectionné</p>
+        </div>
+
+        <div class="levels-list">
+
+            <button class="level-card" data-level="débutant">
+                <div class="level-card-left">
+                    <span class="level-badge badge-debutant">
+                        <span class="material-symbols-outlined">sentiment_satisfied</span>
+                    </span>
+                    <div class="level-card-text">
+                        <span class="level-card-titre">Débutant</span>
+                        <span class="level-card-sous">Questions accessibles pour bien démarrer</span>
+                    </div>
+                </div>
+                <span class="material-symbols-outlined level-arrow">chevron_right</span>
+            </button>
+
+            <button class="level-card" data-level="intermédiaire">
+                <div class="level-card-left">
+                    <span class="level-badge badge-intermediaire">
+                        <span class="material-symbols-outlined">sentiment_neutral</span>
+                    </span>
+                    <div class="level-card-text">
+                        <span class="level-card-titre">Intermédiaire</span>
+                        <span class="level-card-sous">Questions de niveau modéré, quelques défis</span>
+                    </div>
+                </div>
+                <span class="material-symbols-outlined level-arrow">chevron_right</span>
+            </button>
+
+            <button class="level-card" data-level="avancé">
+                <div class="level-card-left">
+                    <span class="level-badge badge-avance">
+                        <span class="material-symbols-outlined">sentiment_very_dissatisfied</span>
+                    </span>
+                    <div class="level-card-text">
+                        <span class="level-card-titre">Avancé</span>
+                        <span class="level-card-sous">Questions difficiles, pour les experts</span>
+                    </div>
+                </div>
+                <span class="material-symbols-outlined level-arrow">chevron_right</span>
+            </button>
+
+            <button class="level-card level-card-aleatoire" data-level="aléatoire">
+                <div class="level-card-left">
+                    <span class="level-badge badge-aleatoire">
+                        <span class="material-symbols-outlined">shuffle</span>
+                    </span>
+                    <div class="level-card-text">
+                        <span class="level-card-titre">Aléatoire</span>
+                        <span class="level-card-sous">Mélange des 3 niveaux — surprise garantie !</span>
+                    </div>
+                </div>
+                <span class="material-symbols-outlined level-arrow">chevron_right</span>
+            </button>
+
+        </div>
+
+        <button class="back-btn" id="level-back-btn">
+            <span class="material-symbols-outlined">arrow_back</span> Retour
+        </button>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- ÉCRAN 3 : INTERFACE PRINCIPALE DU QUIZ     -->
+    <!-- ========================================== -->
+    <div id="quiz-screen" class="screen">
+
+        <div class="quiz-header">
+            <button class="btn-retour" id="quiz-back-btn">
+                <span class="material-symbols-outlined">arrow_back</span> Accueil
+            </button>
+            <span id="nom-domaine" class="nom-domaine">Domaine</span>
+            <span id="score-live" class="score-live">Score : 0</span>
+        </div>
+
+        <div class="quiz-progression">
+            <span id="question-counter">Question 1 / 20</span>
+            <span id="timer" class="timer">
+                <span class="material-symbols-outlined">timer</span> 20 s
+            </span>
+        </div>
+
+        <div class="progress-bar">
+            <div id="progress-fill"></div>
+        </div>
+
+        <p id="question-text" class="question-text">Énoncé de la question ici ?</p>
+
+        <!--
+            Le conteneur du drapeau est inséré ici dynamiquement par script.js
+            quand une question possède un code ISO (champ "code").
+            Il sera visible uniquement pour les questions de drapeaux.
+        -->
+
+        <div id="options-container" class="options-grid">
+
+            <button class="option-btn" id="opt0" onclick="choisirReponse(0)">
+                <span class="lettre">A</span>
+                <span id="texte-opt0">Option A</span>
+            </button>
+
+            <button class="option-btn" id="opt1" onclick="choisirReponse(1)">
+                <span class="lettre">B</span>
+                <span id="texte-opt1">Option B</span>
+            </button>
+
+            <button class="option-btn" id="opt2" onclick="choisirReponse(2)">
+                <span class="lettre">C</span>
+                <span id="texte-opt2">Option C</span>
+            </button>
+
+            <button class="option-btn" id="opt3" onclick="choisirReponse(3)">
+                <span class="lettre">D</span>
+                <span id="texte-opt3">Option D</span>
+            </button>
+
+        </div>
+
+        <div id="feedback" class="feedback cache"></div>
+
+        <button id="btn-suivant" class="btn-suivant cache" onclick="questionSuivante()">
+            Question suivante →
+        </button>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- ÉCRAN 4 : RÉSULTATS                        -->
+    <!-- ========================================== -->
+    <div id="score-screen" class="screen">
+        <div class="resultats-container">
+
+            <h2 class="resultats-titre">Résultats</h2>
+
+            <div class="score-cercle">
+                <span id="score-pourcentage">0%</span>
+                <span class="score-label">Score</span>
+            </div>
+
+            <p id="message-resultat" class="message-resultat"></p>
+
+            <div class="stats">
+                <div class="stat-item">
+                    <span id="stat-bonnes" class="stat-valeur vert">0</span>
+                    <span class="stat-label">Bonnes réponses</span>
+                </div>
+                <div class="stat-item">
+                    <span id="stat-mauvaises" class="stat-valeur rouge">0</span>
+                    <span class="stat-label">Mauvaises réponses</span>
+                </div>
+                <div class="stat-item">
+                    <span id="stat-total" class="stat-valeur">20</span>
+                    <span class="stat-label">Questions</span>
+                </div>
+            </div>
+
+            <div class="scoreboard-container">
+                <h3>
+                    <span class="material-symbols-outlined">leaderboard</span>
+                    Classement du domaine
+                </h3>
+                <div class="sb-tabs">
+                    <button class="sb-tab" data-filtre="tous">Tous</button>
+                    <button class="sb-tab" data-filtre="débutant">Débutant</button>
+                    <button class="sb-tab" data-filtre="intermédiaire">Intermédiaire</button>
+                    <button class="sb-tab" data-filtre="avancé">Avancé</button>
+                    <button class="sb-tab" data-filtre="aléatoire">Aléatoire</button>
+                </div>
+                <ul id="scoreboard-list"></ul>
+            </div>
+
+            <div class="score-actions">
+                <button id="restart-btn">
+                    <span class="material-symbols-outlined">replay</span>
+                    Rejouer
+                </button>
+                <button id="home-btn">
+                    <span class="material-symbols-outlined">home</span>
+                    Changer de domaine
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+</div><!-- /container -->
+
+<script src="quest_info.js"></script>
+<script src="quest_droit.js"></script>
+<script src="quest_medec.js"></script>
+<script src="quest_capit.js"></script>
+<script src="quest_cult_gen.js"></script>
+<script src="quest_langues.js"></script>
+<script src="quest_psycho.js"></script>
+<script src="quest_astro.js"></script>
+<script type="module" src="script.js"></script>
+
+</body>
+</html>

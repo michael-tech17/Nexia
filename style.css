@@ -1,0 +1,1773 @@
+/* ========================================== */
+/* 1. VARIABLES DE COULEURS                   */
+/* ========================================== */
+:root {
+    --bg-main: #f1f5f9;
+    --bg-container: #ffffff;
+    --bg-element: #f8fafc;
+    --bg-element-hover: #e2e8f0;
+
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --text-disabled: #94a3b8;
+
+    --primary: #0284c7;
+    --primary-hover: #0369a1;
+    --primary-light: #e0f2fe;
+
+    --success: #16a34a;
+    --success-light: #dcfce7;
+    --error: #dc2626;
+    --error-light: #fee2e2;
+    --warning: #d97706;
+    --warning-light: #fef3c7;
+
+    --border-color: #cbd5e1;
+}
+
+/* ========================================== */
+/* 2. BASE                                    */
+/* ========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Centrage vertical et horizontal parfait */
+    padding: 16px;
+}
+
+.container {
+    width: 100%;
+    max-width: 680px;
+    background-color: var(--bg-container);
+    padding: 32px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    max-height: 95vh; /* Évite que le conteneur dépasse de l'écran */
+    overflow-y: auto;  /* Ajoute un défilement interne si le contenu est trop grand */
+}
+
+/* ========================================== */
+/* 3. GESTION DES ÉCRANS                      */
+/* ========================================== */
+.screen {
+    display: none;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.screen.active {
+    display: flex;
+}
+
+/* ========================================== */
+/* 4. ÉCRAN 1 : LOGIN                         */
+/* ========================================== */
+.login-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+}
+
+.login-icon {
+    font-size: 48px;
+    color: var(--primary);
+}
+
+#login-screen h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+#login-screen p {
+    color: var(--text-muted);
+    font-size: 14px;
+    max-width: 340px;
+}
+
+#username-input {
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border-color);
+    background-color: var(--bg-element);
+    color: var(--text-main);
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+#username-input:focus {
+    border-color: var(--primary);
+}
+
+/* ========================================== */
+/* 5. BOUTONS GÉNÉRAUX                        */
+/* ========================================== */
+button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px 20px;
+    border-radius: 10px;
+    border: none;
+    background-color: var(--primary);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+button:hover:not(:disabled) {
+    background-color: var(--primary-hover);
+}
+
+button:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+button:disabled {
+    background-color: var(--border-color);
+    color: var(--text-disabled);
+    cursor: not-allowed;
+}
+
+button .material-symbols-outlined {
+    font-size: 18px;
+}
+
+/* ========================================== */
+/* 6. ÉCRANS 2, 2.1, 2.2 : MENUS             */
+/* ========================================== */
+h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-main);
+    text-align: center;
+}
+
+.domains-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Carte domaine : image + icône + texte + flèche */
+.domain-card {
+    display: flex;
+    align-items: stretch;  /* les enfants s'étirent sur toute la hauteur */
+    gap: 14px;
+    background-color: var(--bg-element);
+    border: 1.5px solid var(--border-color);
+    border-radius: 12px;
+    padding: 0;
+    padding-right: 18px;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.2s, background-color 0.2s, transform 0.15s;
+    width: 100%;
+    overflow: hidden;
+    min-height: 64px;
+}
+
+.domain-card:hover {
+    border-color: var(--primary);
+    background-color: var(--primary-light);
+    transform: translateX(4px);
+    color: var(--text-main);
+}
+
+/* Image en bandeau à gauche de la carte — hauteur auto = suit la carte */
+.card-img {
+    width: 80px;
+    height: auto;      /* s'adapte à la hauteur réelle de la carte */
+    min-height: 64px;  /* hauteur mini pour les cartes courtes */
+    object-fit: cover;
+    flex-shrink: 0;
+    display: block;
+    align-self: stretch;
+}
+
+.btn-icone {
+    font-size: 26px;
+    color: var(--primary);
+    flex-shrink: 0;
+    align-self: center; /* centrage vertical garanti quel que soit l'écran */
+    display: flex;
+    align-items: center;
+}
+
+.btn-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;  /* centrage vertical du texte */
+    gap: 2px;
+    flex: 1;
+    padding: 10px 0;
+    min-width: 0;
+}
+
+.btn-titre {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.btn-sous {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--text-muted);
+}
+
+.btn-arrow {
+    font-size: 20px;
+    color: var(--text-disabled);
+    flex-shrink: 0;
+    align-self: center; /* centrage vertical garanti quel que soit l'écran */
+    display: flex;
+    align-items: center;
+}
+
+.back-btn {
+    background-color: transparent;
+    color: var(--text-muted);
+    border: 1.5px solid var(--border-color);
+    font-size: 14px;
+    align-self: flex-start;
+}
+
+.back-btn:hover {
+    background-color: var(--bg-element);
+    color: var(--text-main);
+}
+
+.menu-footer {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-disabled);
+    padding-top: 4px;
+}
+
+/* ========================================== */
+/* 7. ÉCRAN 3 : QUIZ                          */
+/* ========================================== */
+
+/* En-tête */
+.quiz-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-retour {
+    background-color: var(--bg-element);
+    color: var(--text-muted);
+    border: 1.5px solid var(--border-color);
+    font-size: 13px;
+    padding: 8px 14px;
+}
+
+.btn-retour:hover {
+    background-color: var(--bg-element-hover);
+    color: var(--text-main);
+}
+
+.nom-domaine {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-align: center;
+    flex: 1;
+}
+
+.score-live {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary);
+    background-color: var(--primary-light);
+    padding: 6px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+}
+
+/* Progression */
+.quiz-progression {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.timer {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background-color: var(--bg-element);
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border-color);
+    color: var(--primary);
+    font-size: 13px;
+}
+
+.timer.urgent {
+    color: var(--error);
+    border-color: var(--error);
+    background-color: var(--error-light);
+}
+
+.timer .material-symbols-outlined {
+    font-size: 16px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background-color: var(--border-color);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+#progress-fill {
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary);
+    transition: width 20s linear;
+}
+
+/* Question */
+.question-text {
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--text-main);
+}
+
+/* Options fixes A/B/C/D */
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.option-btn {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 14px;
+    background-color: var(--bg-element);
+    color: var(--text-main);
+    text-align: left;
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 14px;
+    border: 1.5px solid var(--border-color);
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    cursor: pointer;
+    transition: border-color 0.15s, background-color 0.15s;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+.option-btn:hover:not(:disabled) {
+    background-color: var(--primary-light);
+    border-color: var(--primary);
+    color: var(--text-main);
+}
+
+.lettre {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background-color: var(--border-color);
+    color: var(--text-muted);
+    font-weight: 700;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+/* États de validation */
+.option-btn.correct {
+    background-color: var(--success-light) !important;
+    border-color: var(--success) !important;
+    color: var(--success) !important;
+}
+
+.option-btn.correct .lettre {
+    background-color: var(--success);
+    color: #fff;
+}
+
+.option-btn.incorrect {
+    background-color: var(--error-light) !important;
+    border-color: var(--error) !important;
+    color: var(--error) !important;
+}
+
+.option-btn.incorrect .lettre {
+    background-color: var(--error);
+    color: #fff;
+}
+
+.option-btn.manque {
+    background-color: var(--warning-light) !important;
+    border-color: var(--warning) !important;
+    color: var(--warning) !important;
+}
+
+.option-btn.manque .lettre {
+    background-color: var(--warning);
+    color: #fff;
+}
+
+/* Feedback */
+.feedback {
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.feedback.cache {
+    display: none;
+}
+
+.feedback.correct {
+    background-color: var(--success-light);
+    color: var(--success);
+    border: 1.5px solid var(--success);
+}
+
+.feedback.incorrect {
+    background-color: var(--error-light);
+    color: var(--error);
+    border: 1.5px solid var(--error);
+}
+
+.feedback.timeout {
+    background-color: var(--warning-light);
+    color: var(--warning);
+    border: 1.5px solid var(--warning);
+}
+
+.feedback .material-symbols-outlined {
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+/* Bouton suivant */
+.btn-suivant {
+    background-color: var(--primary);
+    color: #fff;
+    font-size: 15px;
+    padding: 14px;
+    border-radius: 10px;
+    width: 100%;
+}
+
+.btn-suivant.cache {
+    display: none;
+}
+
+/* ========================================== */
+/* 8. ÉCRAN 4 : RÉSULTATS                     */
+/* ========================================== */
+.resultats-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.resultats-titre {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+/* Cercle de score */
+.score-cercle {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: conic-gradient(var(--primary) var(--pct, 0%), var(--border-color) 0%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.score-cercle::before {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: var(--bg-container);
+}
+
+.score-cercle span {
+    position: relative;
+    z-index: 1;
+    line-height: 1.1;
+}
+
+#score-pourcentage {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.score-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* Message */
+.message-resultat {
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-main);
+}
+
+.message-resultat .material-symbols-outlined {
+    font-size: 22px;
+}
+
+/* Stats */
+.stats {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+}
+
+.stat-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    background-color: var(--bg-element);
+    border: 1.5px solid var(--border-color);
+    border-radius: 12px;
+    padding: 14px 8px;
+}
+
+.stat-valeur {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.stat-valeur.vert { color: var(--success); }
+.stat-valeur.rouge { color: var(--error); }
+
+.stat-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 500;
+    text-align: center;
+}
+
+/* Classement */
+.scoreboard-container {
+    width: 100%;
+    background-color: var(--bg-element);
+    padding: 16px;
+    border-radius: 12px;
+    border: 1.5px solid var(--border-color);
+}
+
+.scoreboard-container h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-align: center;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.scoreboard-container h3 .material-symbols-outlined {
+    font-size: 18px;
+}
+
+#scoreboard-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 160px;
+    overflow-y: auto;
+}
+
+#scoreboard-list li {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px 14px;
+    background-color: var(--bg-container);
+    border-radius: 8px;
+    font-size: 13px;
+    border: 1px solid var(--border-color);
+}
+
+#scoreboard-list li.moi {
+    border-color: var(--primary);
+    background-color: var(--primary-light);
+}
+
+/* Ligne du haut : nom + score sur la même rangée */
+.score-ligne-nom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.score-nom {
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.score-pts {
+    color: var(--text-main);
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* Ligne du bas : date et heure en petit */
+.score-date {
+    font-size: 11px;
+    color: var(--text-disabled);
+    font-weight: 400;
+}
+
+/* Boutons résultats */
+.score-actions {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.score-actions button {
+    flex: 1;
+}
+
+#home-btn {
+    background-color: var(--bg-element);
+    color: var(--text-main);
+    border: 1.5px solid var(--border-color);
+}
+
+#home-btn:hover {
+    background-color: var(--bg-element-hover);
+}
+
+
+/* ========================================== */
+/* 9. ÉCRAN NIVEAU                            */
+/* ========================================== */
+
+.level-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
+}
+
+.level-icon {
+    font-size: 40px;
+    color: var(--primary);
+}
+
+.level-domain-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--primary);
+    background-color: var(--primary-light);
+    padding: 4px 14px;
+    border-radius: 20px;
+}
+
+.levels-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.level-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    background-color: var(--bg-element);
+    border: 1.5px solid var(--border-color);
+    border-radius: 12px;
+    padding: 14px 18px;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.2s, background-color 0.2s, transform 0.15s;
+    width: 100%;
+}
+
+.level-card:hover {
+    border-color: var(--primary);
+    background-color: var(--primary-light);
+    transform: translateX(4px);
+    color: var(--text-main);
+}
+
+.level-card-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex: 1;
+}
+
+.level-badge {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.level-badge .material-symbols-outlined {
+    font-size: 24px;
+}
+
+.badge-debutant {
+    background-color: #dcfce7;
+    color: #16a34a;
+}
+
+.badge-intermediaire {
+    background-color: #fef3c7;
+    color: #d97706;
+}
+
+.badge-avance {
+    background-color: #fee2e2;
+    color: #dc2626;
+}
+
+.badge-aleatoire {
+    background-color: #ede9fe;
+    color: #7c3aed;
+}
+
+.level-card-aleatoire {
+    border-style: dashed;
+    border-color: #c4b5fd;
+}
+
+.level-card-aleatoire:hover {
+    border-color: #7c3aed;
+    background-color: #ede9fe;
+}
+
+.level-card-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.level-card-titre {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.level-card-sous {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--text-muted);
+}
+
+.level-arrow {
+    font-size: 20px;
+    color: var(--text-disabled);
+    flex-shrink: 0;
+}
+
+/* Badge de niveau affiché dans le header du quiz */
+.niveau-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.niveau-badge.debutant  { background-color: #dcfce7; color: #16a34a; }
+.niveau-badge.intermediaire { background-color: #fef3c7; color: #d97706; }
+.niveau-badge.avance    { background-color: #fee2e2; color: #dc2626; }
+.niveau-badge.aleatoire { background-color: #ede9fe; color: #7c3aed; }
+
+/* ========================================== */
+/* 10. RESPONSIVE DESIGN (MOBILES & TABLETTES)*/
+/* ========================================== */
+@media screen and (max-width: 768px) {
+    body {
+        padding: 12px;
+        align-items: center; /* Permet un meilleur défilement sur mobile si le contenu est long */
+    }
+
+    .container {
+        padding: 20px 16px;
+        border-radius: 15px;
+        max-height: none;
+    }
+
+    /* Adaptation des cartes de domaines sur mobile */
+    .domain-card {
+        flex-direction: row;
+        align-items: center;
+        padding-right: 12px;
+    }
+
+    .card-img {
+        width: 70px;
+        min-height: 60px;
+        height: auto;
+    }
+
+    .btn-titre {
+        font-size: 14px;
+    }
+
+    .btn-sous {
+        font-size: 11px;
+    }
+
+    /* Adaptation de l'en-tête du quiz */
+    .quiz-header {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .nom-domaine {
+        order: 3;
+        flex-basis: 100%;
+        text-align: center;
+    }
+
+    /* Actions de fin de quiz en colonne sur mobile */
+    .score-actions {
+        flex-direction: column;
+    }
+
+    .stats {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    #login-screen h1 {
+        font-size: 22px;
+    }
+
+    .card-img {
+        width: 60px;
+        min-height: 55px;
+        height: auto;
+    }
+
+    /* Grille 2×2 : options bien cadrées sur mobile */
+    .options-grid {
+        gap: 8px;
+    }
+
+    .option-btn {
+        padding: 10px 10px;
+        gap: 8px;
+        font-size: 12px;
+        align-items: flex-start;
+        word-break: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+        height: auto;
+        min-height: 0;
+    }
+
+    .lettre {
+        width: 24px;
+        height: 24px;
+        font-size: 11px;
+        border-radius: 6px;
+        flex-shrink: 0;
+        margin-top: 1px;
+    }
+
+    /* Header quiz plus compact */
+    .btn-retour {
+        font-size: 12px;
+        padding: 7px 10px;
+    }
+
+    .question-text {
+        font-size: 15px;
+    }
+}
+/* ========================================== */
+/* 10. DRAPEAU — QUESTIONS AVEC IMAGE         */
+/* ========================================== */
+
+.flag-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 4px 0 14px 0;
+}
+
+#flag-img {
+    /* Taille fixe uniforme pour TOUS les drapeaux */
+    width: 200px;
+    height: 120px;
+    object-fit: cover;          /* remplit sans déformer, recadre si besoin */
+    border-radius: 8px;
+    border: 2px solid var(--border-color);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    display: block;
+    background-color: #f8fafc;  /* fond neutre si transparence */
+}
+
+@media screen and (max-width: 480px) {
+    #flag-img {
+        width: 160px;
+        height: 96px;
+    }
+}
+
+/* ========================================== */
+/* 11. CLASSEMENT — STYLE COMPLET             */
+/* ========================================== */
+
+/* Conteneur général */
+.scoreboard-container {
+    width: 100%;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    padding: 16px;
+    border-radius: 14px;
+    border: 1.5px solid var(--border-color);
+}
+
+.scoreboard-container h3 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-align: center;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.scoreboard-container h3 .material-symbols-outlined {
+    font-size: 16px;
+    color: var(--primary);
+}
+
+/* Onglets de filtre du classement */
+.sb-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 boutons ligne 1, 2 boutons ligne 2 */
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+/* "Avancé" : colonne 1 de la ligne 2 */
+.sb-tab:nth-child(4) {
+    grid-column: 1 / 2;
+}
+
+/* "Aléatoire" : colonnes 2-3 de la ligne 2 (bouton plus large) */
+.sb-tab:nth-child(5) {
+    grid-column: 2 / 4;
+}
+
+.sb-tab {
+    padding: 7px 4px;
+    font-size: 11.5px;
+    font-weight: 600;
+    border-radius: 8px;
+    background-color: var(--bg-element);
+    color: var(--text-muted);
+    border: 1.5px solid var(--border-color);
+    cursor: pointer;
+    transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+    white-space: nowrap;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+.sb-tab:hover:not(.active) {
+    background-color: var(--bg-element-hover);
+    color: var(--text-main);
+}
+
+.sb-tab.active {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #ffffff;
+}
+
+/* Liste */
+#scoreboard-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 280px;
+    overflow-y: auto;
+    padding-right: 2px;
+}
+
+#scoreboard-list::-webkit-scrollbar {
+    width: 4px;
+}
+#scoreboard-list::-webkit-scrollbar-track { background: transparent; }
+#scoreboard-list::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+/* Chaque entrée */
+#scoreboard-list li {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px 14px;
+    background-color: var(--bg-container);
+    border-radius: 10px;
+    border: 1.5px solid var(--border-color);
+    transition: transform 0.15s;
+}
+
+#scoreboard-list li:hover {
+    transform: translateX(3px);
+}
+
+/* Entrée "c'est moi" */
+#scoreboard-list li.moi {
+    border-color: var(--primary);
+    background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
+    box-shadow: 0 2px 8px rgba(2, 132, 199, 0.15);
+}
+
+/* Ligne du haut : badge + nom + score */
+.sb-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.sb-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    flex: 1;
+}
+
+.sb-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-main);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.sb-score {
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* Ligne du bas : date */
+.sb-date {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    color: var(--text-disabled);
+    font-weight: 400;
+}
+
+.sb-date .material-symbols-outlined {
+    font-size: 12px;
+}
+
+/* Tag "Vous" */
+.moi-tag {
+    font-size: 10px;
+    font-weight: 700;
+    background-color: var(--primary);
+    color: #fff;
+    padding: 1px 7px;
+    border-radius: 20px;
+    flex-shrink: 0;
+}
+
+/* Badges de rang */
+.rank-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 20px;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.rank-badge .material-symbols-outlined {
+    font-size: 13px;
+}
+
+.rank-badge.gold {
+    background-color: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fcd34d;
+}
+
+.rank-badge.silver {
+    background-color: #f1f5f9;
+    color: #475569;
+    border: 1px solid #94a3b8;
+}
+
+.rank-badge.bronze {
+    background-color: #ffedd5;
+    color: #9a3412;
+    border: 1px solid #fb923c;
+}
+
+.rank-badge.other {
+    background-color: var(--bg-element);
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+    min-width: 32px;
+    justify-content: center;
+}
+
+/* Boutons résultats */
+.score-actions {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.score-actions button { flex: 1; }
+
+#home-btn {
+    background-color: var(--bg-element);
+    color: var(--text-main);
+    border: 1.5px solid var(--border-color);
+}
+
+#home-btn:hover {
+    background-color: var(--bg-element-hover);
+}
+
+/* ========================================== */
+/* 12. FIX : cartes domaines et niveaux          */
+/* Le style global "button" imposait         */
+/* color:#fff et hover fond bleu foncé,      */
+/* rendant les sous-titres illisibles.       */
+/* ========================================== */
+
+/* --- État normal : textes bien colorés --- */
+.domain-card,
+.level-card {
+    color: var(--text-main);
+    background-color: var(--bg-element);
+}
+
+.domain-card .btn-titre,
+.level-card .level-card-titre {
+    color: var(--text-main);
+}
+
+.domain-card .btn-sous,
+.level-card .level-card-sous {
+    color: var(--text-muted);
+}
+
+.domain-card .btn-icone {
+    color: var(--primary);
+}
+
+.domain-card .btn-arrow,
+.level-card .level-arrow {
+    color: var(--text-disabled);
+}
+
+/* --- Hover : fond bleu CLAIR, textes sombres lisibles --- */
+.domain-card:hover:not(:disabled),
+.level-card:hover:not(:disabled) {
+    background-color: var(--primary-light);
+    border-color: var(--primary);
+    color: var(--text-main);
+}
+
+.domain-card:hover .btn-titre,
+.level-card:hover .level-card-titre {
+    color: var(--text-main);
+}
+
+.domain-card:hover .btn-sous,
+.level-card:hover .level-card-sous {
+    color: var(--primary-hover);
+}
+
+.domain-card:hover .btn-icone {
+    color: var(--primary-hover);
+}
+
+.domain-card:hover .btn-arrow,
+.level-card:hover .level-arrow {
+    color: var(--primary);
+}
+
+/* ========================================== */
+/* 13. ÉCRAN AVATAR — SÉLECTION                   */
+/* ========================================== */
+.avatar-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+}
+
+.avatar-header-icon {
+    font-size: 44px;
+    color: var(--primary);
+}
+
+#avatar-screen h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+#avatar-screen p {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+/* Grille 5 colonnes */
+.avatar-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    max-height: 380px;
+    overflow-y: auto;
+    padding: 8px 4px;
+}
+
+@media (max-width: 480px) {
+    .avatar-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Bouton avatar individuel */
+.avatar-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    background: var(--bg-element);
+    border: 2.5px solid transparent;
+    border-radius: 16px;
+    padding: 10px 6px 8px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s, transform 0.15s;
+}
+
+.avatar-option:hover {
+    /* Fond très léger pour ne pas masquer l'image ni le label */
+    background: #e0f2fe55;
+    border-color: var(--primary);
+    transform: scale(1.05);
+}
+
+.avatar-option.selected {
+    border-color: var(--primary);
+    /* Fond quasi transparent : juste une légère teinte bleue */
+    background: #e0f2fe44;
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.22);
+    transform: scale(1.05);
+}
+
+/* Cercle sélectionné : anneau bleu autour de l'image */
+.avatar-option.selected .avatar-circle {
+    outline: 3px solid var(--primary);
+    outline-offset: 3px;
+}
+
+.avatar-option:hover .avatar-label {
+    color: var(--primary-hover);
+    font-weight: 600;
+}
+
+.avatar-option.selected .avatar-label {
+    color: var(--primary);
+    font-weight: 700;
+}
+
+/* Cercle de l'avatar — légèrement plus grand pour aérer */
+.avatar-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2.5px solid white;
+    outline: 2px solid rgba(0,0,0,0.06);
+}
+
+.avatar-circle svg {
+    width: 100%;
+    height: 100%;
+}
+
+.avatar-label {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-align: center;
+    line-height: 1.2;
+}
+
+/* Bouton confirmer avatar */
+#avatar-confirm-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 14px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, opacity 0.2s;
+}
+
+#avatar-confirm-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+#avatar-confirm-btn:not(:disabled):hover {
+    background: var(--primary-hover);
+}
+
+/* ========================================== */
+/* 15. AVATAR DANS LE CLASSEMENT                  */
+/* ========================================== */
+.sb-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    border: 2px solid white;
+    outline: 1.5px solid rgba(0,0,0,0.08);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sb-avatar svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Ajuster l'alignement de sb-left pour accueillir l'avatar */
+.sb-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    min-width: 0;
+}
+
+/* ========================================================= */
+/* 16. COULEURS DE HOVER PAR DOMAINE                            */
+/* Chaque domaine a sa propre identité visuelle au survol  */
+/* ========================================================= */
+
+/* --- Informatique : cyan / teal --- */
+[data-domain="informatique"] .btn-icone { color: #0e7490; }
+[data-domain="informatique"]:hover,
+[data-sub="programmation"]:hover,
+[data-sub="reseaux"]:hover {
+    border-color: #0e7490 !important;
+    background-color: #ecfeff !important;
+}
+
+/* --- Droit : ambre / or --- */
+[data-domain="droit"] .btn-icone { color: #b45309; }
+[data-domain="droit"]:hover {
+    border-color: #b45309 !important;
+    background-color: #fffbeb !important;
+}
+
+/* --- Médecine : vert émeraude --- */
+[data-domain="medecine"] .btn-icone { color: #065f46; }
+[data-domain="medecine"]:hover {
+    border-color: #059669 !important;
+    background-color: #ecfdf5 !important;
+}
+
+/* --- Capitales & Pays : vert sauge --- */
+[data-domain="capitales_pays"] .btn-icone { color: #166534; }
+[data-domain="capitales_pays"]:hover,
+[data-sub="pays"]:hover,
+[data-sub="capitales"]:hover {
+    border-color: #16a34a !important;
+    background-color: #f0fdf4 !important;
+}
+
+/* --- Culture générale : orange chaud --- */
+[data-domain="culture_generale"] .btn-icone { color: #c2410c; }
+[data-domain="culture_generale"]:hover {
+    border-color: #ea580c !important;
+    background-color: #fff7ed !important;
+}
+
+/* --- Langues : rose framboise --- */
+[data-domain="langues"] .btn-icone { color: #9d174d; }
+[data-domain="langues"]:hover,
+[data-sub="francais"]:hover,
+[data-sub="anglais"]:hover {
+    border-color: #9d174d !important;
+    background-color: #fce7f3 !important;
+}
+
+/* --- Psychologie : violet --- */
+[data-domain="psychologie"] .btn-icone { color: #5b21b6; }
+[data-domain="psychologie"]:hover {
+    border-color: #5b21b6 !important;
+    background-color: #ede9fe !important;
+}
+
+/* --- Astronomie : ardoise sombre --- */
+[data-domain="astronomie"] .btn-icone { color: #334155; }
+[data-domain="astronomie"]:hover {
+    border-color: #334155 !important;
+    background-color: #f1f5f9 !important;
+}
+
+/* ========================================================= */
+/* 17. BADGES DE NIVEAU PAR DOMAINE                             */
+/* ========================================================= */
+.niveau-badge.langues     { background-color: #fce7f3; color: #9d174d; }
+.niveau-badge.psychologie { background-color: #ede9fe; color: #5b21b6; }
+.niveau-badge.astronomie  { background-color: #0f172a; color: #e2e8f0; }
+.niveau-badge.francais    { background-color: #fce7f3; color: #9d174d; }
+.niveau-badge.anglais     { background-color: #dbeafe; color: #1e40af; }
+
+/* ========================================== */
+/* 18. RESPONSIVE — FIX MOBILE OPTIONS (≤480px)  */
+/* ========================================== */
+@media screen and (max-width: 480px) {
+    .options-grid {
+        gap: 8px;
+    }
+
+    .option-btn {
+        padding: 10px;
+        gap: 8px;
+        font-size: 12px;
+        align-items: flex-start;
+        hyphens: auto;
+    }
+
+    .lettre {
+        width: 24px;
+        height: 24px;
+        font-size: 11px;
+        border-radius: 6px;
+        flex-shrink: 0;
+        margin-top: 1px;
+    }
+
+    .btn-retour {
+        font-size: 12px;
+        padding: 7px 10px;
+    }
+
+    .question-text {
+        font-size: 15px;
+    }
+}
+
+/* ========================================== */
+/* 19. ÉCRAN PAYS — SÉLECTION                     */
+/* ========================================== */
+.country-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+}
+
+.country-header-icon {
+    font-size: 44px;
+    color: var(--primary);
+}
+
+#country-screen h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+#country-screen p {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+/* Champ de recherche */
+.country-search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.country-search-icon {
+    position: absolute;
+    left: 12px;
+    font-size: 20px;
+    color: var(--text-muted);
+    pointer-events: none;
+}
+
+#country-search {
+    width: 100%;
+    padding: 12px 14px 12px 40px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border-color);
+    background-color: var(--bg-element);
+    color: var(--text-main);
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+#country-search:focus {
+    border-color: var(--primary);
+}
+
+/* Onglets continents */
+.continent-tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.continent-tab {
+    padding: 7px 12px;
+    border-radius: 20px;
+    background-color: var(--bg-element);
+    border: 1.5px solid var(--border-color);
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.continent-tab:hover:not(:disabled) {
+    background-color: var(--primary-light);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.continent-tab.active {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #ffffff;
+}
+
+/* Grille des pays */
+.country-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    max-height: 320px;
+    overflow-y: auto;
+    padding: 4px 2px;
+}
+
+@media (max-width: 480px) {
+    .country-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.country-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 10px 6px 8px;
+    border-radius: 12px;
+    background-color: var(--bg-element);
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+    text-align: center;
+    line-height: 1.2;
+    min-height: 70px;
+}
+
+.country-card:hover:not(:disabled) {
+    background-color: var(--primary-light);
+    border-color: var(--primary);
+    color: var(--primary-hover);
+    transform: scale(1.04);
+}
+
+.country-card.selected {
+    border-color: var(--primary);
+    background-color: var(--primary-light);
+    color: var(--primary);
+    font-weight: 700;
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.20);
+    transform: scale(1.04);
+}
+
+.country-flag {
+    font-size: 26px;
+    line-height: 1;
+}
+
+.country-name {
+    font-size: 10px;
+    line-height: 1.2;
+}
+
+.country-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 14px;
+    padding: 24px 0;
+}
+
+/* Bouton confirmer pays */
+#country-confirm-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 14px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, opacity 0.2s;
+}
+
+#country-confirm-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: var(--border-color);
+    color: var(--text-disabled);
+}
+
+#country-confirm-btn:not(:disabled):hover {
+    background: var(--primary-hover);
+}
+
+/* ========================================== */
+/* 20. DRAPEAU DANS LE CLASSEMENT                 */
+/* ========================================== */
+.sb-flag {
+    font-size: 16px;
+    line-height: 1;
+    margin-left: 2px;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
