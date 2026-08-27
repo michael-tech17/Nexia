@@ -37,15 +37,17 @@ const CloudScore = {
             });
 
             await addDoc(collection(db, "Score"), {
-                domain:     domain,
-                sub:        sub || "",
-                name:       entry.name,
-                score:      entry.score,
-                total:      entry.total,
-                pct:        entry.pct,
-                ts:         entry.ts,
-                dateHeure:  dateHeure,
-                niveau:     entry.niveau || ""
+                domain:      domain,
+                sub:         sub || "",
+                name:        entry.name,
+                score:       entry.score,
+                total:       entry.total,
+                pct:         entry.pct,
+                ts:          entry.ts,
+                dateHeure:   dateHeure,
+                niveau:      entry.niveau || "",
+                countryCode: entry.countryCode || "",
+                countryName: entry.countryName || ""
             });
         } catch (e) {
             console.warn("Erreur écriture Firestore :", e);
@@ -67,6 +69,25 @@ const CloudScore = {
         } catch (e) {
             console.warn("Erreur lecture Firestore :", e);
             return [];
+        }
+    },
+
+    /* Enregistre le résultat d'une réponse individuelle dans la collection "Reponses" */
+    async pushReponse(domain, sub, question, options, reponseCorrecteIndex, optionChoisieIndex, resultat) {
+        // resultat : "correct" | "incorrect" | "timeout"
+        try {
+            await addDoc(collection(db, "Reponses"), {
+                domain:              domain,
+                sub:                 sub || "",
+                question:            question,
+                options:             options,
+                reponseCorrecte:     options[reponseCorrecteIndex] || "",
+                optionChoisie:       optionChoisieIndex === -1 ? null : (options[optionChoisieIndex] || null),
+                resultat:            resultat,  // "correct" | "incorrect" | "timeout"
+                ts:                  Date.now()
+            });
+        } catch (e) {
+            console.warn("Erreur enregistrement réponse :", e);
         }
     }
 };
@@ -802,13 +823,22 @@ window.choisirReponse = function(positionChoisie) {
     const feedback = document.getElementById('feedback');
 
     if (positionChoisie === -1) {
+        // ⏱️ Temps écoulé — personne n'a répondu
         if (positionCorrecte !== -1) boutons[positionCorrecte].classList.add('manque');
         feedback.className = 'feedback timeout';
         feedback.innerHTML =
             `<span class="material-symbols-outlined">timer</span>
              <span>Temps écoulé ! ${q.explication}</span>`;
 
+        // Enregistrement Firebase : timeout
+        CloudScore.pushReponse(
+            currentDomainKey, currentSubKey,
+            q.question, q.options, q.reponse,
+            -1, "timeout"
+        );
+
     } else if (parseInt(boutons[positionChoisie].dataset.indexOriginal) === q.reponse) {
+        // ✅ Bonne réponse
         boutons[positionChoisie].classList.add('correct');
         score++;
         document.getElementById('score-live').textContent = `Score : ${score}`;
@@ -817,13 +847,28 @@ window.choisirReponse = function(positionChoisie) {
             `<span class="material-symbols-outlined">check_circle</span>
              <span>Bonne réponse ! ${q.explication}</span>`;
 
+        // Enregistrement Firebase : correct
+        CloudScore.pushReponse(
+            currentDomainKey, currentSubKey,
+            q.question, q.options, q.reponse,
+            parseInt(boutons[positionChoisie].dataset.indexOriginal), "correct"
+        );
+
     } else {
+        // ❌ Mauvaise réponse
         boutons[positionChoisie].classList.add('incorrect');
         if (positionCorrecte !== -1) boutons[positionCorrecte].classList.add('manque');
         feedback.className = 'feedback incorrect';
         feedback.innerHTML =
             `<span class="material-symbols-outlined">cancel</span>
              <span>Mauvaise réponse. ${q.explication}</span>`;
+
+        // Enregistrement Firebase : incorrect + option choisie
+        CloudScore.pushReponse(
+            currentDomainKey, currentSubKey,
+            q.question, q.options, q.reponse,
+            parseInt(boutons[positionChoisie].dataset.indexOriginal), "incorrect"
+        );
     }
 
     document.getElementById('btn-suivant').className = 'btn-suivant';
@@ -888,12 +933,14 @@ async function afficherResultats() {
 
     const tsJoueur = Date.now();
     const entry = {
-        name:   currentUser,
+        name:        currentUser,
         score,
         total,
-        pct:    pourcentage,
-        ts:     tsJoueur,
-        niveau: currentNiveau
+        pct:         pourcentage,
+        ts:          tsJoueur,
+        niveau:      currentNiveau,
+        countryCode: currentCountry ? currentCountry.code : "",
+        countryName: currentCountry ? currentCountry.name : ""
     };
     await CloudScore.push(currentDomainKey, currentSubKey, entry);
 

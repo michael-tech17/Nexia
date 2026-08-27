@@ -183,7 +183,8 @@ h2 {
     min-height: 64px;
 }
 
-.domain-card:hover {
+.domain-card:hover,
+.domain-card:active {
     border-color: var(--primary);
     background-color: var(--primary-light);
     transform: translateX(4px);
@@ -1259,31 +1260,58 @@ h2 {
     color: var(--text-disabled);
 }
 
-/* --- Hover : fond bleu CLAIR, textes sombres lisibles --- */
+/* --- Hover (desktop) et Active (mobile tactile) : fond bleu CLAIR --- */
 .domain-card:hover:not(:disabled),
-.level-card:hover:not(:disabled) {
+.domain-card:active:not(:disabled),
+.level-card:hover:not(:disabled),
+.level-card:active:not(:disabled) {
     background-color: var(--primary-light);
     border-color: var(--primary);
     color: var(--text-main);
 }
 
 .domain-card:hover .btn-titre,
-.level-card:hover .level-card-titre {
+.domain-card:active .btn-titre,
+.level-card:hover .level-card-titre,
+.level-card:active .level-card-titre {
     color: var(--text-main);
 }
 
 .domain-card:hover .btn-sous,
-.level-card:hover .level-card-sous {
+.domain-card:active .btn-sous,
+.level-card:hover .level-card-sous,
+.level-card:active .level-card-sous {
     color: var(--primary-hover);
 }
 
-.domain-card:hover .btn-icone {
+.domain-card:hover .btn-icone,
+.domain-card:active .btn-icone {
     color: var(--primary-hover);
 }
 
 .domain-card:hover .btn-arrow,
-.level-card:hover .level-arrow {
+.domain-card:active .btn-arrow,
+.level-card:hover .level-arrow,
+.level-card:active .level-arrow {
     color: var(--primary);
+}
+
+/* Sur appareils SANS souris (mobile/tablette) : le hover ne colle pas.
+   On utilise media hover:none pour garder l'effet visible au tap via :active */
+@media (hover: none) {
+    .domain-card:active:not(:disabled),
+    .level-card:active:not(:disabled) {
+        background-color: var(--primary-light);
+        border-color: var(--primary);
+        transform: translateX(4px);
+    }
+    .domain-card:active .btn-titre,
+    .level-card:active .level-card-titre { color: var(--text-main); }
+    .domain-card:active .btn-sous,
+    .level-card:active .level-card-sous  { color: var(--primary-hover); }
+    .domain-card:active .btn-icone       { color: var(--primary-hover); }
+    .domain-card:active .btn-arrow,
+    .level-card:active .level-arrow      { color: var(--primary); }
 }
 
 /* ========================================== */
