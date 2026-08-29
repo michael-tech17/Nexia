@@ -1542,6 +1542,13 @@ h2 {
     background-color: #f1f5f9 !important;
 }
 
+/* --- Dinosaures : vert forêt préhistorique --- */
+[data-domain="dinosaures"] .btn-icone { color: #3d6b2f; }
+[data-domain="dinosaures"]:hover {
+    border-color: #3d6b2f !important;
+    background-color: #f0fdf4 !important;
+}
+
 /* ========================================================= */
 /* 17. BADGES DE NIVEAU PAR DOMAINE                             */
 /* ========================================================= */
@@ -1784,4 +1791,42 @@ h2 {
     margin-left: 2px;
     border-radius: 8px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* ========================================== */
+/* 21. DINOSAURE — IMAGE PENDANT LE QUIZ      */
+/* ========================================== */
+
+.dino-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 4px 0 14px 0;
+}
+
+#dino-img {
+    width: 260px;
+    height: 180px;
+    object-fit: cover;
+    object-position: center top; /* cadre sur la partie haute = le corps du dino */
+    border-radius: 12px;
+    border: 2px solid var(--border-color);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    display: block;
+    background-color: #f0fdf4;
+    transition: opacity 0.3s ease;
+}
+
+/* État de chargement : opacité réduite */
+#dino-img.dino-loading {
+    opacity: 0.2;
+    background-color: #dcfce7;
+}
+
+@media screen and (max-width: 480px) {
+    #dino-img {
+        width: 200px;
+        height: 140px;
+    }
 }

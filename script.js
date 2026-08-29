@@ -112,7 +112,8 @@ function normalizeQuestion(q) {
         options:     q.options,
         reponse:     q.reponse,
         explication: q.explication || "",
-        niveau:      niveauMap[niveauBrut] || niveauBrut
+        niveau:      niveauMap[niveauBrut] || niveauBrut,
+        isDinoImg:   q.question && q.question.includes("représenté sur cette image")
     };
 }
 
@@ -146,7 +147,8 @@ const quizData = {
         anglais:  flattenDomain(langues.anglais)
     },
     psychologie:  flattenDomain(psychologie),
-    astronomie:   flattenDomain(astronomie)
+    astronomie:   flattenDomain(astronomie),
+    dinosaures:   flattenDomain(dinosaures)
 };
 
 const NOM_DOMAINES = {
@@ -163,7 +165,8 @@ const NOM_DOMAINES = {
     capitales:        "Capitales du monde",
     pays:             "Pays du monde — Drapeaux",
     francais:         "🇫🇷 Langue française",
-    anglais:          "🇬🇧 Langue anglaise"
+    anglais:          "🇬🇧 Langue anglaise",
+    dinosaures:       "🦖 Dinosaures & Préhistoire"
 };
 
 /* -------------------------------------------------------------- */
@@ -620,6 +623,7 @@ document.querySelectorAll('.back-btn').forEach(btn => {
 document.getElementById('quiz-back-btn').addEventListener('click', () => {
     clearInterval(timerID);
     hideFlagImage();
+    hideDinoImage();
     showScreen('menu-screen');
 });
 
@@ -720,6 +724,98 @@ function hideFlagImage() {
 }
 
 /* -------------------------------------------------------------- */
+/* 20b. GESTION DE L'IMAGE DINOSAURE (Wikipedia API)              */
+/* -------------------------------------------------------------- */
+
+// Correspondance code dino → titre Wikipedia EN pour la vignette
+const DINO_WIKI = {
+    trex:               'Tyrannosaurus',
+    triceratops:        'Triceratops',
+    velociraptor:       'Velociraptor',
+    stegosaurus:        'Stegosaurus',
+    brachiosaurus:      'Brachiosaurus',
+    spinosaurus:        'Spinosaurus',
+    ankylosaurus:       'Ankylosaurus',
+    diplodocus:         'Diplodocus',
+    allosaurus:         'Allosaurus',
+    parasaurolophus:    'Parasaurolophus',
+    iguanodon:          'Iguanodon',
+    carnotaurus:        'Carnotaurus',
+    giganotosaurus:     'Giganotosaurus',
+    apatosaurus:        'Apatosaurus',
+    pachycephalosaurus: 'Pachycephalosaurus',
+    dilophosaurus:      'Dilophosaurus',
+    compsognathus:      'Compsognathus',
+    archaeopteryx:      'Archaeopteryx',
+    therizinosaurus:    'Therizinosaurus',
+    oviraptor:          'Oviraptor',
+    argentinosaurus:    'Argentinosaurus',
+    baryonyx:           'Baryonyx',
+    deinocheirus:       'Deinocheirus',
+    gallimimus:         'Gallimimus'
+};
+
+// Cache dédié aux images dino (séparé du cache avatars)
+const dinoImgCache = {};
+
+async function fetchDinoImage(code) {
+    const wikiTitle = DINO_WIKI[code];
+    if (!wikiTitle) return null;
+    if (dinoImgCache[code]) return dinoImgCache[code];
+    try {
+        const url = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(wikiTitle)}&prop=pageimages&format=json&pithumbsize=400&origin=*`;
+        const resp = await fetch(url);
+        const data = await resp.json();
+        const pages = data.query.pages;
+        const page  = Object.values(pages)[0];
+        if (page.thumbnail && page.thumbnail.source) {
+            dinoImgCache[code] = page.thumbnail.source;
+            return page.thumbnail.source;
+        }
+    } catch (e) { /* silencieux */ }
+    return null;
+}
+
+async function showDinoImage(code) {
+    let dinoContainer = document.getElementById('dino-container');
+
+    if (!dinoContainer) {
+        dinoContainer = document.createElement('div');
+        dinoContainer.id = 'dino-container';
+        dinoContainer.className = 'dino-container';
+
+        const img = document.createElement('img');
+        img.id  = 'dino-img';
+        img.alt = 'Dinosaure';
+        dinoContainer.appendChild(img);
+
+        const questionText = document.getElementById('question-text');
+        questionText.insertAdjacentElement('afterend', dinoContainer);
+    }
+
+    dinoContainer.style.display = 'flex';
+
+    const img = document.getElementById('dino-img');
+    // Affiche un placeholder pendant le chargement
+    img.src = '';
+    img.classList.add('dino-loading');
+
+    const src = await fetchDinoImage(code);
+    if (src) {
+        img.onload  = () => img.classList.remove('dino-loading');
+        img.onerror = () => { dinoContainer.style.display = 'none'; };
+        img.src = src;
+    } else {
+        dinoContainer.style.display = 'none';
+    }
+}
+
+function hideDinoImage() {
+    const dinoContainer = document.getElementById('dino-container');
+    if (dinoContainer) dinoContainer.style.display = 'none';
+}
+
+/* -------------------------------------------------------------- */
 /* 21. AFFICHER UNE QUESTION                                           */
 /* -------------------------------------------------------------- */
 function afficherQuestion() {
@@ -742,10 +838,15 @@ function afficherQuestion() {
     fill.style.transition = 'none';
     fill.style.width = pct + '%';
 
-    if (q.code && q.code.trim() !== "") {
+    if (currentDomainKey === 'dinosaures' && q.isDinoImg && q.code && q.code.trim() !== "") {
+        hideFlagImage();
+        showDinoImage(q.code.trim());
+    } else if (q.code && q.code.trim() !== "" && currentDomainKey !== 'dinosaures') {
+        hideDinoImage();
         showFlagImage(q.code.trim());
     } else {
         hideFlagImage();
+        hideDinoImage();
     }
 
     const ordreOptions = melangerTableau([0, 1, 2, 3]);
@@ -891,6 +992,7 @@ let tsJoueurGlobal  = 0;
 
 async function afficherResultats() {
     hideFlagImage();
+    hideDinoImage();
 
     const total       = activeQuestions.length;
     const pourcentage = Math.round((score / total) * 100);
