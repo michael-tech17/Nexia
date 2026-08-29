@@ -73,12 +73,13 @@ const CloudScore = {
     },
 
     /* Enregistre le résultat d'une réponse individuelle dans la collection "Reponses" */
-    async pushReponse(domain, sub, question, options, reponseCorrecteIndex, optionChoisieIndex, resultat) {
+    async pushReponse(domain, sub, niveau, question, options, reponseCorrecteIndex, optionChoisieIndex, resultat) {
         // resultat : "correct" | "incorrect" | "timeout"
         try {
             await addDoc(collection(db, "Reponses"), {
                 domain:              domain,
                 sub:                 sub || "",
+                niveau:              niveau || "",
                 question:            question,
                 options:             options,
                 reponseCorrecte:     options[reponseCorrecteIndex] || "",
@@ -832,7 +833,7 @@ window.choisirReponse = function(positionChoisie) {
 
         // Enregistrement Firebase : timeout
         CloudScore.pushReponse(
-            currentDomainKey, currentSubKey,
+            currentDomainKey, currentSubKey, currentNiveau,
             q.question, q.options, q.reponse,
             -1, "timeout"
         );
@@ -849,7 +850,7 @@ window.choisirReponse = function(positionChoisie) {
 
         // Enregistrement Firebase : correct
         CloudScore.pushReponse(
-            currentDomainKey, currentSubKey,
+            currentDomainKey, currentSubKey, currentNiveau,
             q.question, q.options, q.reponse,
             parseInt(boutons[positionChoisie].dataset.indexOriginal), "correct"
         );
@@ -865,7 +866,7 @@ window.choisirReponse = function(positionChoisie) {
 
         // Enregistrement Firebase : incorrect + option choisie
         CloudScore.pushReponse(
-            currentDomainKey, currentSubKey,
+            currentDomainKey, currentSubKey, currentNiveau,
             q.question, q.options, q.reponse,
             parseInt(boutons[positionChoisie].dataset.indexOriginal), "incorrect"
         );
@@ -1002,14 +1003,12 @@ function afficherOngletClassement(filtre) {
         const estMoi = e.ts === tsJoueurGlobal;
 
         let badgeClass, badgeLabel, badgeIcon;
-        if      (i === 0) { badgeClass = 'gold';   badgeLabel = '1er';      badgeIcon = 'emoji_events'; }
-        else if (i === 1) { badgeClass = 'silver'; badgeLabel = '2ème';     badgeIcon = 'emoji_events'; }
-        else if (i === 2) { badgeClass = 'bronze'; badgeLabel = '3ème';     badgeIcon = 'emoji_events'; }
-        else              { badgeClass = 'other';  badgeLabel = `#${i + 1}`; badgeIcon = ''; }
+        if      (i === 0) { badgeClass = 'gold';   badgeLabel = '1er';       badgeIcon = 'military_tech'; }
+        else if (i === 1) { badgeClass = 'silver'; badgeLabel = '2ème';      badgeIcon = 'workspace_premium'; }
+        else if (i === 2) { badgeClass = 'bronze'; badgeLabel = '3ème';      badgeIcon = 'grade'; }
+        else              { badgeClass = 'other';  badgeLabel = `${i + 1}`;  badgeIcon = 'tag'; }
 
-        const badgeHtml = badgeIcon
-            ? `<span class="rank-badge ${badgeClass}"><span class="material-symbols-outlined">${badgeIcon}</span>${badgeLabel}</span>`
-            : `<span class="rank-badge ${badgeClass}">${badgeLabel}</span>`;
+        const badgeHtml = `<span class="rank-badge ${badgeClass}"><span class="material-symbols-outlined">${badgeIcon}</span>${badgeLabel}</span>`;
 
         const pctNum   = parseInt(e.pct) || 0;
         const pctColor = pctNum >= 70 ? 'var(--success)' : pctNum >= 40 ? 'var(--warning)' : 'var(--error)';

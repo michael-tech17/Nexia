@@ -1169,42 +1169,28 @@ h2 {
 .rank-badge {
     display: inline-flex;
     align-items: center;
-    gap: 3px;
-    font-size: 11px;
+    gap: 4px;
+    font-size: 13px;
     font-weight: 700;
-    padding: 3px 9px;
+    padding: 4px 10px;
     border-radius: 20px;
     flex-shrink: 0;
     white-space: nowrap;
 }
 
 .rank-badge .material-symbols-outlined {
-    font-size: 13px;
+    font-size: 16px;
+    line-height: 1;
 }
 
-.rank-badge.gold {
-    background-color: #fef3c7;
-    color: #92400e;
-    border: 1px solid #fcd34d;
-}
-
-.rank-badge.silver {
-    background-color: #f1f5f9;
-    color: #475569;
-    border: 1px solid #94a3b8;
-}
-
-.rank-badge.bronze {
-    background-color: #ffedd5;
-    color: #9a3412;
-    border: 1px solid #fb923c;
-}
-
-.rank-badge.other {
-    background-color: var(--bg-element);
-    color: var(--text-muted);
-    border: 1px solid var(--border-color);
-    min-width: 32px;
+.rank-badge.gold   { color: #f59e0b; background: #fef3c7; }
+.rank-badge.silver { color: #94a3b8; background: #f1f5f9; }
+.rank-badge.bronze { color: #b45309; background: #ffedd5; }
+.rank-badge.other  {
+    color: var(--text-main);
+    background: var(--bg-element);
+    font-size: 12px;
+    min-width: 36px;
     justify-content: center;
 }
 
