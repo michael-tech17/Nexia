@@ -724,59 +724,77 @@ function hideFlagImage() {
 }
 
 /* -------------------------------------------------------------- */
-/* 20b. GESTION DE L'IMAGE DINOSAURE (Wikipedia API)              */
+/* 20b. GESTION DE L'IMAGE DINOSAURE (URLs Wikimedia directes)    */
+/* Toutes les images sont des reconstitutions artistiques         */
+/* garantissant : animal vivant, corps entier, pas de squelette   */
 /* -------------------------------------------------------------- */
 
-// Correspondance code dino → titre Wikipedia EN pour la vignette
-const DINO_WIKI = {
-    trex:               'Tyrannosaurus',
-    triceratops:        'Triceratops',
-    velociraptor:       'Velociraptor',
-    stegosaurus:        'Stegosaurus',
-    brachiosaurus:      'Brachiosaurus',
-    spinosaurus:        'Spinosaurus',
-    ankylosaurus:       'Ankylosaurus',
-    diplodocus:         'Diplodocus',
-    allosaurus:         'Allosaurus',
-    parasaurolophus:    'Parasaurolophus',
-    iguanodon:          'Iguanodon',
-    carnotaurus:        'Carnotaurus',
-    giganotosaurus:     'Giganotosaurus',
-    apatosaurus:        'Apatosaurus',
-    pachycephalosaurus: 'Pachycephalosaurus',
-    dilophosaurus:      'Dilophosaurus',
-    compsognathus:      'Compsognathus',
-    archaeopteryx:      'Archaeopteryx',
-    therizinosaurus:    'Therizinosaurus',
-    oviraptor:          'Oviraptor',
-    argentinosaurus:    'Argentinosaurus',
-    baryonyx:           'Baryonyx',
-    deinocheirus:       'Deinocheirus',
-    gallimimus:         'Gallimimus'
+// Dictionnaire code dino → URL directe Wikimedia Commons
+// Critères : reconstitution artistique, corps entier, dinosaure vivant
+const DINO_IMG = {
+    // === Dinos classiques ===
+    trex:               'https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Tyrannosaurus_Rex_des_cours.png/1024px-Tyrannosaurus_Rex_des_cours.png',
+    triceratops:        'https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Triceratops_dinosaur.png/1024px-Triceratops_dinosaur.png',
+    velociraptor:       'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Velociraptor_dinoguy2.jpg/1024px-Velociraptor_dinoguy2.jpg',
+    stegosaurus:        'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Stegosaurus_stenops_life_restoration.png/1024px-Stegosaurus_stenops_life_restoration.png',
+    brachiosaurus:      'https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Brachiosaurus_BW.jpg/1024px-Brachiosaurus_BW.jpg',
+    spinosaurus:        'https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Spinosaurus2.jpg/1024px-Spinosaurus2.jpg',
+    ankylosaurus:       'https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Ankylosaurus_magniventris_reconstruction.png/1024px-Ankylosaurus_magniventris_reconstruction.png',
+    diplodocus:         'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Diplodocus_carnegii.jpg/1024px-Diplodocus_carnegii.jpg',
+    allosaurus:         'https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Allosaurus_Revised.jpg/1024px-Allosaurus_Revised.jpg',
+    parasaurolophus:    'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Parasaurolophus_life_restoration_2013.jpg/1024px-Parasaurolophus_life_restoration_2013.jpg',
+    iguanodon:          'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Iguanodon_BW.jpg/1024px-Iguanodon_BW.jpg',
+    carnotaurus:        'https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Carnotaurus_MUSE.jpg/1024px-Carnotaurus_MUSE.jpg',
+    giganotosaurus:     'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Giganotosaurus_carolinii.jpg/1024px-Giganotosaurus_carolinii.jpg',
+    apatosaurus:        'https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Apatosaurus_louisae.jpg/1024px-Apatosaurus_louisae.jpg',
+    pachycephalosaurus: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Pachycephalosaurus_wyomingensis_1.jpg/1024px-Pachycephalosaurus_wyomingensis_1.jpg',
+    dilophosaurus:      'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Dilophosaurus_wetherilli.png/1024px-Dilophosaurus_wetherilli.png',
+    compsognathus:      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/CompsognathusLudwig.jpg/1024px-CompsognathusLudwig.jpg',
+    archaeopteryx:      'https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Archaeopteryx_lithographica_%28Staatliches_Museum_f%C3%BCr_Naturkunde_Stuttgart%29.jpg/1024px-Archaeopteryx_lithographica_%28Staatliches_Museum_f%C3%BCr_Naturkunde_Stuttgart%29.jpg',
+    therizinosaurus:    'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Therizinosaurus.jpg/1024px-Therizinosaurus.jpg',
+    oviraptor:          'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Oviraptor_Reconstruction.jpg/1024px-Oviraptor_Reconstruction.jpg',
+    argentinosaurus:    'https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Argentinosaurus_BW.jpg/1024px-Argentinosaurus_BW.jpg',
+    baryonyx:           'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Baryonyx_Scale.jpg/1024px-Baryonyx_Scale.jpg',
+    deinocheirus:       'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Deinocheirus_NT.jpg/1024px-Deinocheirus_NT.jpg',
+    gallimimus:         'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Gallimimus_NT.jpg/1024px-Gallimimus_NT.jpg',
+    // === Dinos Super Charge (Power Rangers Dino Super Charge) ===
+    pteradon:           'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Pteranodon_NT.jpg/1024px-Pteranodon_NT.jpg',
+    raptor:             'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Velociraptor_dinoguy2.jpg/1024px-Velociraptor_dinoguy2.jpg',
+    stegosaure:         'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Stegosaurus_stenops_life_restoration.png/1024px-Stegosaurus_stenops_life_restoration.png',
+    ankylo:             'https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Ankylosaurus_magniventris_reconstruction.png/1024px-Ankylosaurus_magniventris_reconstruction.png',
+    pachy:              'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Pachycephalosaurus_wyomingensis_1.jpg/1024px-Pachycephalosaurus_wyomingensis_1.jpg',
+    plesio:             'https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Plesiosaurus_BW.jpg/1024px-Plesiosaurus_BW.jpg',
+    para:               'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Parasaurolophus_life_restoration_2013.jpg/1024px-Parasaurolophus_life_restoration_2013.jpg',
+    kentrosaurus:       'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Kentrosaurus_BW.jpg/1024px-Kentrosaurus_BW.jpg',
+    dimetrodon:         'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Dimetrodon_NT_new.jpg/1024px-Dimetrodon_NT_new.jpg',
+    troodon:            'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Troodon_formosus.jpg/1024px-Troodon_formosus.jpg',
+    mosasaur:           'https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Mosasaurus_BW.jpg/1024px-Mosasaurus_BW.jpg',
+    // === Autres dinos célèbres ===
+    styracosaurus:      'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Styracosaurus_BW.jpg/1024px-Styracosaurus_BW.jpg',
+    deinonychus:        'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Deinonychus_by_durbed.jpg/1024px-Deinonychus_by_durbed.jpg',
+    ichthyosaurus:      'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Ichthyosaurus_h_harder.jpg/1024px-Ichthyosaurus_h_harder.jpg',
+    pteranodon:         'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Pteranodon_NT.jpg/1024px-Pteranodon_NT.jpg',
+    mosasaurus:         'https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Mosasaurus_BW.jpg/1024px-Mosasaurus_BW.jpg',
+    plesiosaurus:       'https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Plesiosaurus_BW.jpg/1024px-Plesiosaurus_BW.jpg',
+    carcharodontosaurus:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Carcharodontosaurus_BW.jpg/1024px-Carcharodontosaurus_BW.jpg',
+    troodon2:           'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Troodon_formosus.jpg/1024px-Troodon_formosus.jpg',
+    protoceratops:      'https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Protoceratops_NT.jpg/1024px-Protoceratops_NT.jpg',
+    iguanodon2:         'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Iguanodon_BW.jpg/1024px-Iguanodon_BW.jpg',
+    maiasaura:          'https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Maiasaura_dinosaur.png/1024px-Maiasaura_dinosaur.png',
+    ceratosaurus:       'https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Ceratosaurus_NT.jpg/1024px-Ceratosaurus_NT.jpg',
+    ornithomimus:       'https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Ornithomimus_edmontonicus_restoration.jpg/1024px-Ornithomimus_edmontonicus_restoration.jpg',
+    abelisaurus:        'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Carnotaurus_MUSE.jpg/1024px-Carnotaurus_MUSE.jpg',
+    albertosaurus:      'https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Albertosaurus_sarcophagus.jpg/1024px-Albertosaurus_sarcophagus.jpg',
+    patagotitan:        'https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Argentinosaurus_BW.jpg/1024px-Argentinosaurus_BW.jpg',
+    suchomimus:         'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Baryonyx_Scale.jpg/1024px-Baryonyx_Scale.jpg',
+    // === Dino Super Charge — Titano Zord (Argent) ===
+    titanosaurus:       'https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Argentinosaurus_BW.jpg/1024px-Argentinosaurus_BW.jpg',
+    // === MMPR — Mastodonte (Ranger Noir), Dragon (Ranger Vert) ===
+    mastodonte:         'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Mastodon.jpg/1024px-Mastodon.jpg',
+    dragon:             'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Spinosaurus2.jpg/1024px-Spinosaurus2.jpg',
 };
 
-// Cache dédié aux images dino (séparé du cache avatars)
-const dinoImgCache = {};
-
-async function fetchDinoImage(code) {
-    const wikiTitle = DINO_WIKI[code];
-    if (!wikiTitle) return null;
-    if (dinoImgCache[code]) return dinoImgCache[code];
-    try {
-        const url = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(wikiTitle)}&prop=pageimages&format=json&pithumbsize=400&origin=*`;
-        const resp = await fetch(url);
-        const data = await resp.json();
-        const pages = data.query.pages;
-        const page  = Object.values(pages)[0];
-        if (page.thumbnail && page.thumbnail.source) {
-            dinoImgCache[code] = page.thumbnail.source;
-            return page.thumbnail.source;
-        }
-    } catch (e) { /* silencieux */ }
-    return null;
-}
-
-async function showDinoImage(code) {
+function showDinoImage(code) {
     let dinoContainer = document.getElementById('dino-container');
 
     if (!dinoContainer) {
@@ -793,21 +811,18 @@ async function showDinoImage(code) {
         questionText.insertAdjacentElement('afterend', dinoContainer);
     }
 
-    dinoContainer.style.display = 'flex';
-
-    const img = document.getElementById('dino-img');
-    // Affiche un placeholder pendant le chargement
-    img.src = '';
-    img.classList.add('dino-loading');
-
-    const src = await fetchDinoImage(code);
-    if (src) {
-        img.onload  = () => img.classList.remove('dino-loading');
-        img.onerror = () => { dinoContainer.style.display = 'none'; };
-        img.src = src;
-    } else {
+    const src = DINO_IMG[code] || null;
+    if (!src) {
         dinoContainer.style.display = 'none';
+        return;
     }
+
+    dinoContainer.style.display = 'flex';
+    const img = document.getElementById('dino-img');
+    img.classList.add('dino-loading');
+    img.onload  = () => img.classList.remove('dino-loading');
+    img.onerror = () => { dinoContainer.style.display = 'none'; };
+    img.src = src;
 }
 
 function hideDinoImage() {
@@ -840,7 +855,7 @@ function afficherQuestion() {
 
     if (currentDomainKey === 'dinosaures' && q.isDinoImg && q.code && q.code.trim() !== "") {
         hideFlagImage();
-        showDinoImage(q.code.trim());
+        showDinoImage(q.code.trim()); // synchrone — DINO_IMG dictionary
     } else if (q.code && q.code.trim() !== "" && currentDomainKey !== 'dinosaures') {
         hideDinoImage();
         showFlagImage(q.code.trim());

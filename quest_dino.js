@@ -376,4 +376,150 @@ const dinosaures = [
 {question:"Quel groupe auquel appartient Gallimimus est inclus dans les théropodes ?",code:"gallimimus",niveau:"avance",options:["Les ornithomimosaures","Les sauropodes","Les cératopsiens","Les ankylosauriens"],reponse:0,explication:"Gallimimus est un ornithomimosaure, donc un théropode."},
 {question:"Quel dinosaure est représenté sur cette image ?",code:"gallimimus",niveau:"avance",options:["Gallimimus","Ornithomimus","Struthiomimus","Deinocheirus"],reponse:0,explication:"La reconstruction correspond à Gallimimus."},
 
+    /* ===================================================================
+       POWER RANGERS DINO SUPER CHARGE (2015-2016)
+       Liste officielle des 11 Zords & leurs dinosaures réels
+       ┌─────────────────────────────────────────────────────────────┐
+       │ Rouge   → T-Rex Zord        → Tyrannosaurus rex            │
+       │ Bleu    → Stego Zord        → Stegosaurus                  │
+       │ Rose    → Tricera Zord      → Triceratops                  │
+       │ Noir    → Para Zord         → Parasaurolophus               │
+       │ Vert    → Raptor Zord       → Velociraptor                  │
+       │ Or      → Ptera Zord        → Pteranodon                   │
+       │ Aqua    → Ankylo Zord       → Ankylosaurus                 │
+       │ Graphite→ Pachy Zord        → Pachycephalosaurus           │
+       │ Violet  → Plesio Zord       → Plesiosaurus                 │
+       │ Argent  → Titano Zord       → Titanosaurus (sauropode)     │
+       │ Spino   → Spino Zord        → Spinosaurus                  │
+       └─────────────────────────────────────────────────────────────┘
+    =================================================================== */
+
+    /* === T-Rex / Tyrannosaurus rex — Ranger Rouge (T-Rex Zord) === */
+{question:"Dans Power Rangers Dino Super Charge, quel Zord est associé au Ranger Rouge ?",code:"trex",niveau:"debutant",options:["Le T-Rex Zord (Tyrannosaurus)","Le Stego Zord (Stegosaurus)","Le Ptera Zord (Pteranodon)","Le Titano Zord (Titanosaure)"],reponse:0,explication:"Le Ranger Rouge de Dino Super Charge pilote le T-Rex Zord, basé sur le Tyrannosaurus rex."},
+{question:"Quel dinosaure inspire le T-Rex Zord du Ranger Rouge dans Dino Super Charge ?",code:"trex",niveau:"debutant",options:["Le Tyrannosaurus rex","Le Stegosaurus","Le Parasaurolophus","L'Ankylosaurus"],reponse:0,explication:"Le T-Rex Zord est directement inspiré du Tyrannosaurus rex, le plus célèbre des théropodes carnivores."},
+
+    /* === Stegosaurus — Ranger Bleu (Stego Zord) === */
+{question:"Dans Power Rangers Dino Super Charge, quel dinosaure est la base du Stego Zord du Ranger Bleu ?",code:"stegosaurus",niveau:"debutant",options:["Le Stegosaurus","Le Velociraptor","Le Triceratops","L'Ankylosaurus"],reponse:0,explication:"Le Ranger Bleu de Dino Super Charge pilote le Stego Zord, inspiré du Stegosaurus et ses plaques dorsales."},
+{question:"Dans Dino Super Charge, quelle couleur de ranger est associée au Stego Zord ?",code:"stegosaurus",niveau:"debutant",options:["Bleu","Rouge","Vert","Rose"],reponse:0,explication:"C'est le Ranger Bleu qui pilote le Stego Zord basé sur le Stegosaurus dans Dino Super Charge."},
+
+    /* === Triceratops — Ranger Rose (Tricera Zord) === */
+{question:"Dans Power Rangers Dino Super Charge, quel dinosaure est la référence du Tricera Zord du Ranger Rose ?",code:"triceratops",niveau:"debutant",options:["Le Triceratops","Le Stegosaurus","L'Ankylosaurus","Le Parasaurolophus"],reponse:0,explication:"Le Ranger Rose de Dino Super Charge pilote le Tricera Zord, basé sur le Triceratops aux trois cornes."},
+{question:"Dans Dino Super Charge, quelle couleur de ranger pilote le Tricera Zord ?",code:"triceratops",niveau:"debutant",options:["Rose","Bleu","Rouge","Noir"],reponse:0,explication:"C'est le Ranger Rose qui pilote le Tricera Zord inspiré du Triceratops."},
+
+    /* === Parasaurolophus — Ranger Noir (Para Zord) === */
+{question:"Dans Power Rangers Dino Super Charge, quel dinosaure inspire le Para Zord du Ranger Noir ?",code:"parasaurolophus",niveau:"debutant",options:["Le Parasaurolophus","L'Ankylosaurus","Le Stegosaurus","Le Velociraptor"],reponse:0,explication:"Le Ranger Noir de Dino Super Charge pilote le Para Zord, inspiré du Parasaurolophus et sa crête céphalique creuse."},
+{question:"Dans Dino Super Charge, quelle couleur de ranger est associée au Para Zord (Parasaurolophus) ?",code:"parasaurolophus",niveau:"debutant",options:["Noir","Vert","Or","Violet"],reponse:0,explication:"C'est le Ranger Noir qui pilote le Para Zord basé sur le Parasaurolophus."},
+
+    /* === Velociraptor — Ranger Vert (Raptor Zord) === */
+{question:"Dans Power Rangers Dino Super Charge, quel dinosaure est la base du Raptor Zord du Ranger Vert ?",code:"velociraptor",niveau:"debutant",options:["Le Velociraptor","Le Stegosaurus","L'Ankylosaurus","Le T-Rex"],reponse:0,explication:"Le Ranger Vert de Dino Super Charge pilote le Raptor Zord, inspiré du Velociraptor."},
+{question:"Dans Dino Super Charge, quelle couleur de ranger pilote le Raptor Zord (Velociraptor) ?",code:"velociraptor",niveau:"debutant",options:["Vert","Bleu","Rose","Graphite"],reponse:0,explication:"C'est le Ranger Vert qui pilote le Raptor Zord basé sur le Velociraptor dans Dino Super Charge."},
+
+    /* === Pteranodon — Ranger Or (Ptera Zord) === */
+{question:"Dans Power Rangers Dino Super Charge, quel animal préhistorique inspire le Ptera Zord du Ranger Or ?",code:"pteradon",niveau:"debutant",options:["Le Pteranodon","Le Plesiosaurus","Le Titanosaure","Le Spinosaurus"],reponse:0,explication:"Le Ranger Or de Dino Super Charge pilote le Ptera Zord, inspiré du Pteranodon ou Ptérodactyle, grand ptérosaure volant du Crétacé."},
+{question:"Dans Dino Super Charge, quelle couleur de ranger est associée au Ptera Zord (Pteranodon) ?",code:"pteradon",niveau:"debutant",options:["Or","Rouge","Argent","Violet"],reponse:0,explication:"C'est le Ranger Or qui pilote le Ptera Zord basé sur le Pteranodon dans Dino Super Charge."},
+{question:"Quel groupe de reptiles volants comprend le Pteranodon, base du Ptera Zord Or ?",code:"pteradon",niveau:"debutant",options:["Les ptérosaures","Les dinosaures à plumes","Les oiseaux préhistoriques","Les archosaures nageurs"],reponse:0,explication:"Le Pteranodon ou Ptérodactyle est un ptérosaure, reptile volant du Crétacé, distinct des dinosaures au sens strict."},
+{question:"Quel était l'élément distinctif du crâne du Pteranodon ?",code:"pteradon",niveau:"debutant",options:["Une crête osseuse","Des cornes multiples","Un bec denté","Une carapace"],reponse:0,explication:"Le Pteranodon ou Ptérodactyle possédait une grande crête osseuse sur le crâne dont la fonction reste discutée."},
+{question:"Quel animal préhistorique est représenté sur cette image ?",code:"pteradon",niveau:"debutant",options:["Pteranodon","Quetzalcoatlus","Dimorphodon","Pterodactylus"],reponse:0,explication:"L'image représente un Pteranodon ou Ptérodactyle, grand ptérosaure à crête reconnaissable, inspirant le Ptera Zord Or de Dino Super Charge."},
+
+    /* === Ankylosaurus — Ranger Aqua (Ankylo Zord) === */
+{question:"Dans Power Rangers Dino Super Charge, quel dinosaure inspire l'Ankylo Zord du Ranger Aqua ?",code:"ankylosaurus",niveau:"debutant",options:["L'Ankylosaurus","Le Pachycephalosaurus","Le Triceratops","Le Stegosaurus"],reponse:0,explication:"Le Ranger Aqua de Dino Super Charge pilote l'Ankylo Zord, inspiré de l'Ankylosaurus et sa massue caudale."},
+{question:"Dans Dino Super Charge, quelle couleur de ranger pilote l'Ankylo Zord (Ankylosaurus) ?",code:"ankylosaurus",niveau:"debutant",options:["Aqua","Noir","Graphite","Vert"],reponse:0,explication:"C'est le Ranger Aqua qui pilote l'Ankylo Zord basé sur l'Ankylosaurus dans Dino Super Charge."},
+
+    /* === Pachycephalosaurus — Ranger Graphite (Pachy Zord) === */
+{question:"Dans Power Rangers Dino Super Charge, quel dinosaure est la base du Pachy Zord du Ranger Graphite ?",code:"pachycephalosaurus",niveau:"debutant",options:["Le Pachycephalosaurus","L'Ankylosaurus","Le Spinosaurus","Le Carnotaurus"],reponse:0,explication:"Le Ranger Graphite de Dino Super Charge pilote le Pachy Zord, inspiré du Pachycephalosaurus à dôme crânien épais."},
+{question:"Par quelle caractéristique anatomique le Pachycephalosaurus, base du Pachy Zord, est-il reconnaissable ?",code:"pachycephalosaurus",niveau:"debutant",options:["Son crâne en dôme épais","Ses trois cornes frontales","Sa collerette osseuse","Sa voile dorsale"],reponse:0,explication:"Le Pachycephalosaurus possède un dôme crânien épais de plusieurs centimètres, caractéristique de ce groupe."},
+{question:"Dans Dino Super Charge, quelle couleur de ranger pilote le Pachy Zord (Pachycephalosaurus) ?",code:"pachycephalosaurus",niveau:"debutant",options:["Graphite","Aqua","Violet","Argent"],reponse:0,explication:"C'est le Ranger Graphite qui pilote le Pachy Zord basé sur le Pachycephalosaurus dans Dino Super Charge."},
+{question:"Quel dinosaure est représenté sur cette image ?",code:"pachy",niveau:"debutant",options:["Pachycephalosaurus","Stygimoloch","Dracorex","Triceratops"],reponse:0,explication:"L'image représente un Pachycephalosaurus identifiable à son crâne en dôme épais, inspirant le Pachy Zord Graphite."},
+
+    /* === Plesiosaurus — Ranger Violet (Plesio Zord) === */
+{question:"Dans Power Rangers Dino Super Charge, quel reptile marin inspire le Plesio Zord du Ranger Violet ?",code:"plesio",niveau:"debutant",options:["Le Plésiosaure","Le Mosasaurus","L'Ichthyosaure","Le Kronosaurus"],reponse:0,explication:"Le Ranger Violet de Dino Super Charge pilote le Plesio Zord, inspiré du Plésiosaure, reptile marin du Mésozoïque."},
+{question:"Dans Dino Super Charge, quelle couleur de ranger est associée au Plesio Zord ?",code:"plesio",niveau:"debutant",options:["Violet","Or","Argent","Aqua"],reponse:0,explication:"C'est le Ranger Violet qui pilote le Plesio Zord basé sur le Plésiosaure dans Dino Super Charge."},
+{question:"Le Plésiosaure, base du Plesio Zord Violet, était-il un dinosaure ?",code:"plesio",niveau:"debutant",options:["Non, c'était un reptile marin","Oui, c'était un dinosaure aquatique","Oui, mais il vivait aussi sur terre","Non, c'était un poisson préhistorique"],reponse:0,explication:"Le Plésiosaure était un reptile marin du groupe des plésiosaures, distinct des dinosaures au sens strict."},
+{question:"Quelle caractéristique distingue le Plésiosaure à long cou des autres reptiles marins ?",code:"plesio",niveau:"debutant",options:["Son très long cou et ses nageoires","Ses dents en scie géantes","Sa voile dorsale","Sa carapace de tortue"],reponse:0,explication:"Le Plésiosaure est connu pour son long cou, ses quatre nageoires et son corps en tonneau."},
+{question:"Quel animal préhistorique est représenté sur cette image ?",code:"plesio",niveau:"debutant",options:["Plésiosaure","Mosasaurus","Ichthyosaure","Pliosaure"],reponse:0,explication:"L'image représente un Plésiosaure, reptile marin du Mésozoïque à long cou, base du Plesio Zord Violet."},
+
+    /* === Titanosaurus — Ranger Argent (Titano Zord) === */
+{question:"Dans Power Rangers Dino Super Charge, quel dinosaure inspire le Titano Zord du Ranger Argent ?",code:"titanosaurus",niveau:"debutant",options:["Le Titanosaure (grand sauropode)","Le Triceratops","L'Ankylosaurus","Le Pteranodon"],reponse:0,explication:"Le Ranger Argent de Dino Super Charge pilote le Titano Zord, inspiré du Titanosaure, l'un des plus grands sauropodes."},
+{question:"Dans Dino Super Charge, quelle couleur de ranger pilote le Titano Zord (Titanosaure) ?",code:"titanosaurus",niveau:"debutant",options:["Argent","Or","Graphite","Aqua"],reponse:0,explication:"C'est le Ranger Argent qui pilote le Titano Zord basé sur le Titanosaure dans Dino Super Charge."},
+{question:"À quel groupe de dinosaures appartient le Titanosaure, inspiration du Titano Zord ?",code:"titanosaurus",niveau:"debutant",options:["Les sauropodes","Les théropodes","Les cératopsiens","Les hadrosaures"],reponse:0,explication:"Le Titanosaure est un titanosaurien, un groupe de grands sauropodes quadrupèdes à long cou du Crétacé."},
+{question:"Quelle caractéristique physique principale définit les titanosaures comme le Titano Zord ?",code:"titanosaurus",niveau:"debutant",options:["Un corps massif, un très long cou et une longue queue","Trois cornes frontales","Des plaques dorsales","Une voile spinale"],reponse:0,explication:"Les titanosaures sont de grands sauropodes reconnaissables à leur silhouette allongée avec un long cou et une longue queue."},
+{question:"Quel dinosaure est représenté sur cette image ?",code:"titanosaurus",niveau:"debutant",options:["Titanosaure (sauropode géant)","Brachiosaurus","Diplodocus","Argentinosaurus"],reponse:0,explication:"L'image représente un titanosaure, grand sauropode du Crétacé qui inspire le Titano Zord Argent de Dino Super Charge."},
+
+    /* === Spinosaurus — Spino Zord === */
+{question:"Dans Power Rangers Dino Super Charge, quel dinosaure inspire le Spino Zord ?",code:"spinosaurus",niveau:"debutant",options:["Le Spinosaurus","Le Tyrannosaurus","Le Giganotosaurus","Le Carnotaurus"],reponse:0,explication:"Le Spino Zord de Dino Super Charge est directement inspiré du Spinosaurus et sa grande structure dorsale."},
+{question:"Quelle structure spectaculaire du Spinosaurus, base du Spino Zord, le rend reconnaissable ?",code:"spinosaurus",niveau:"debutant",options:["Une grande voile ou dos en épines vertébrales","Une massue caudale","Trois cornes frontales","Une collerette osseuse"],reponse:0,explication:"Le Spinosaurus possède de longues épines vertébrales formant une grande structure dorsale caractéristique."},
+
+    /* ===================================================================
+       POWER RANGERS MIGHTY MORPHIN (1993-1996) — Créatures notables
+       Mastodonte (Ranger Noir), Dragon (Ranger Vert),
+       Titanus / Brachiosaure (Ranger Blanc / Zords spéciaux)
+    =================================================================== */
+
+    /* === Mastodonte — Ranger Noir (Mastodon Dinozord) === */
+{question:"Dans Power Rangers Mighty Morphin, quel animal préhistorique inspire le Zord du Ranger Noir ?",code:"mastodonte",niveau:"debutant",options:["Le Mastodonte","Le T-Rex","Le Mammouth","Le Diplocaulus"],reponse:0,explication:"Le Ranger Noir de Mighty Morphin pilote le Mastodon Dinozord, inspiré du Mastodonte, mammifère préhistorique cousin du mammouth."},
+{question:"Le Mastodonte, Zord du Ranger Noir MMPR, était-il un dinosaure ?",code:"mastodonte",niveau:"debutant",options:["Non, c'était un mammifère préhistorique","Oui, c'était un dinosaure herbivore","Oui, mais il vivait au Jurassique","Non, c'était un reptile"], reponse:0,explication:"Le Mastodonte (Mammut americanum) était un mammifère de la famille des proboscidiens, pas un dinosaure."},
+{question:"À quel groupe animal appartient le Mastodonte, animal du Ranger Noir dans MMPR ?",code:"mastodonte",niveau:"debutant",options:["Les proboscidiens (mammifères à trompe)","Les marsupiaux","Les reptiles mammaliens","Les cétacés préhistoriques"],reponse:0,explication:"Le Mastodonte appartient aux proboscidiens, le même groupe que les mammouths et les éléphants actuels."},
+{question:"Quelle différence principale existe entre le Mastodonte et le Mammouth laineux ?",code:"mastodonte",niveau:"intermediaire",options:["Leur denture et leur morphologie crânienne","Leur période d'existence identique","Leur taille identique","Leur habitat exclusivement tropical"],reponse:0,explication:"Les mastodontes ont une denture composée de tubercules arrondis, différente des lamelles des mammouths."},
+{question:"Quel animal préhistorique est représenté sur cette image ?",code:"mastodonte",niveau:"debutant",options:["Mastodonte","Mammouth laineux","Paraceratherium","Deinotherium"],reponse:0,explication:"L'image représente un mastodonte, mammifère préhistorique à trompe inspirant le Mastodon Dinozord du Ranger Noir MMPR."},
+
+    /* === Dragon / Dragonzord — Ranger Vert (MMPR) === */
+{question:"Dans Power Rangers Mighty Morphin, quel creature mythique inspire le Dragonzord du Ranger Vert ?",code:"dragon",niveau:"debutant",options:["Un dragon","Un dinosaure ailé","Un ptérosaure géant","Une chimère"],reponse:0,explication:"Le Dragonzord du Ranger Vert de Mighty Morphin est inspiré d'un dragon mythique, créature fantastique et non un animal préhistorique réel."},
+{question:"Le Dragonzord du Ranger Vert dans MMPR est-il basé sur un dinosaure réel ?",code:"dragon",niveau:"debutant",options:["Non, c'est une créature mythique (dragon)","Oui, c'est un Spinosaurus","Oui, c'est un Baryonyx","Non, c'est un ptérosaure"],reponse:0,explication:"Contrairement aux autres Dinozords, le Dragonzord est basé sur un dragon mythique et non sur un dinosaure ou animal préhistorique réel."},
+{question:"Dans MMPR, quelle couleur de Ranger pilote le Dragonzord basé sur un dragon ?",code:"dragon",niveau:"debutant",options:["Vert","Rouge","Noir","Blanc"],reponse:0,explication:"C'est le Ranger Vert (Tommy Oliver) qui pilote le Dragonzord dans Mighty Morphin Power Rangers."},
+
+    /* === Titanus / Brachiosaure — Carrier Zord (MMPR) === */
+{question:"Dans Power Rangers Mighty Morphin, quel dinosaure inspire Titanus, le Carrier Zord géant ?",code:"brachiosaurus",niveau:"debutant",options:["Le Brachiosaurus (sauropode)","Le Triceratops","Le Stegosaurus","L'Ankylosaurus"],reponse:0,explication:"Titanus est un Carrier Zord gigantesque inspiré du Brachiosaurus, grand sauropode à long cou."},
+{question:"Dans MMPR, quel surnom porte Titanus, le Zord géant basé sur un Brachiosaurus ?",code:"brachiosaurus",niveau:"intermediaire",options:["Le Carrier Zord","Le Master Zord","Le Super Zord","Le Titan Zord"],reponse:0,explication:"Titanus est surnommé le Carrier Zord car il transporte les autres Zords pour former le Ultrazord."},
+
+    /* ===================================================================
+       DINOS CÉLÈBRES MANQUANTS — Styracosaurus, Deinonychus,
+       Ceratosaurus, Maiasaura, Ornithomimus, Protoceratops,
+       Ichthyosaure, Pteranodon (standalone), Albertosaurus
+    =================================================================== */
+
+    /* === Styracosaurus === */
+{question:"Quelle caractéristique visuelle distingue immédiatement le Styracosaure du Triceratops ?",code:"styracosaurus",niveau:"debutant",options:["De longues pointes rayonnantes sur la collerette","Trois cornes frontales plus grandes","Une massue caudale","Des plaques dorsales"],reponse:0,explication:"Le Styracosaure possède une collerette ornée de longues épines saillantes, différente de celle du Triceratops."},
+{question:"Le Styracosaure était-il carnivore ?",code:"styracosaurus",niveau:"debutant",options:["Non, c'était un herbivore","Oui, c'était un prédateur","Oui, mais seulement les jeunes","Non, c'était un insectivore"],reponse:0,explication:"Le Styracosaure était un cératopsien herbivore, comme tous les membres de sa famille."},
+{question:"Quel dinosaure est représenté sur cette image ?",code:"styracosaurus",niveau:"debutant",options:["Styracosaurus","Centrosaurus","Triceratops","Torosaurus"],reponse:0,explication:"L'image représente un Styracosaurus, cératopsien à la collerette hérissée de longues épines."},
+{question:"À quelle famille de dinosaures appartient le Styracosaure ?",code:"styracosaurus",niveau:"intermediaire",options:["Les cératopsiens","Les hadrosaures","Les ankylosaures","Les théropodes"],reponse:0,explication:"Le Styracosaure appartient aux cératopsiens, dinosaures à cornes et collerette."},
+{question:"Dans quel continent vivait principalement le Styracosaure ?",code:"styracosaurus",niveau:"intermediaire",options:["Amérique du Nord","Afrique","Asie","Europe"],reponse:0,explication:"Le Styracosaure vivait en Amérique du Nord, dans ce qui est aujourd'hui le Canada, au Crétacé."},
+
+    /* === Deinonychus === */
+{question:"En quoi le Deinonychus diffère-t-il du Velociraptor en termes de taille ?",code:"deinonychus",niveau:"debutant",options:["Il était nettement plus grand","Il était plus petit","Ils avaient exactement la même taille","Il était deux fois plus léger"],reponse:0,explication:"Le Deinonychus était significativement plus grand que le Velociraptor, atteignant environ 3,4 mètres."},
+{question:"Que signifie le nom Deinonychus ?",code:"deinonychus",niveau:"debutant",options:["Griffe terrible","Lézard agile","Chasseur rapide","Reptile plumeux"],reponse:0,explication:"Deinonychus signifie littéralement 'griffe terrible', en référence à sa grande griffe rétractile."},
+{question:"Quel dinosaure est représenté sur cette image ?",code:"deinonychus",niveau:"debutant",options:["Deinonychus","Velociraptor","Utahraptor","Dromaeosaurus"],reponse:0,explication:"L'image représente un Deinonychus, dromaeosauridé nord-américain à grande griffe rétractile."},
+{question:"Quel rôle a joué Deinonychus dans l'histoire de la paléontologie du comportement ?",code:"deinonychus",niveau:"intermediaire",options:["Il a inspiré l'hypothèse de chasse en meute","Il a prouvé que les dinos étaient à sang froid","Il a montré que les dinos ne pouvaient pas voler","Il a invalidé la parenté oiseaux-dinos"],reponse:0,explication:"John Ostrom a utilisé Deinonychus pour argumenter en faveur d'une chasse active et coordonnée chez les dinosaures."},
+
+    /* === Ceratosaurus === */
+{question:"Quelle structure nasale distingue le Ceratosaurus des autres grands théropodes ?",code:"ceratosaurus",niveau:"debutant",options:["Une corne nasale","Un bec crochu","Une double crête","Un sac jugulaire"],reponse:0,explication:"Le Ceratosaurus possède une corne nasale caractéristique ainsi que de petites cornes orbitaires."},
+{question:"À quelle période vivait le Ceratosaurus ?",code:"ceratosaurus",niveau:"debutant",options:["Jurassique","Crétacé supérieur","Trias","Permien"],reponse:0,explication:"Le Ceratosaurus vivait au Jurassique, contemporain de l'Allosaurus en Amérique du Nord."},
+{question:"Quel dinosaure est représenté sur cette image ?",code:"ceratosaurus",niveau:"debutant",options:["Ceratosaurus","Carnotaurus","Allosaurus","Dilophosaurus"],reponse:0,explication:"L'image représente un Ceratosaurus, théropode jurassique à corne nasale."},
+
+    /* === Maiasaura === */
+{question:"Que signifie le nom Maiasaura ?",code:"maiasaura",niveau:"debutant",options:["Lézard bonne mère","Lézard des marais","Grand reptile","Mère des dinosaures"],reponse:0,explication:"Maiasaura signifie 'lézard bonne mère', car des preuves fossiles suggèrent des soins parentaux étendus."},
+{question:"Quelle découverte paléontologique a rendu la Maiasaura célèbre ?",code:"maiasaura",niveau:"debutant",options:["Des nids avec jeunes et œufs suggérant des soins parentaux","Les premiers fossiles de plumes","La plus grande concentration de crânes","Sa ressemblance avec les oiseaux"],reponse:0,explication:"Des nids avec jeunes dinosaures ont suggéré que Maiasaura s'occupait de ses petits après l'éclosion."},
+{question:"À quel groupe appartient la Maiasaura ?",code:"maiasaura",niveau:"debutant",options:["Les hadrosaures","Les cératopsiens","Les théropodes","Les sauropodes"],reponse:0,explication:"Maiasaura est un hadrosaure, dinosaure à bec de canard du Crétacé nord-américain."},
+{question:"Quel dinosaure est représenté sur cette image ?",code:"maiasaura",niveau:"debutant",options:["Maiasaura","Parasaurolophus","Edmontosaurus","Iguanodon"],reponse:0,explication:"L'image représente une Maiasaura, hadrosaure connu pour ses soins parentaux."},
+
+    /* === Protoceratops === */
+{question:"Pourquoi le Protoceratops est-il important dans l'histoire de la paléontologie ?",code:"protoceratops",niveau:"intermediaire",options:["Des fossiles ont été trouvés sur un nid d'œufs","C'est le premier dinosaure à cornes découvert","C'est le plus grand cératopsien","Il a été décrit avant le Triceratops"],reponse:0,explication:"Un Protoceratops fossilisé sur un nid a fourni l'une des premières preuves directes de comportement parental chez les dinosaures."},
+{question:"Le Protoceratops possédait-il des cornes développées ?",code:"protoceratops",niveau:"debutant",options:["Non, il avait surtout une collerette sans grandes cornes","Oui, trois longues cornes","Oui, une grande corne nasale","Non, il n'avait aucune structure céphalique"],reponse:0,explication:"Protoceratops avait une collerette mais pas les grandes cornes des cératopsiens plus évolués."},
+{question:"Quel dinosaure est représenté sur cette image ?",code:"protoceratops",niveau:"debutant",options:["Protoceratops","Psittacosaurus","Leptoceratops","Microceratops"],reponse:0,explication:"L'image représente un Protoceratops, petit cératopsien asiatique sans cornes développées."},
+
+    /* === Ichthyosaure === */
+{question:"L'Ichthyosaure était-il un dinosaure ?",code:"ichthyosaurus",niveau:"debutant",options:["Non, c'était un reptile marin","Oui, un dinosaure aquatique","Oui, mais il était amphibie","Non, c'était un poisson primitif"],reponse:0,explication:"L'Ichthyosaure était un reptile marin ressemblant à un dauphin, distinct des dinosaures."},
+{question:"À quel animal actuel l'Ichthyosaure ressemblait-il morphologiquement ?",code:"ichthyosaurus",niveau:"debutant",options:["Un dauphin","Un crocodile","Un requin","Une tortue"],reponse:0,explication:"L'Ichthyosaure ressemblait beaucoup à un dauphin moderne, exemple d'évolution convergente."},
+{question:"Quel animal préhistorique est représenté sur cette image ?",code:"ichthyosaurus",niveau:"debutant",options:["Ichthyosaure","Plésiosaure","Mosasaurus","Nothosaure"],reponse:0,explication:"L'image représente un Ichthyosaure, reptile marin à silhouette de dauphin."},
+
+    /* === Pteranodon standalone === */
+{question:"Quelle était l'envergure des grands Pteranodon ?",code:"pteranodon",niveau:"intermediaire",options:["Jusqu'à 7 mètres","Jusqu'à 2 mètres","Jusqu'à 15 mètres","Jusqu'à 30 mètres"],reponse:0,explication:"Les grands Pteranodon pouvaient atteindre une envergure d'environ 7 mètres."},
+{question:"Quelle technique de vol le Pteranodon utilisait-il probablement ?",code:"pteranodon",niveau:"intermediaire",options:["Le vol plané thermique","La propulsion par battements rapides","Le vol ramé exclusivement","Le saut propulsé par la queue"],reponse:0,explication:"Sa grande envergure et ses caractéristiques anatomiques sont compatibles avec un vol plané efficace sur de longues distances."},
+{question:"Quel animal préhistorique est représenté sur cette image ?",code:"pteranodon",niveau:"intermediaire",options:["Pteranodon","Quetzalcoatlus","Pterodactylus","Rhamphorhynchus"],reponse:0,explication:"L'image représente un Pteranodon, large ptérosaure à crête du Crétacé."},
+
+    /* === Albertosaurus === */
+{question:"L'Albertosaurus appartenait-il à la même famille que Tyrannosaurus rex ?",code:"albertosaurus",niveau:"intermediaire",options:["Oui, c'était un tyrannosauridé","Non, c'était un cératopsien","Non, c'était un sauropode","Oui, mais d'une sous-famille distincte incompatible"],reponse:0,explication:"L'Albertosaurus était bien un tyrannosauridé, plus ancien et plus petit que le T. rex."},
+{question:"Où les fossiles d'Albertosaurus ont-ils principalement été découverts ?",code:"albertosaurus",niveau:"intermediaire",options:["En Alberta, Canada","En Argentine","En Chine","En Mongolie"],reponse:0,explication:"L'Albertosaurus doit son nom à la province de l'Alberta au Canada, où ses fossiles ont été découverts."},
+{question:"En quoi l'Albertosaurus différait-il du T. rex ?",code:"albertosaurus",niveau:"intermediaire",options:["Il était plus petit et plus ancien","Il était plus grand et plus récent","Il avait trois doigts fonctionnels","Il vivait au Jurassique"],reponse:0,explication:"L'Albertosaurus vivait environ 10 millions d'années avant le T. rex et était significativement plus petit."},
+{question:"Quel dinosaure est représenté sur cette image ?",code:"albertosaurus",niveau:"intermediaire",options:["Albertosaurus","Gorgosaurus","Daspletosaurus","Tyrannosaurus"],reponse:0,explication:"L'image représente un Albertosaurus, tyrannosauridé canadien plus petit que le T. rex."},
+
 ];
