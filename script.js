@@ -490,8 +490,9 @@ function renderCountryGrid(continent, search) {
         : TOUS_LES_PAYS.filter(p => p.continent === continent);
 
     if (search.trim()) {
-        const q = search.trim().toLowerCase();
-        liste = liste.filter(p => p.name.toLowerCase().includes(q));
+        const normalize = str => str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        const q = normalize(search.trim());
+        liste = liste.filter(p => normalize(p.name).includes(q));
     }
 
     if (liste.length === 0) {
