@@ -813,36 +813,90 @@ async function getDinoImageUrl(code) {
     }
 }
 
-async function showDinoImage(code) {
-    // Crée le container si nécessaire
+// Correspondance code dino → fichier local dans Images/
+const DINO_IMG = {
+    trex:               'Images/Tyrannosaurus Rex.jpg',
+    triceratops:        'Images/Triceratops.jpg',
+    velociraptor:       'Images/Velociraptor.jpg',
+    raptor:             'Images/Velociraptor.jpg',
+    stegosaurus:        'Images/Stegosaurus.jpg',
+    stegosaure:         'Images/Stegosaurus.jpg',
+    spinosaurus:        'Images/Spinosaurus.jpg',
+    dragon:             'Images/Spinosaurus.jpg',
+    ankylosaurus:       'Images/Ankylosaurus.jpg',
+    ankylo:             'Images/Ankylosaurus.jpg',
+    brachiosaurus:      'Images/Brachiosaurus.jpg',
+    diplodocus:         'Images/Diplodocus.jpg',
+    allosaurus:         'Images/Allosaurus.jpg',
+    parasaurolophus:    'Images/Parasaurolophus.jpg',
+    para:               'Images/Parasaurolophus.jpg',
+    iguanodon:          'Images/Iguanodon.jpg',
+    iguanodon2:         'Images/Iguanodon.jpg',
+    carnotaurus:        'Images/Carnotaurus.jpg',
+    abelisaurus:        'Images/Carnotaurus.jpg',
+    giganotosaurus:     'Images/Giganotosaurus.jpg',
+    apatosaurus:        'Images/Apatosaurus.jpg',
+    pachycephalosaurus: 'Images/Pachycephalosaurus.jpg',
+    pachy:              'Images/Pachycephalosaurus.jpg',
+    dilophosaurus:      'Images/Dilophosaurus.jpg',
+    compsognathus:      'Images/Compsognathus.jpg',
+    archaeopteryx:      'Images/Archaeopteryx.jpg',
+    therizinosaurus:    'Images/Therizinosaurus.jpg',
+    oviraptor:          'Images/Oviraptor.jpg',
+    argentinosaurus:    'Images/Argentinosaurus.jpg',
+    patagotitan:        'Images/Argentinosaurus.jpg',
+    titanosaurus:       'Images/Argentinosaurus.jpg',
+    baryonyx:           'Images/Baryonyx.jpg',
+    suchomimus:         'Images/Baryonyx.jpg',
+    deinocheirus:       'Images/Deinocheirus.jpg',
+    gallimimus:         'Images/Gallimimus.jpg',
+    ornithomimus:       'Images/Gallimimus.jpg',
+    pteranodon:         'Images/Pteranodon.jpg',
+    pteradon:           'Images/Pteranodon.jpg',
+    plesiosaurus:       'Images/Plesiosaurus.jpg',
+    plesio:             'Images/Plesiosaurus.jpg',
+    deinonychus:        'Images/Deinonychus.jpg',
+    ichthyosaurus:      'Images/Ichthyosaurus.jpg',
+    protoceratops:      'Images/Protoceratops.jpg',
+    maiasaura:          'Images/Maiasaura.jpg',
+    ceratosaurus:       'Images/Ceratosaurus.jpg',
+    albertosaurus:      'Images/Albertosaurus.jpg',
+    styracosaurus:      'Images/Styracosaurus.jpg',
+    mosasaurus:         'Images/Plesiosaurus.jpg',
+    mosasaur:           'Images/Plesiosaurus.jpg',
+};
+
+function showDinoImage(code) {
     let dinoContainer = document.getElementById('dino-container');
     if (!dinoContainer) {
         dinoContainer = document.createElement('div');
         dinoContainer.id = 'dino-container';
         dinoContainer.className = 'dino-container';
+
+        // Wrapper cadre fixe qui absorbe toutes les orientations
+        const wrapper = document.createElement('div');
+        wrapper.className = 'dino-img-wrapper';
+
         const img = document.createElement('img');
         img.id  = 'dino-img';
         img.alt = 'Dinosaure';
-        dinoContainer.appendChild(img);
+
+        wrapper.appendChild(img);
+        dinoContainer.appendChild(wrapper);
         document.getElementById('question-text').insertAdjacentElement('afterend', dinoContainer);
     }
 
-    const img = document.getElementById('dino-img');
-
-    // Affiche un loader pendant le fetch Wikipedia
-    dinoContainer.style.display = 'flex';
-    img.style.opacity = '0.3';
-    img.src = '';
-
-    const src = await getDinoImageUrl(code);
+    const src = DINO_IMG[code] || null;
     if (!src) {
         dinoContainer.style.display = 'none';
         return;
     }
 
-    img.onload  = () => { img.style.opacity = '1'; };
+    const img = document.getElementById('dino-img');
     img.onerror = () => { dinoContainer.style.display = 'none'; };
+    img.onload  = () => { dinoContainer.style.display = 'flex'; };
     img.src = src;
+    dinoContainer.style.display = 'flex';
 }
 
 function hideDinoImage() {
