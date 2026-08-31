@@ -207,42 +207,43 @@ body {
 
 .pin-eye-btn {
     position: absolute;
-    right: 10px;
-    background: transparent;
-    border: none;
-    padding: 6px;
-    border-radius: 6px;
-    color: var(--text-muted);
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
     cursor: pointer;
+    color: var(--text-muted);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: color 0.2s;
-    min-width: unset;
+    width: 24px !important;
+    height: 24px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    line-height: 1;
     outline: none;
-    box-shadow: none;
+    transition: color 0.15s;
 }
 
-.pin-eye-btn:hover {
-    color: var(--primary);
-    background: transparent !important;
-    outline: none !important;
-    box-shadow: none !important;
-    transform: none !important;
-}
+.pin-eye-btn:hover { color: var(--primary); }
 
 .pin-eye-btn:focus,
 .pin-eye-btn:active,
 .pin-eye-btn:focus-visible {
-    color: var(--text-muted);
     background: transparent !important;
     outline: none !important;
     box-shadow: none !important;
-    transform: none !important;
+    transform: translateY(-50%) !important;
 }
 
 .pin-eye-btn .material-symbols-outlined {
-    font-size: 22px;
+    font-size: 20px !important;
+    line-height: 1 !important;
+    display: block !important;
+    margin: 0 !important;
+    color: inherit;
 }
 
 .pin-error-msg {
@@ -363,11 +364,11 @@ button {
     transition: background-color 0.2s, transform 0.1s;
 }
 
-button:hover:not(:disabled) {
+button:hover:not(:disabled):not(.btn-link-forgot):not(.welcome-btn) {
     background-color: var(--primary-hover);
 }
 
-button:active:not(:disabled) {
+button:active:not(:disabled):not(.btn-link-forgot) {
     transform: scale(0.98);
 }
 
@@ -2108,4 +2109,152 @@ h2 {
         height: 200px;
         border-radius: 10px;
     }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   ── MOT DE PASSE OUBLIÉ — styles ─────────────────────────────── */
+
+.btn-link-forgot {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    color: var(--primary);
+    font-size: 13px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    padding: 7px 14px;
+    border-radius: 8px;
+    transition: color 0.18s;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+.btn-link-forgot:hover,
+.btn-link-forgot:focus,
+.btn-link-forgot:focus-visible,
+.btn-link-forgot:active {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    transform: none !important;
+    color: var(--text-muted);
+}
+
+/* Ligne des 3 champs score/domaine/niveau */
+.forgot-score-row {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    margin-top: 4px;
+}
+
+.forgot-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+}
+
+.forgot-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted, #888);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding-left: 2px;
+}
+
+/* Champ nom dans forgot-screen — même style que reconnect-name-input */
+#forgot-name-input {
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border-color);
+    background-color: var(--bg-element);
+    color: var(--text-main);
+    font-size: 16px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#forgot-name-input:focus {
+    border-color: var(--primary);
+}
+
+#forgot-score-input,
+#forgot-domain-select,
+#forgot-niveau-select {
+    width: 100%;
+    padding: 13px 16px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border-color);
+    background-color: var(--bg-element);
+    color: var(--text-main);
+    font-size: 15px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+#forgot-score-input:focus,
+#forgot-domain-select:focus,
+#forgot-niveau-select:focus {
+    border-color: var(--primary);
+}
+
+#forgot-domain-select,
+#forgot-niveau-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'%3E%3Cpath fill='%23888' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-color: var(--bg-element);
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 40px;
+    cursor: pointer;
+}
+
+/* Option placeholder grisée dans les selects */
+#forgot-domain-select option[value=""],
+#forgot-niveau-select option[value=""] {
+    color: var(--text-muted);
+}
+
+/* ── RESPONSIVE MOBILE — réduire taille texte placeholders ─────── */
+@media (max-width: 480px) {
+    #forgot-name-input,
+    #forgot-score-input,
+    #forgot-domain-select,
+    #forgot-niveau-select {
+        font-size: 14px;
+        padding: 12px 14px;
+    }
+
+    #reconnect-name-input,
+    #reconnect-pin-input,
+    #username-input {
+        font-size: 14px;
+    }
+
+    .pin-input-wrapper input {
+        font-size: 17px;
+    }
+
+    .forgot-label {
+        font-size: 11px;
+    }
+}
+
+/* Animation spin pour le loading */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
 }

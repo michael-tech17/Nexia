@@ -8,7 +8,7 @@
 import { initializeApp }                          from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import { getFirestore, collection, addDoc,
          query, where, orderBy, limit,
-         getDocs }                                from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+         getDocs, setDoc, doc, getDoc }           from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey:            "AIzaSyDoGmIzJVldQn9GugOX3ip75BCES9h2kIg",
@@ -601,11 +601,194 @@ reconnectBtn.addEventListener('click', () => {
     showScreen('menu-screen');
 });
 
+// Bouton "Retour" depuis l'écran reconnexion → écran 0
+document.getElementById('reconnect-back-btn').addEventListener('click', () => {
+    reconnectNameInput.value = '';
+    reconnectPinInput.value  = '';
+    reconnectError.style.display = 'none';
+    reconnectBtn.disabled = true;
+    showScreen('welcome-screen');
+});
+
 // Bouton "Créer un nouveau profil" depuis l'écran reconnexion
 document.getElementById('reconnect-create-btn').addEventListener('click', () => {
     document.getElementById('username-input').value = '';
     document.getElementById('start-btn').disabled = true;
     showScreen('login-screen');
+});
+
+/* -------------------------------------------------------------- */
+/* 12d. ÉCRAN MOT DE PASSE OUBLIÉ                                  */
+/* -------------------------------------------------------------- */
+
+// Lien "Mot de passe oublié ?"
+document.getElementById('forgot-pin-btn').addEventListener('click', () => {
+    // Réinitialiser l'écran
+    document.getElementById('forgot-name-input').value   = '';
+    document.getElementById('forgot-score-input').value  = '';
+    document.getElementById('forgot-domain-select').value = '';
+    document.getElementById('forgot-niveau-select').value = '';
+    document.getElementById('forgot-error').style.display   = 'none';
+    document.getElementById('forgot-loading').style.display = 'none';
+    document.getElementById('forgot-verify-btn').disabled   = true;
+    showScreen('forgot-screen');
+});
+
+// Retour depuis forgot-screen
+document.getElementById('forgot-back-btn').addEventListener('click', () => {
+    showScreen('reconnect-screen');
+});
+
+// Activer le bouton vérifier quand tous les champs sont remplis
+function updateForgotBtn() {
+    const nom    = document.getElementById('forgot-name-input').value.trim();
+    const score  = document.getElementById('forgot-score-input').value.trim();
+    const domain = document.getElementById('forgot-domain-select').value;
+    const niveau = document.getElementById('forgot-niveau-select').value;
+    document.getElementById('forgot-verify-btn').disabled =
+        !(nom && score !== '' && domain && niveau);
+}
+
+document.getElementById('forgot-name-input').addEventListener('input',   updateForgotBtn);
+document.getElementById('forgot-score-input').addEventListener('input',  updateForgotBtn);
+document.getElementById('forgot-domain-select').addEventListener('change', updateForgotBtn);
+document.getElementById('forgot-niveau-select').addEventListener('change', updateForgotBtn);
+
+// Vérification de l'identité dans Firestore
+document.getElementById('forgot-verify-btn').addEventListener('click', async () => {
+    const nom        = document.getElementById('forgot-name-input').value.trim();
+    const scoreVal   = parseInt(document.getElementById('forgot-score-input').value, 10);
+    const domainVal  = document.getElementById('forgot-domain-select').value;
+    const niveauVal  = document.getElementById('forgot-niveau-select').value;
+    const errEl      = document.getElementById('forgot-error');
+    const loadEl     = document.getElementById('forgot-loading');
+    const errText    = document.getElementById('forgot-error-text');
+
+    errEl.style.display  = 'none';
+    loadEl.style.display = 'block';
+    document.getElementById('forgot-verify-btn').disabled = true;
+
+    try {
+        // Chercher dans Firestore : même nom + même domaine + même niveau + même score
+        const q = query(
+            collection(db, "Score"),
+            where("name",   "==", nom),
+            where("score",  "==", scoreVal),
+            where("niveau", "==", niveauVal),
+            limit(20)
+        );
+        const snap = await getDocs(q);
+
+        // Vérifier aussi le domaine (domain ou sub)
+        const match = snap.docs.find(d => {
+            const data = d.data();
+            return data.domain === domainVal || data.sub === domainVal;
+        });
+
+        loadEl.style.display = 'none';
+
+        if (match) {
+            // Identité vérifiée → écran nouveau PIN
+            currentUser = nom;
+            // Pré-charger le profil existant
+            const savedAvatar  = localStorage.getItem('quiz_avatar_' + currentUser);
+            const savedCountry = localStorage.getItem('quiz_country_' + currentUser);
+            if (savedAvatar)  currentAvatarId = savedAvatar;
+            if (savedCountry) currentCountry  = JSON.parse(savedCountry);
+
+            // Réinitialiser écran nouveau PIN
+            document.getElementById('newpin-input').value         = '';
+            document.getElementById('newpin-confirm-input').value = '';
+            document.getElementById('newpin-error').style.display = 'none';
+            document.getElementById('newpin-save-btn').disabled   = true;
+            document.getElementById('newpin-input').type          = 'password';
+            document.getElementById('newpin-confirm-input').type  = 'password';
+            document.getElementById('newpin-eye-icon').textContent         = 'visibility';
+            document.getElementById('newpin-confirm-eye-icon').textContent = 'visibility';
+            showScreen('newpin-screen');
+        } else {
+            errText.textContent = 'Informations incorrectes. Vérifiez votre nom, score, domaine et niveau.';
+            errEl.style.display = 'flex';
+            document.getElementById('forgot-verify-btn').disabled = false;
+        }
+    } catch(e) {
+        loadEl.style.display = 'none';
+        errText.textContent  = 'Erreur de connexion. Réessayez dans quelques instants.';
+        errEl.style.display  = 'flex';
+        document.getElementById('forgot-verify-btn').disabled = false;
+        console.warn("Erreur vérification identité :", e);
+    }
+});
+
+/* -------------------------------------------------------------- */
+/* 12e. ÉCRAN NOUVEAU PIN                                           */
+/* -------------------------------------------------------------- */
+
+// Boutons œil pour les 2 champs PIN
+document.getElementById('newpin-toggle-btn').addEventListener('click', () => {
+    const inp = document.getElementById('newpin-input');
+    const eye = document.getElementById('newpin-eye-icon');
+    const shown = inp.type === 'text';
+    inp.type = shown ? 'password' : 'text';
+    eye.textContent = shown ? 'visibility' : 'visibility_off';
+});
+
+document.getElementById('newpin-confirm-toggle-btn').addEventListener('click', () => {
+    const inp = document.getElementById('newpin-confirm-input');
+    const eye = document.getElementById('newpin-confirm-eye-icon');
+    const shown = inp.type === 'text';
+    inp.type = shown ? 'password' : 'text';
+    eye.textContent = shown ? 'visibility' : 'visibility_off';
+});
+
+// Activer le bouton sauvegarder
+function updateNewPinBtn() {
+    const p1 = document.getElementById('newpin-input').value;
+    const p2 = document.getElementById('newpin-confirm-input').value;
+    document.getElementById('newpin-save-btn').disabled = !(p1.length === 4 && p2.length === 4);
+}
+
+document.getElementById('newpin-input').addEventListener('input', (e) => {
+    e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
+    document.getElementById('newpin-error').style.display = 'none';
+    updateNewPinBtn();
+});
+
+document.getElementById('newpin-confirm-input').addEventListener('input', (e) => {
+    e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
+    document.getElementById('newpin-error').style.display = 'none';
+    updateNewPinBtn();
+});
+
+// Sauvegarder le nouveau PIN
+document.getElementById('newpin-save-btn').addEventListener('click', async () => {
+    const p1     = document.getElementById('newpin-input').value;
+    const p2     = document.getElementById('newpin-confirm-input').value;
+    const errEl  = document.getElementById('newpin-error');
+    const errTxt = document.getElementById('newpin-error-text');
+
+    if (p1 !== p2) {
+        errTxt.textContent       = 'Les deux codes PIN ne correspondent pas.';
+        errEl.style.display      = 'flex';
+        return;
+    }
+
+    // Sauvegarder dans localStorage
+    localStorage.setItem('quiz_pin_' + currentUser, p1);
+
+    // Mettre à jour dans Firestore (collection Joueurs)
+    try {
+        const docRef = doc(db, "Joueurs", currentUser.toLowerCase().trim());
+        const snap   = await getDoc(docRef);
+        if (snap.exists()) {
+            await setDoc(docRef, { ...snap.data(), pin: p1, tsUpdate: Date.now() });
+        }
+    } catch(e) {
+        console.warn("Erreur mise à jour PIN dans Firestore :", e);
+    }
+
+    // Rediriger directement vers les domaines
+    showScreen('menu-screen');
 });
 
 /* -------------------------------------------------------------- */
@@ -708,9 +891,57 @@ document.getElementById('country-confirm-btn').addEventListener('click', () => {
 /* -------------------------------------------------------------- */
 /* 14. ÉCRAN AVATAR                                                    */
 /* -------------------------------------------------------------- */
-document.getElementById('avatar-confirm-btn').addEventListener('click', () => {
+
+/* Enregistre ou met à jour le joueur dans Firestore (collection "Joueurs")
+   — upsert : si le joueur existe déjà (même nom), on met à jour son doc    */
+async function upsertJoueur(nom, avatarId, country, pin) {
+    try {
+        const now     = new Date();
+        const docRef  = doc(db, "Joueurs", nom.toLowerCase().trim());
+        const snap    = await getDoc(docRef);
+        const dateHeure = now.toLocaleDateString('fr-FR', {
+            day: '2-digit', month: '2-digit', year: 'numeric'
+        }) + ' à ' + now.toLocaleTimeString('fr-FR', {
+            hour: '2-digit', minute: '2-digit'
+        });
+
+        if (snap.exists()) {
+            // Mise à jour — on préserve la date d'inscription d'origine
+            await setDoc(docRef, {
+                name:        nom,
+                avatarId:    avatarId || snap.data().avatarId || "",
+                countryCode: country  ? country.code : (snap.data().countryCode || ""),
+                countryName: country  ? country.name : (snap.data().countryName || ""),
+                pin:         pin      || snap.data().pin || "",
+                tsUpdate:    now.getTime(),
+                ts:          snap.data().ts || now.getTime(),
+                dateHeure:   snap.data().dateHeure || dateHeure
+            });
+            console.log("🔄 Joueur mis à jour dans Firestore :", nom);
+        } else {
+            // Nouvelle inscription
+            await setDoc(docRef, {
+                name:        nom,
+                avatarId:    avatarId || "",
+                countryCode: country  ? country.code : "",
+                countryName: country  ? country.name : "",
+                pin:         pin      || "",
+                ts:          now.getTime(),
+                tsUpdate:    now.getTime(),
+                dateHeure:   dateHeure
+            });
+            console.log("✅ Nouveau joueur enregistré dans Firestore :", nom);
+        }
+    } catch(e) {
+        console.warn("Erreur upsert joueur :", e);
+    }
+}
+
+document.getElementById('avatar-confirm-btn').addEventListener('click', async () => {
     if (!currentAvatarId) return;
     localStorage.setItem('quiz_avatar_' + currentUser, currentAvatarId);
+    const pin = localStorage.getItem('quiz_pin_' + currentUser) || "";
+    await upsertJoueur(currentUser, currentAvatarId, currentCountry, pin);
     showScreen('menu-screen');
 });
 

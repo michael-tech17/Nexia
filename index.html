@@ -75,6 +75,10 @@
     <!-- ÉCRAN RECONNEXION : ANCIEN JOUEUR          -->
     <!-- ========================================== -->
     <div id="reconnect-screen" class="screen">
+        <button id="reconnect-back-btn" class="btn-secondary" style="align-self:flex-start;margin-bottom:8px">
+            <span class="material-symbols-outlined">arrow_back</span>
+            Retour
+        </button>
         <div class="login-header">
             <span class="material-symbols-outlined login-icon">manage_accounts</span>
             <h2>Reconnexion</h2>
@@ -98,6 +102,109 @@
         <button id="reconnect-create-btn" class="btn-secondary">
             <span class="material-symbols-outlined">person_add</span>
             Créer un nouveau profil
+        </button>
+        <div style="text-align:center;margin-top:12px">
+            <button id="forgot-pin-btn" class="btn-link-forgot">
+                <span class="material-symbols-outlined" style="font-size:15px;vertical-align:middle">help</span>
+                Mot de passe oublié ?
+            </button>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- ÉCRAN VÉRIFICATION IDENTITÉ (mdp oublié)   -->
+    <!-- ========================================== -->
+    <div id="forgot-screen" class="screen">
+        <div class="login-header">
+            <span class="material-symbols-outlined login-icon">lock_reset</span>
+            <h2>Vérification de votre identité</h2>
+            <p>Renseignez ces informations pour retrouver votre accès.</p>
+        </div>
+
+        <input type="text" id="forgot-name-input" placeholder="Votre nom exact..." autocomplete="off">
+
+        <div class="forgot-score-row">
+            <div class="forgot-field-group">
+                <label class="forgot-label">Score obtenu (sur 20)</label>
+                <input type="number" id="forgot-score-input" placeholder="Ex : 14" min="0" max="20" autocomplete="off">
+            </div>
+            <div class="forgot-field-group">
+                <label class="forgot-label">Domaine joué</label>
+                <select id="forgot-domain-select">
+                    <option value="">— Sélectionner —</option>
+                    <option value="programmation">Informatique — Développement Web &amp; Mobile</option>
+                    <option value="reseaux">Informatique — Réseaux &amp; Systèmes</option>
+                    <option value="droit">Droit</option>
+                    <option value="medecine">Médecine</option>
+                    <option value="pays">Capitales &amp; Pays du monde — Drapeaux du monde</option>
+                    <option value="capitales">Capitales &amp; Pays du monde — Capitales du monde</option>
+                    <option value="culture_generale">Culture générale</option>
+                    <option value="francais">Langues &amp; Linguistique — Langue Française</option>
+                    <option value="anglais">Langues &amp; Linguistique — Langue Anglaise</option>
+                    <option value="psychologie">Psychologie &amp; Comportement</option>
+                    <option value="astronomie">Astronomie &amp; Espace</option>
+                    <option value="dinosaures">Dinosaures &amp; Préhistoire</option>
+                </select>
+            </div>
+            <div class="forgot-field-group">
+                <label class="forgot-label">Niveau joué</label>
+                <select id="forgot-niveau-select">
+                    <option value="">— Sélectionner —</option>
+                    <option value="débutant">Débutant</option>
+                    <option value="intermédiaire">Intermédiaire</option>
+                    <option value="avancé">Avancé</option>
+                    <option value="aléatoire">Aléatoire</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="forgot-error" class="pin-error-msg" style="display:none;">
+            <span class="material-symbols-outlined">error</span>
+            <span id="forgot-error-text">Informations incorrectes. Vérifiez et réessayez.</span>
+        </div>
+        <div id="forgot-loading" style="display:none;text-align:center;color:var(--primary);font-size:14px;padding:8px 0">
+            <span class="material-symbols-outlined" style="animation:spin 1s linear infinite;vertical-align:middle">autorenew</span>
+            Vérification en cours…
+        </div>
+
+        <button id="forgot-verify-btn" disabled>
+            <span class="material-symbols-outlined">verified_user</span>
+            Vérifier mon identité
+        </button>
+        <button id="forgot-back-btn" class="btn-secondary">
+            <span class="material-symbols-outlined">arrow_back</span>
+            Retour
+        </button>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- ÉCRAN NOUVEAU PIN (après vérification)     -->
+    <!-- ========================================== -->
+    <div id="newpin-screen" class="screen">
+        <div class="login-header">
+            <span class="material-symbols-outlined login-icon">lock_open</span>
+            <h2>Nouveau code PIN</h2>
+            <p>Choisissez un nouveau code à 4 chiffres.</p>
+        </div>
+        <div class="pin-input-wrapper">
+            <input type="password" id="newpin-input" placeholder="Nouveau PIN (4 chiffres)" maxlength="4" inputmode="numeric" autocomplete="off">
+            <button type="button" id="newpin-toggle-btn" class="pin-eye-btn" title="Afficher/masquer">
+                <span class="material-symbols-outlined" id="newpin-eye-icon">visibility</span>
+            </button>
+        </div>
+        <div class="pin-input-wrapper" style="margin-top:10px">
+            <input type="password" id="newpin-confirm-input" placeholder="Confirmer le PIN" maxlength="4" inputmode="numeric" autocomplete="off">
+            <button type="button" id="newpin-confirm-toggle-btn" class="pin-eye-btn" title="Afficher/masquer">
+                <span class="material-symbols-outlined" id="newpin-confirm-eye-icon">visibility</span>
+            </button>
+        </div>
+        <div id="newpin-error" class="pin-error-msg" style="display:none;">
+            <span class="material-symbols-outlined">error</span>
+            <span id="newpin-error-text">Les deux codes PIN ne correspondent pas.</span>
+        </div>
+        <button id="newpin-save-btn" disabled>
+            <span class="material-symbols-outlined">save</span>
+            Enregistrer mon nouveau PIN
         </button>
     </div>
 
