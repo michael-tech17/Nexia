@@ -287,6 +287,28 @@ h2 {
     color: var(--text-main);
 }
 
+.btn-quitter {
+    background-color: var(--error-light);
+    color: var(--error);
+    border: 1.5px solid var(--error);
+    font-size: 13px;
+    padding: 8px 14px;
+    border-radius: var(--radius-btn, 8px);
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: background 0.15s, color 0.15s;
+}
+
+.btn-quitter:hover {
+    background-color: var(--error);
+    color: #fff;
+}
+
 .nom-domaine {
     font-size: 13px;
     font-weight: 600;
@@ -684,12 +706,14 @@ h2 {
 /* Boutons résultats */
 .score-actions {
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
     width: 100%;
 }
 
 .score-actions button {
     flex: 1;
+    min-width: 140px;
 }
 
 #home-btn {
@@ -700,6 +724,18 @@ h2 {
 
 #home-btn:hover {
     background-color: var(--bg-element-hover);
+}
+
+#change-profile-btn {
+    background-color: var(--bg-element);
+    color: var(--text-muted);
+    border: 1.5px solid var(--border-color);
+    flex-basis: 100%;
+}
+
+#change-profile-btn:hover {
+    background-color: var(--bg-element-hover);
+    color: var(--text-main);
 }
 
 
@@ -885,14 +921,16 @@ h2 {
 
     /* Adaptation de l'en-tête du quiz */
     .quiz-header {
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         gap: 6px;
     }
 
     .nom-domaine {
-        order: 3;
-        flex-basis: 100%;
+        order: unset;
+        flex-basis: auto;
         text-align: center;
+        flex: 1;
+        font-size: 12px;
     }
 
     /* Actions de fin de quiz en colonne sur mobile */
@@ -945,6 +983,11 @@ h2 {
 
     /* Header quiz plus compact */
     .btn-retour {
+        font-size: 12px;
+        padding: 7px 10px;
+    }
+
+    .btn-quitter {
         font-size: 12px;
         padding: 7px 10px;
     }

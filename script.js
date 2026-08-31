@@ -72,6 +72,30 @@ const CloudScore = {
         }
     },
 
+    /* Enregistre un abandon (joueur qui quitte le quiz sans terminer) */
+    async pushAbandon(domain, sub, niveau, name, questionAtteinte, country) {
+        try {
+            const now = new Date();
+            await addDoc(collection(db, "Abandons"), {
+                domain:           domain || "",
+                sub:              sub    || "",
+                niveau:           niveau || "",
+                name:             name   || "",
+                questionAtteinte: questionAtteinte,
+                ts:               now.getTime(),
+                dateHeure:        now.toLocaleDateString('fr-FR', {
+                    day: '2-digit', month: '2-digit', year: 'numeric'
+                }) + ' à ' + now.toLocaleTimeString('fr-FR', {
+                    hour: '2-digit', minute: '2-digit', second: '2-digit'
+                }),
+                countryCode:      country ? country.code  : "",
+                countryName:      country ? country.name  : ""
+            });
+        } catch (e) {
+            console.warn("Erreur enregistrement abandon :", e);
+        }
+    },
+
     /* Enregistre le résultat d'une réponse individuelle dans la collection "Reponses" */
     async pushReponse(domain, sub, niveau, question, options, reponseCorrecteIndex, optionChoisieIndex, resultat) {
         // resultat : "correct" | "incorrect" | "timeout"
@@ -183,6 +207,7 @@ let timerID              = null;
 let tempsRestant         = 20;
 let aRepondu             = false;
 let currentCountry       = null; // { code, name, flag }
+let quizEnCours          = false; // true dès le début du quiz, false dès la fin ou l'abandon
 
 /* -------------------------------------------------------------- */
 /* 7. DONNÉES PAYS — classées par continent                          */
@@ -625,7 +650,43 @@ document.getElementById('quiz-back-btn').addEventListener('click', () => {
     clearInterval(timerID);
     hideFlagImage();
     hideDinoImage();
+
+    // Enregistrer l'abandon si le quiz était en cours
+    if (quizEnCours) {
+        quizEnCours = false;
+        CloudScore.pushAbandon(
+            currentDomainKey,
+            currentSubKey,
+            currentNiveau,
+            currentUser,
+            currentQuestionIndex + 1, // question à laquelle il s'est arrêté
+            currentCountry
+        );
+    }
+
     showScreen('menu-screen');
+});
+
+// Bouton "Quitter" — ramène à l'écran de sélection du niveau et enregistre l'abandon
+document.getElementById('quiz-quit-btn').addEventListener('click', () => {
+    clearInterval(timerID);
+    hideFlagImage();
+    hideDinoImage();
+
+    if (quizEnCours) {
+        quizEnCours = false;
+        CloudScore.pushAbandon(
+            currentDomainKey,
+            currentSubKey,
+            currentNiveau,
+            currentUser,
+            currentQuestionIndex + 1,
+            currentCountry
+        );
+    }
+
+    // Retour à l'écran de niveau (l'écran juste avant le démarrage)
+    showScreen('level-screen');
 });
 
 /* -------------------------------------------------------------- */
@@ -668,6 +729,7 @@ function demarrerQuiz(domain, sub = null) {
     activeQuestions      = melangerTableau(pool).slice(0, 20);
     currentQuestionIndex = 0;
     score                = 0;
+    quizEnCours          = true;
 
     const nomAffiche = NOM_DOMAINES[sub] || NOM_DOMAINES[domain] || domain;
     document.getElementById('nom-domaine').textContent = nomAffiche;
@@ -1083,6 +1145,7 @@ let tsJoueurGlobal  = 0;
 async function afficherResultats() {
     hideFlagImage();
     hideDinoImage();
+    quizEnCours = false; // quiz terminé normalement — pas un abandon
 
     const total       = activeQuestions.length;
     const pourcentage = Math.round((score / total) * 100);
@@ -1260,6 +1323,16 @@ document.getElementById('restart-btn').addEventListener('click', () => {
 
 document.getElementById('home-btn').addEventListener('click', () => {
     showScreen('menu-screen');
+});
+
+document.getElementById('change-profile-btn').addEventListener('click', () => {
+    // Réinitialiser l'état utilisateur
+    currentUser      = "";
+    currentAvatarId  = null;
+    currentCountry   = null;
+    document.getElementById('username-input').value = "";
+    document.getElementById('start-btn').disabled   = true;
+    showScreen('login-screen');
 });
 
 /* -------------------------------------------------------------- */
