@@ -17,6 +17,91 @@
 <div class="container">
 
     <!-- ========================================== -->
+    <!-- ÉCRAN 0 : NOUVEAU OU ANCIEN JOUEUR ?       -->
+    <!-- ========================================== -->
+    <div id="welcome-screen" class="screen">
+        <div class="welcome-header">
+            <span class="material-symbols-outlined welcome-icon">school</span>
+            <h1>Nexia</h1>
+            <p>Bienvenue ! Avant de commencer, dites-nous qui vous êtes.</p>
+        </div>
+
+        <div class="welcome-buttons">
+            <button id="btn-nouveau-joueur" class="welcome-btn welcome-btn-oui">
+                <span class="material-symbols-outlined">person_add</span>
+                Oui, je suis nouveau
+            </button>
+            <button id="btn-ancien-joueur" class="welcome-btn welcome-btn-non">
+                <span class="material-symbols-outlined">login</span>
+                Non, j'ai déjà un profil
+            </button>
+        </div>
+
+        <div class="welcome-note">
+            <span class="material-symbols-outlined">info</span>
+            <p>
+                <strong>Nouveau joueur :</strong> joueur venant de découvrir le quiz.<br>
+                <strong>Ancien joueur :</strong> joueur ayant déjà joué une ou plusieurs parties.
+            </p>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- ÉCRAN PIN : CHOIX DU CODE PIN (nouveau)    -->
+    <!-- ========================================== -->
+    <div id="pin-screen" class="screen">
+        <div class="login-header">
+            <span class="material-symbols-outlined login-icon">lock</span>
+            <h2>Créez votre code PIN</h2>
+            <p>Choisissez un code à 4 chiffres. Il vous servira à vous reconnecter lors de vos prochaines parties.</p>
+        </div>
+        <div class="pin-input-wrapper">
+            <input type="password" id="pin-input" placeholder="••••" maxlength="4" inputmode="numeric" autocomplete="off">
+            <button type="button" id="pin-toggle-btn" class="pin-eye-btn" title="Afficher/masquer">
+                <span class="material-symbols-outlined" id="pin-eye-icon">visibility</span>
+            </button>
+        </div>
+        <div id="pin-error" class="pin-error-msg" style="display:none;">
+            <span class="material-symbols-outlined">error</span>
+            Le code PIN doit contenir exactement 4 chiffres.
+        </div>
+        <button id="pin-confirm-btn" disabled>
+            <span class="material-symbols-outlined">check_circle</span>
+            Confirmer mon PIN
+        </button>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- ÉCRAN RECONNEXION : ANCIEN JOUEUR          -->
+    <!-- ========================================== -->
+    <div id="reconnect-screen" class="screen">
+        <div class="login-header">
+            <span class="material-symbols-outlined login-icon">manage_accounts</span>
+            <h2>Reconnexion</h2>
+            <p>Entrez votre nom et votre code PIN pour accéder directement à vos domaines.</p>
+        </div>
+        <input type="text" id="reconnect-name-input" placeholder="Votre nom..." autocomplete="off">
+        <div class="pin-input-wrapper">
+            <input type="password" id="reconnect-pin-input" placeholder="Code PIN (4 chiffres)" maxlength="4" inputmode="numeric" autocomplete="off">
+            <button type="button" id="reconnect-pin-toggle-btn" class="pin-eye-btn" title="Afficher/masquer">
+                <span class="material-symbols-outlined" id="reconnect-pin-eye-icon">visibility</span>
+            </button>
+        </div>
+        <div id="reconnect-error" class="pin-error-msg" style="display:none;">
+            <span class="material-symbols-outlined">error</span>
+            <span id="reconnect-error-text">Nom ou code PIN incorrect. Veuillez réessayer.</span>
+        </div>
+        <button id="reconnect-btn" disabled>
+            <span class="material-symbols-outlined">login</span>
+            Se connecter
+        </button>
+        <button id="reconnect-create-btn" class="btn-secondary">
+            <span class="material-symbols-outlined">person_add</span>
+            Créer un nouveau profil
+        </button>
+    </div>
+
+    <!-- ========================================== -->
     <!-- ÉCRAN 1 : SAISIE DU NOM UTILISATEUR        -->
     <!-- ========================================== -->
     <div id="login-screen" class="screen">

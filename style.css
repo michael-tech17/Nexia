@@ -70,6 +70,238 @@ body {
 }
 
 /* ========================================== */
+/* 3b. ÉCRAN 0 : WELCOME (nouveau/ancien)     */
+/* ========================================== */
+.welcome-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+}
+
+.welcome-icon {
+    font-size: 52px;
+    color: var(--primary);
+}
+
+#welcome-screen h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+#welcome-screen > .welcome-header > p {
+    color: var(--text-muted);
+    font-size: 14px;
+    max-width: 340px;
+}
+
+.welcome-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.welcome-btn {
+    width: 100%;
+    padding: 16px 20px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.welcome-btn-oui {
+    background-color: var(--success);
+    color: #fff;
+}
+
+.welcome-btn-oui:hover:not(:disabled) {
+    background-color: #15803d;
+}
+
+.welcome-btn-non {
+    background-color: var(--bg-element);
+    color: var(--text-main);
+    border: 1.5px solid var(--border-color);
+}
+
+.welcome-btn-non:hover:not(:disabled) {
+    background-color: var(--bg-element-hover);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.welcome-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background-color: var(--primary-light);
+    border: 1.5px solid #bae6fd;
+    border-radius: 10px;
+    padding: 14px 16px;
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.welcome-note .material-symbols-outlined {
+    font-size: 20px;
+    color: var(--primary);
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.welcome-note strong {
+    color: var(--text-main);
+}
+
+/* ========================================== */
+/* 3c. ÉCRAN PIN & RECONNEXION                */
+/* ========================================== */
+.pin-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.pin-input-wrapper input {
+    width: 100%;
+    padding: 14px 52px 14px 16px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border-color);
+    background-color: var(--bg-element);
+    color: var(--text-main);
+    font-size: 20px;
+    letter-spacing: 6px;
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: monospace;
+    /* Supprime le bouton œil natif du navigateur */
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+/* Masquer l'icône œil native — Chrome/Edge */
+.pin-input-wrapper input::-ms-reveal,
+.pin-input-wrapper input::-ms-clear,
+.pin-input-wrapper input::-webkit-contacts-auto-fill-button,
+.pin-input-wrapper input::-webkit-credentials-auto-fill-button,
+.pin-input-wrapper input::-webkit-password-generation-indicator,
+.pin-input-wrapper input::-webkit-strong-password-auto-fill-button {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+.pin-input-wrapper input:focus {
+    border-color: var(--primary);
+}
+
+.pin-eye-btn {
+    position: absolute;
+    right: 10px;
+    background: transparent;
+    border: none;
+    padding: 6px;
+    border-radius: 6px;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+    min-width: unset;
+    outline: none;
+    box-shadow: none;
+}
+
+.pin-eye-btn:hover {
+    color: var(--primary);
+    background: transparent !important;
+    outline: none !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+.pin-eye-btn:focus,
+.pin-eye-btn:active,
+.pin-eye-btn:focus-visible {
+    color: var(--text-muted);
+    background: transparent !important;
+    outline: none !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+.pin-eye-btn .material-symbols-outlined {
+    font-size: 22px;
+}
+
+.pin-error-msg {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--error-light);
+    border: 1.5px solid #fca5a5;
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: var(--error);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.pin-error-msg .material-symbols-outlined {
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+/* Champ nom écran reconnexion */
+#reconnect-name-input {
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border-color);
+    background-color: var(--bg-element);
+    color: var(--text-main);
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+}
+
+#reconnect-name-input:focus {
+    border-color: var(--primary);
+}
+
+/* Champ PIN reconnexion — lettre-spacing plus discret */
+#reconnect-pin-input {
+    letter-spacing: 4px;
+    font-size: 18px;
+}
+
+/* Bouton secondaire (créer nouveau profil) */
+.btn-secondary {
+    background-color: var(--bg-element);
+    color: var(--text-muted);
+    border: 1.5px solid var(--border-color);
+    font-size: 14px;
+    padding: 11px 16px;
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background-color: var(--bg-element-hover);
+    color: var(--text-main);
+    border-color: var(--text-muted);
+}
+
+/* ========================================== */
 /* 4. ÉCRAN 1 : LOGIN                         */
 /* ========================================== */
 .login-header {

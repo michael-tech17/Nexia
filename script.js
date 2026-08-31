@@ -476,6 +476,139 @@ function showScreen(id) {
 }
 
 /* -------------------------------------------------------------- */
+/* 12. ÉCRAN 0 : WELCOME — nouveau ou ancien joueur ?                  */
+/* -------------------------------------------------------------- */
+
+document.getElementById('btn-nouveau-joueur').addEventListener('click', () => {
+    // Réinitialiser les champs
+    document.getElementById('username-input').value = '';
+    document.getElementById('start-btn').disabled = true;
+    showScreen('login-screen');
+});
+
+document.getElementById('btn-ancien-joueur').addEventListener('click', () => {
+    document.getElementById('reconnect-name-input').value = '';
+    document.getElementById('reconnect-pin-input').value  = '';
+    document.getElementById('reconnect-btn').disabled     = true;
+    document.getElementById('reconnect-error').style.display = 'none';
+    showScreen('reconnect-screen');
+});
+
+/* -------------------------------------------------------------- */
+/* 12b. ÉCRAN PIN — choix du code PIN (nouveau joueur)                 */
+/* -------------------------------------------------------------- */
+const pinInput      = document.getElementById('pin-input');
+const pinConfirmBtn = document.getElementById('pin-confirm-btn');
+const pinError      = document.getElementById('pin-error');
+const pinToggleBtn  = document.getElementById('pin-toggle-btn');
+const pinEyeIcon    = document.getElementById('pin-eye-icon');
+
+// Filtrer : chiffres uniquement
+pinInput.addEventListener('input', () => {
+    pinInput.value = pinInput.value.replace(/\D/g, '').slice(0, 4);
+    const ok = pinInput.value.length === 4;
+    pinConfirmBtn.disabled = !ok;
+    pinError.style.display = (!ok && pinInput.value.length > 0) ? 'flex' : 'none';
+});
+
+pinInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !pinConfirmBtn.disabled) pinConfirmBtn.click();
+});
+
+// Bouton œil — masquer / afficher
+pinToggleBtn.addEventListener('click', () => {
+    const shown = pinInput.type === 'text';
+    pinInput.type = shown ? 'password' : 'text';
+    pinEyeIcon.textContent = shown ? 'visibility' : 'visibility_off';
+});
+
+// Confirmer le PIN → aller vers écran pays
+pinConfirmBtn.addEventListener('click', () => {
+    if (pinInput.value.length !== 4) return;
+    // Sauvegarder le PIN dans le localStorage
+    localStorage.setItem('quiz_pin_' + currentUser, pinInput.value);
+    // Charger données éventuellement sauvegardées
+    const savedAvatar  = localStorage.getItem('quiz_avatar_' + currentUser);
+    const savedCountry = localStorage.getItem('quiz_country_' + currentUser);
+    if (savedAvatar)  currentAvatarId = savedAvatar;
+    if (savedCountry) currentCountry  = JSON.parse(savedCountry);
+    renderCountryGrid('all', '');
+    if (currentCountry) {
+        document.getElementById('country-confirm-btn').disabled = false;
+    }
+    showScreen('country-screen');
+});
+
+/* -------------------------------------------------------------- */
+/* 12c. ÉCRAN RECONNEXION — ancien joueur                              */
+/* -------------------------------------------------------------- */
+const reconnectNameInput  = document.getElementById('reconnect-name-input');
+const reconnectPinInput   = document.getElementById('reconnect-pin-input');
+const reconnectBtn        = document.getElementById('reconnect-btn');
+const reconnectError      = document.getElementById('reconnect-error');
+const reconnectPinToggle  = document.getElementById('reconnect-pin-toggle-btn');
+const reconnectPinEye     = document.getElementById('reconnect-pin-eye-icon');
+
+function updateReconnectBtn() {
+    const nameOk = reconnectNameInput.value.trim().length > 0;
+    const pinOk  = reconnectPinInput.value.length === 4;
+    reconnectBtn.disabled = !(nameOk && pinOk);
+}
+
+reconnectNameInput.addEventListener('input', () => {
+    reconnectError.style.display = 'none';
+    updateReconnectBtn();
+});
+
+reconnectPinInput.addEventListener('input', () => {
+    reconnectPinInput.value = reconnectPinInput.value.replace(/\D/g, '').slice(0, 4);
+    reconnectError.style.display = 'none';
+    updateReconnectBtn();
+});
+
+reconnectPinInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !reconnectBtn.disabled) reconnectBtn.click();
+});
+
+// Bouton œil reconnexion
+reconnectPinToggle.addEventListener('click', () => {
+    const shown = reconnectPinInput.type === 'text';
+    reconnectPinInput.type = shown ? 'password' : 'text';
+    reconnectPinEye.textContent = shown ? 'visibility' : 'visibility_off';
+});
+
+// Valider la reconnexion
+reconnectBtn.addEventListener('click', () => {
+    const nom    = reconnectNameInput.value.trim();
+    const pin    = reconnectPinInput.value;
+    const pinSaved = localStorage.getItem('quiz_pin_' + nom);
+
+    if (!pinSaved || pinSaved !== pin) {
+        reconnectError.style.display = 'flex';
+        document.getElementById('reconnect-error-text').textContent =
+            'Nom ou code PIN incorrect. Veuillez réessayer.';
+        return;
+    }
+
+    // Connexion réussie — charger le profil
+    currentUser = nom;
+    const savedAvatar  = localStorage.getItem('quiz_avatar_' + currentUser);
+    const savedCountry = localStorage.getItem('quiz_country_' + currentUser);
+    if (savedAvatar)  currentAvatarId = savedAvatar;
+    if (savedCountry) currentCountry  = JSON.parse(savedCountry);
+
+    reconnectError.style.display = 'none';
+    showScreen('menu-screen');
+});
+
+// Bouton "Créer un nouveau profil" depuis l'écran reconnexion
+document.getElementById('reconnect-create-btn').addEventListener('click', () => {
+    document.getElementById('username-input').value = '';
+    document.getElementById('start-btn').disabled = true;
+    showScreen('login-screen');
+});
+
+/* -------------------------------------------------------------- */
 /* 12. ÉCRAN 1 : LOGIN                                                 */
 /* -------------------------------------------------------------- */
 const usernameInput = document.getElementById('username-input');
@@ -491,17 +624,13 @@ usernameInput.addEventListener('keydown', (e) => {
 
 startBtn.addEventListener('click', () => {
     currentUser = usernameInput.value.trim();
-    const savedAvatar  = localStorage.getItem('quiz_avatar_' + currentUser);
-    const savedCountry = localStorage.getItem('quiz_country_' + currentUser);
-    if (savedAvatar)  currentAvatarId = savedAvatar;
-    if (savedCountry) currentCountry  = JSON.parse(savedCountry);
-
-    // Pré-sélectionner le pays sauvegardé si existant
-    renderCountryGrid('all', '');
-    if (currentCountry) {
-        document.getElementById('country-confirm-btn').disabled = false;
-    }
-    showScreen('country-screen');
+    // Aller vers l'écran PIN (nouveau joueur)
+    pinInput.value = '';
+    pinConfirmBtn.disabled = true;
+    pinError.style.display = 'none';
+    pinInput.type = 'password';
+    pinEyeIcon.textContent = 'visibility';
+    showScreen('pin-screen');
 });
 
 /* -------------------------------------------------------------- */
@@ -1330,12 +1459,16 @@ document.getElementById('change-profile-btn').addEventListener('click', () => {
     currentUser      = "";
     currentAvatarId  = null;
     currentCountry   = null;
-    document.getElementById('username-input').value = "";
-    document.getElementById('start-btn').disabled   = true;
-    showScreen('login-screen');
+    document.getElementById('username-input').value       = "";
+    document.getElementById('start-btn').disabled         = true;
+    document.getElementById('reconnect-name-input').value = "";
+    document.getElementById('reconnect-pin-input').value  = "";
+    document.getElementById('reconnect-btn').disabled     = true;
+    document.getElementById('reconnect-error').style.display = 'none';
+    showScreen('welcome-screen');
 });
 
 /* -------------------------------------------------------------- */
 /* 29. DÉMARRAGE                                                       */
 /* -------------------------------------------------------------- */
-showScreen('login-screen');
+showScreen('welcome-screen');
