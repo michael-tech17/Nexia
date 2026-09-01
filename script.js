@@ -1148,8 +1148,9 @@ function demarrerQuiz(domain, sub = null) {
     if (!niveauBadgeEl) {
         niveauBadgeEl = document.createElement('span');
         niveauBadgeEl.id = 'niveau-badge';
-        const nomDom = document.getElementById('nom-domaine');
-        nomDom.insertAdjacentElement('afterend', niveauBadgeEl);
+        const quizHeader = document.querySelector('.quiz-header');
+        const quitBtn = document.getElementById('quiz-quit-btn');
+        quizHeader.insertBefore(niveauBadgeEl, quitBtn);
     }
     const classeNiveau = {
         'débutant':      'debutant',

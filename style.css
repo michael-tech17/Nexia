@@ -507,6 +507,18 @@ h2 {
     gap: 8px;
 }
 
+.quiz-domain-footer {
+    margin-top: 16px;
+    text-align: center;
+}
+
+.quiz-domain-footer .nom-domaine {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    opacity: 0.7;
+}
+
 .btn-retour {
     background-color: var(--bg-element);
     color: var(--text-muted);
