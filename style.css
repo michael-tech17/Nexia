@@ -364,7 +364,7 @@ button {
     transition: background-color 0.2s, transform 0.1s;
 }
 
-button:hover:not(:disabled):not(.btn-link-forgot):not(.welcome-btn) {
+button:hover:not(:disabled):not(.btn-link-forgot):not(.welcome-btn):not(.option-btn):not(.level-card):not(.domain-card):not(.btn-secondary) {
     background-color: var(--primary-hover);
 }
 
@@ -418,8 +418,8 @@ h2 {
 
 .domain-card:hover,
 .domain-card:active {
-    border-color: var(--primary);
-    background-color: var(--primary-light);
+    border-color: var(--border-color);
+    background-color: var(--bg-element-hover);
     transform: translateX(4px);
     color: var(--text-main);
 }
@@ -645,9 +645,10 @@ h2 {
     white-space: normal;
 }
 
-.option-btn:hover:not(:disabled) {
-    background-color: var(--primary-light);
-    border-color: var(--primary);
+.option-btn:hover:not(:disabled),
+.option-btn:active:not(:disabled) {
+    background-color: var(--bg-element-hover);
+    border-color: var(--border-color);
     color: var(--text-main);
 }
 
@@ -1019,9 +1020,10 @@ h2 {
     width: 100%;
 }
 
-.level-card:hover {
-    border-color: var(--primary);
-    background-color: var(--primary-light);
+.level-card:hover,
+.level-card:active {
+    border-color: var(--border-color);
+    background-color: var(--bg-element-hover);
     transform: translateX(4px);
     color: var(--text-main);
 }
@@ -1072,9 +1074,10 @@ h2 {
     border-color: #c4b5fd;
 }
 
-.level-card-aleatoire:hover {
-    border-color: #7c3aed;
-    background-color: #ede9fe;
+.level-card-aleatoire:hover,
+.level-card-aleatoire:active {
+    border-color: var(--border-color);
+    background-color: var(--bg-element-hover);
 }
 
 .level-card-text {
@@ -1527,8 +1530,8 @@ h2 {
 .domain-card:active:not(:disabled),
 .level-card:hover:not(:disabled),
 .level-card:active:not(:disabled) {
-    background-color: var(--primary-light);
-    border-color: var(--primary);
+    background-color: var(--bg-element-hover);
+    border-color: var(--border-color);
     color: var(--text-main);
 }
 
@@ -1543,19 +1546,19 @@ h2 {
 .domain-card:active .btn-sous,
 .level-card:hover .level-card-sous,
 .level-card:active .level-card-sous {
-    color: var(--primary-hover);
+    color: var(--text-muted);
 }
 
 .domain-card:hover .btn-icone,
 .domain-card:active .btn-icone {
-    color: var(--primary-hover);
+    color: var(--text-muted);
 }
 
 .domain-card:hover .btn-arrow,
 .domain-card:active .btn-arrow,
 .level-card:hover .level-arrow,
 .level-card:active .level-arrow {
-    color: var(--primary);
+    color: var(--text-muted);
 }
 
 /* Sur appareils SANS souris (mobile/tablette) : le hover ne colle pas.
@@ -1563,17 +1566,17 @@ h2 {
 @media (hover: none) {
     .domain-card:active:not(:disabled),
     .level-card:active:not(:disabled) {
-        background-color: var(--primary-light);
-        border-color: var(--primary);
+        background-color: var(--bg-element-hover);
+        border-color: var(--border-color);
         transform: translateX(4px);
     }
     .domain-card:active .btn-titre,
     .level-card:active .level-card-titre { color: var(--text-main); }
     .domain-card:active .btn-sous,
-    .level-card:active .level-card-sous  { color: var(--primary-hover); }
-    .domain-card:active .btn-icone       { color: var(--primary-hover); }
+    .level-card:active .level-card-sous  { color: var(--text-muted); }
+    .domain-card:active .btn-icone       { color: var(--text-muted); }
     .domain-card:active .btn-arrow,
-    .level-card:active .level-arrow      { color: var(--primary); }
+    .level-card:active .level-arrow      { color: var(--text-muted); }
 }
 
 /* ========================================== */
@@ -2251,6 +2254,74 @@ h2 {
     .forgot-label {
         font-size: 11px;
     }
+}
+
+/* ── BANDEAU JOUEUR (menu-screen) ──────────────────────────────────── */
+.menu-player-banner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--primary-light);
+    border-radius: var(--radius);
+    margin-bottom: 18px;
+}
+
+.menu-player-avatar-wrap {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #fff;
+    border: 2px solid var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#menu-player-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.menu-player-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.menu-player-greeting {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.menu-player-name-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+#menu-player-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-main);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#menu-player-flag {
+    width: 22px;
+    height: 15px;
+    object-fit: cover;
+    border-radius: 2px;
+    flex-shrink: 0;
 }
 
 /* Animation spin pour le loading */

@@ -288,6 +288,21 @@
     <!-- ÉCRAN 2 : SÉLECTION DES 5 GRANDS DOMAINES -->
     <!-- ========================================== -->
     <div id="menu-screen" class="screen">
+
+        <!-- Bandeau joueur : avatar + nom + drapeau — rempli par updateMenuUI() dans script.js -->
+        <div class="menu-player-banner">
+            <div class="menu-player-avatar-wrap">
+                <img id="menu-player-avatar" src="" alt="Avatar" />
+            </div>
+            <div class="menu-player-info">
+                <span class="menu-player-greeting">Connecté en tant que</span>
+                <div class="menu-player-name-row">
+                    <span id="menu-player-name">—</span>
+                    <img id="menu-player-flag" src="" alt="" style="display:none;" />
+                </div>
+            </div>
+        </div>
+
         <h2>Choisissez un domaine</h2>
         <div class="domains-list">
 

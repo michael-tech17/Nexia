@@ -417,6 +417,54 @@ function getAvatarImg(id) {
     return 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svg)));
 }
 
+// Précharge l'image Wikipedia d'un avatar dans le cache, puis met à jour
+// TOUS les éléments <img> qui l'affichent (menu + classement).
+// Appelé dès qu'on connaît l'avatarId du joueur connecté.
+async function preloadAvatarAndRefresh(avatarId) {
+    if (!avatarId) return;
+    const av = getAvatarById(avatarId);
+    if (avatarImgCache[av.wiki]) {
+        // Déjà en cache → mettre à jour l'UI immédiatement
+        refreshAllAvatarImgs(avatarId, avatarImgCache[av.wiki]);
+        return;
+    }
+    const imgUrl = await fetchWikiImage(av.wiki, 200);
+    if (imgUrl) refreshAllAvatarImgs(avatarId, imgUrl);
+}
+
+// Injecte l'image dans tous les éléments portant data-avatar-id="avatarId"
+function refreshAllAvatarImgs(avatarId, imgUrl) {
+    document.querySelectorAll(`[data-avatar-id="${avatarId}"]`).forEach(el => {
+        el.src = imgUrl;
+    });
+}
+
+// Met à jour le bandeau du menu (avatar + drapeau + nom) et précharge l'image
+async function updateMenuUI() {
+    // ── Avatar ──────────────────────────────────────────────────────
+    const avatarEl = document.getElementById('menu-player-avatar');
+    if (avatarEl && currentAvatarId) {
+        avatarEl.dataset.avatarId = currentAvatarId;
+        avatarEl.src = getAvatarImg(currentAvatarId); // emoji SVG instantané
+        // Remplace par la vraie image dès qu'elle est prête
+        preloadAvatarAndRefresh(currentAvatarId);
+    }
+
+    // ── Nom ─────────────────────────────────────────────────────────
+    const nameEl = document.getElementById('menu-player-name');
+    if (nameEl && currentUser) nameEl.textContent = currentUser;
+
+    // ── Drapeau ─────────────────────────────────────────────────────
+    const flagEl = document.getElementById('menu-player-flag');
+    if (flagEl && currentCountry?.code) {
+        flagEl.src = flagUrl(currentCountry.code);
+        flagEl.alt = currentCountry.name || '';
+        flagEl.style.display = '';
+    } else if (flagEl) {
+        flagEl.style.display = 'none';
+    }
+}
+
 /* -------------------------------------------------------------- */
 /* 10. GÉNÉRER LA GRILLE D'AVATARS — chargement asynchrone           */
 /* -------------------------------------------------------------- */
@@ -599,6 +647,7 @@ reconnectBtn.addEventListener('click', () => {
 
     reconnectError.style.display = 'none';
     showScreen('menu-screen');
+    updateMenuUI(); // ← met à jour avatar + drapeau + nom dans le menu
 });
 
 // Bouton "Retour" depuis l'écran reconnexion → écran 0
@@ -943,6 +992,7 @@ document.getElementById('avatar-confirm-btn').addEventListener('click', async ()
     const pin = localStorage.getItem('quiz_pin_' + currentUser) || "";
     await upsertJoueur(currentUser, currentAvatarId, currentCountry, pin);
     showScreen('menu-screen');
+    updateMenuUI(); // ← met à jour avatar + drapeau + nom dans le menu
 });
 
 /* -------------------------------------------------------------- */
@@ -1560,6 +1610,17 @@ async function afficherResultats() {
     };
     await CloudScore.push(currentDomainKey, currentSubKey, entry);
 
+    // Mettre à jour tsUpdate dans Firestore après chaque partie
+    try {
+        const docRef = doc(db, "Joueurs", currentUser.toLowerCase().trim());
+        const snap   = await getDoc(docRef);
+        if (snap.exists()) {
+            await setDoc(docRef, { ...snap.data(), tsUpdate: Date.now() });
+        }
+    } catch(e) {
+        console.warn("Impossible de mettre à jour tsUpdate :", e);
+    }
+
     const tousLesScores = await CloudScore.load(currentDomainKey, currentSubKey);
     scoreboardData = tousLesScores;
     tsJoueurGlobal = tsJoueur;
@@ -1614,6 +1675,11 @@ function afficherOngletClassement(filtre) {
         'aléatoire':     'Aléatoire'
     };
 
+    // Collecter les avatarId uniques du classement pour préchargement groupé
+    const avatarIdsClassement = [...new Set(donnees.map((e, i) =>
+        localStorage.getItem('quiz_avatar_' + e.name) || AVATARS[i % AVATARS.length].id
+    ))];
+
     list.innerHTML = donnees.map((e, i) => {
         const estMoi = e.ts === tsJoueurGlobal;
 
@@ -1631,11 +1697,20 @@ function afficherOngletClassement(filtre) {
         const dateStr  = e.dateHeure || '';
         const moiTag   = estMoi ? '<span class="moi-tag">Vous</span>' : '';
 
-        // Drapeau du pays depuis localStorage
-        const savedCountryRaw = localStorage.getItem('quiz_country_' + e.name);
-        const flagHtml = savedCountryRaw
-            ? (() => { try { const c = JSON.parse(savedCountryRaw); return `<img class="sb-flag-img" src="${flagUrl(c.code)}" alt="${c.name}" title="${c.name}">`; } catch { return ''; } })()
-            : '';
+        // Drapeau — priorité : champ countryCode du score Firebase (fiable sur tous les appareils)
+        // Fallback : localStorage si le champ Firebase est absent
+        let flagHtml = '';
+        if (e.countryCode) {
+            flagHtml = `<img class="sb-flag-img" src="${flagUrl(e.countryCode)}" alt="${e.countryName || e.countryCode}" title="${e.countryName || e.countryCode}">`;
+        } else {
+            const savedCountryRaw = localStorage.getItem('quiz_country_' + e.name);
+            if (savedCountryRaw) {
+                try {
+                    const c = JSON.parse(savedCountryRaw);
+                    flagHtml = `<img class="sb-flag-img" src="${flagUrl(c.code)}" alt="${c.name}" title="${c.name}">`;
+                } catch { /* pas de drapeau */ }
+            }
+        }
 
         const niv     = e.niveau || '';
         const nivCls  = niveauClasse[niv] || '';
@@ -1644,10 +1719,10 @@ function afficherOngletClassement(filtre) {
             ? `<span class="niveau-badge ${nivCls}" style="font-size:10px;padding:2px 8px;">${nivLbl}</span>`
             : '';
 
-        // ✅ CORRIGÉ : utilise getAvatarImg avec une image
+        // Avatar — emoji SVG immédiat, remplacé par la vraie image via data-avatar-id dès qu'elle est chargée
         const avatarId  = localStorage.getItem('quiz_avatar_' + e.name) || AVATARS[i % AVATARS.length].id;
         const avatarImg = getAvatarImg(avatarId);
-        const avatarHtml = `<div class="sb-avatar"><img src="${avatarImg}" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div>`;
+        const avatarHtml = `<div class="sb-avatar"><img src="${avatarImg}" alt="avatar" data-avatar-id="${avatarId}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div>`;
 
         return `<li class="${estMoi ? 'moi' : ''}">
             <div class="sb-top">
@@ -1663,6 +1738,10 @@ function afficherOngletClassement(filtre) {
             ${dateStr ? `<div class="sb-date"><span class="material-symbols-outlined">schedule</span>${dateStr}</div>` : ''}
         </li>`;
     }).join('');
+
+    // Précharger les vraies images Wikipedia pour tous les avatars du classement
+    // → remplace automatiquement les emojis SVG via data-avatar-id
+    avatarIdsClassement.forEach(id => preloadAvatarAndRefresh(id));
 }
 
 /* -------------------------------------------------------------- */
