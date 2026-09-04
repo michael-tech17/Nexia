@@ -234,7 +234,7 @@
         <div style="text-align:center;margin-top:12px">
             <button id="forgot-pin-btn" class="btn-link-forgot">
                 <span class="material-symbols-outlined" style="font-size:15px;vertical-align:middle">help</span>
-                Mot de passe oublié ?
+                Code PIN oublié ?
             </button>
         </div>
     </div>
@@ -290,9 +290,9 @@
             <span class="material-symbols-outlined">error</span>
             <span id="forgot-error-text">Informations incorrectes. Vérifiez et réessayez.</span>
         </div>
-        <div id="forgot-loading" style="display:none;text-align:center;color:var(--primary);font-size:14px;padding:8px 0">
-            <span class="material-symbols-outlined" style="animation:spin 1s linear infinite;vertical-align:middle">autorenew</span>
-            Vérification en cours…
+        <div id="forgot-loading" class="reconnect-loading-box" style="display:none;">
+            <span class="material-symbols-outlined reconnect-loading-icon">autorenew</span>
+            <span class="reconnect-loading-text">Vérification en cours…</span>
         </div>
 
         <button id="forgot-verify-btn" disabled>
@@ -329,6 +329,15 @@
         <div id="newpin-error" class="pin-error-msg" style="display:none;">
             <span class="material-symbols-outlined">error</span>
             <span id="newpin-error-text">Les deux codes PIN ne correspondent pas.</span>
+        </div>
+        <div id="newpin-loading" class="reconnect-loading-box" style="display:none;">
+            <span class="material-symbols-outlined reconnect-loading-icon">autorenew</span>
+            <span class="reconnect-loading-text">Enregistrement en cours…</span>
+        </div>
+        <div id="newpin-success" class="avis-success-box" style="display:none;">
+            <span class="material-symbols-outlined avis-success-icon">check_circle</span>
+            <h3>Code PIN mis à jour !</h3>
+            <p>Ton nouveau code PIN a bien été enregistré. Tu vas être redirigé vers tes domaines.</p>
         </div>
         <button id="newpin-save-btn" disabled>
             <span class="material-symbols-outlined">save</span>
@@ -873,9 +882,9 @@
                 <span id="avis-error-text">Veuillez sélectionner une note avant d'envoyer.</span>
             </div>
 
-            <div id="avis-loading" style="display:none;text-align:center;color:var(--primary);font-size:14px;padding:6px 0">
-                <span class="material-symbols-outlined" style="animation:spin 1s linear infinite;vertical-align:middle">autorenew</span>
-                Envoi en cours…
+            <div id="avis-loading" class="reconnect-loading-box" style="display:none;">
+                <span class="material-symbols-outlined reconnect-loading-icon">autorenew</span>
+                <span class="reconnect-loading-text">Envoi en cours…</span>
             </div>
 
             <button id="avis-send-btn" disabled>

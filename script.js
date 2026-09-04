@@ -811,7 +811,7 @@ document.getElementById('forgot-verify-btn').addEventListener('click', async () 
     const errText    = document.getElementById('forgot-error-text');
 
     errEl.style.display  = 'none';
-    loadEl.style.display = 'block';
+    loadEl.style.display = 'flex';
     document.getElementById('forgot-verify-btn').disabled = true;
 
     try {
@@ -843,14 +843,16 @@ document.getElementById('forgot-verify-btn').addEventListener('click', async () 
             if (savedCountry) currentCountry  = JSON.parse(savedCountry);
 
             // Réinitialiser écran nouveau PIN
-            document.getElementById('newpin-input').value         = '';
-            document.getElementById('newpin-confirm-input').value = '';
-            document.getElementById('newpin-error').style.display = 'none';
-            document.getElementById('newpin-save-btn').disabled   = true;
-            document.getElementById('newpin-input').type          = 'password';
-            document.getElementById('newpin-confirm-input').type  = 'password';
-            document.getElementById('newpin-eye-icon').textContent         = 'visibility';
-            document.getElementById('newpin-confirm-eye-icon').textContent = 'visibility';
+            document.getElementById('newpin-input').value           = '';
+            document.getElementById('newpin-confirm-input').value   = '';
+            document.getElementById('newpin-error').style.display   = 'none';
+            document.getElementById('newpin-loading').style.display = 'none';
+            document.getElementById('newpin-success').style.display = 'none';
+            document.getElementById('newpin-save-btn').disabled     = true;
+            document.getElementById('newpin-input').type            = 'password';
+            document.getElementById('newpin-confirm-input').type    = 'password';
+            document.getElementById('newpin-eye-icon').textContent          = 'visibility';
+            document.getElementById('newpin-confirm-eye-icon').textContent  = 'visibility';
             showScreen('newpin-screen');
         } else {
             errText.textContent = 'Informations incorrectes. Vérifiez votre nom, score, domaine et niveau.';
@@ -908,16 +910,23 @@ document.getElementById('newpin-confirm-input').addEventListener('input', (e) =>
 
 // Sauvegarder le nouveau PIN
 document.getElementById('newpin-save-btn').addEventListener('click', async () => {
-    const p1     = document.getElementById('newpin-input').value;
-    const p2     = document.getElementById('newpin-confirm-input').value;
-    const errEl  = document.getElementById('newpin-error');
-    const errTxt = document.getElementById('newpin-error-text');
+    const p1        = document.getElementById('newpin-input').value;
+    const p2        = document.getElementById('newpin-confirm-input').value;
+    const errEl     = document.getElementById('newpin-error');
+    const errTxt    = document.getElementById('newpin-error-text');
+    const loadEl    = document.getElementById('newpin-loading');
+    const successEl = document.getElementById('newpin-success');
+    const saveBtn   = document.getElementById('newpin-save-btn');
 
     if (p1 !== p2) {
-        errTxt.textContent       = 'Les deux codes PIN ne correspondent pas.';
-        errEl.style.display      = 'flex';
+        errTxt.textContent  = 'Les deux codes PIN ne correspondent pas.';
+        errEl.style.display = 'flex';
         return;
     }
+
+    errEl.style.display     = 'none';
+    loadEl.style.display    = 'flex';
+    saveBtn.disabled        = true;
 
     // Sauvegarder dans localStorage
     localStorage.setItem('quiz_pin_' + currentUser, p1);
@@ -952,8 +961,14 @@ document.getElementById('newpin-save-btn').addEventListener('click', async () =>
         console.warn("Erreur mise à jour PIN / ResetPin dans Firestore :", e);
     }
 
-    // Rediriger directement vers les domaines
-    showScreen('menu-screen');
+    loadEl.style.display    = 'none';
+    successEl.style.display = 'flex';
+
+    // Rediriger vers les domaines après un court délai
+    setTimeout(() => {
+        successEl.style.display = 'none';
+        showScreen('menu-screen');
+    }, 2000);
 });
 
 /* -------------------------------------------------------------- */
