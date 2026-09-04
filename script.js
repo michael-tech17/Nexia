@@ -967,11 +967,14 @@ document.getElementById('newpin-save-btn').addEventListener('click', async () =>
     loadEl.style.display    = 'none';
     successEl.style.display = 'flex';
 
-    // Rediriger vers les domaines après un court délai
+    // Afficher l'écran "Nouveau code PIN" après un court délai
     setTimeout(() => {
         successEl.style.display = 'none';
-        showScreen('menu-screen');
-    }, 2000);
+        fillSuccessScreen('newpin-success-avatar', 'newpin-success-name', 'newpin-success-country', currentAvatarId, currentUser, currentCountry);
+        const pinDisplay = p1 ? p1.split('').join(' ') : '—';
+        document.getElementById('newpin-success-pin').textContent = pinDisplay;
+        showScreen('newpin-success-screen');
+    }, 1200);
 });
 
 /* -------------------------------------------------------------- */
@@ -1167,6 +1170,10 @@ document.getElementById('reg-success-play-btn').addEventListener('click', () => 
 });
 
 document.getElementById('reconnect-success-play-btn').addEventListener('click', () => {
+    showScreen('menu-screen');
+});
+
+document.getElementById('newpin-success-play-btn').addEventListener('click', () => {
     showScreen('menu-screen');
 });
 

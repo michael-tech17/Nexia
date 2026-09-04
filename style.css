@@ -2472,6 +2472,17 @@ h2 {
     line-height: 1.4;
 }
 
+/* Variante nouveau PIN : icône violette + clé */
+.newpin-icon-wrap {
+    background: #f3e8ff;
+    border-color: #9333ea;
+}
+
+.newpin-check-icon {
+    color: #9333ea;
+    font-variation-settings: 'FILL' 1;
+}
+
 /* Variante reconnexion : icône bleue + main qui salue */
 .reconnect-icon-wrap {
     background: var(--primary-light);
