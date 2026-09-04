@@ -2472,6 +2472,29 @@ h2 {
     line-height: 1.4;
 }
 
+/* Variante reconnexion : icône bleue + main qui salue */
+.reconnect-icon-wrap {
+    background: var(--primary-light);
+    border-color: var(--primary);
+}
+
+.reconnect-check-icon {
+    color: var(--primary);
+}
+
+/* L'avatar dans les écrans succès est un cercle contenant une <img> */
+.reg-success-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: var(--bg-element);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 @media screen and (max-width: 480px) {
     .reg-success-icon-wrap { width: 60px; height: 60px; }
     .reg-success-icon { font-size: 32px; }

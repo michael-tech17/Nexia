@@ -102,7 +102,7 @@
                     <span class="material-symbols-outlined faq-chevron">expand_more</span>
                 </button>
                 <div class="faq-answer">
-                    <p>Le code PIN est un code à <strong>4 chiffres</strong> que vous créez lors de votre première inscription. Il vous permet de vous reconnecter lors de vos prochaines parties sans recréer un profil. Conservez-le précieusement ! Si vous l'oubliez, la fonctionnalité <em>"Code PIN oublié ?"</em> vous permet de le réinitialiser en vérifiant votre identité via votre nom et un score passé.</p>
+                    <p>Le code PIN est un code à <strong>4 chiffres</strong> que vous créez lors de votre première inscription. Il vous permet de vous reconnecter lors de vos prochaines parties sans recréer un profil. Conservez-le précieusement ! Si vous l'oubliez, la fonctionnalité <em>"Mot de passe oublié ?"</em> vous permet de le réinitialiser en vérifiant votre identité via votre nom et un score passé.</p>
                 </div>
             </div>
 
@@ -112,7 +112,7 @@
                     <span class="material-symbols-outlined faq-chevron">expand_more</span>
                 </button>
                 <div class="faq-answer">
-                    <p>Pas de panique ! Depuis l'écran de reconnexion, cliquez sur <em>"Code PIN oublié ?"</em> en bas de page. Il vous sera demandé de renseigner :</p>
+                    <p>Pas de panique ! Depuis l'écran de reconnexion, cliquez sur <em>"Mot de passe oublié ?"</em> en bas de page. Il vous sera demandé de renseigner :</p>
                     <ul>
                         <li>Votre <strong>nom exact</strong> (tel que saisi lors de l'inscription)</li>
                         <li>Un <strong>score obtenu</strong> lors d'une partie précédente (sur 20)</li>
@@ -470,6 +470,32 @@
         </div>
 
         <button id="reg-success-play-btn">
+            <span class="material-symbols-outlined">play_arrow</span>
+            C'est parti, je joue !
+        </button>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- ÉCRAN RECONNEXION RÉUSSIE (ancien joueur)  -->
+    <!-- ========================================== -->
+    <div id="reconnect-success-screen" class="screen">
+        <div class="reg-success-header">
+            <div class="reg-success-icon-wrap reconnect-icon-wrap">
+                <span class="material-symbols-outlined reg-success-icon reconnect-check-icon">waving_hand</span>
+            </div>
+            <h2>Content de te revoir !</h2>
+            <p>Ta reconnexion a réussi. C'est l'heure de jouer !</p>
+        </div>
+
+        <div class="reg-success-profile">
+            <div id="reconnect-success-avatar" class="reg-success-avatar"></div>
+            <div class="reg-success-info">
+                <span id="reconnect-success-name" class="reg-success-name"></span>
+                <span id="reconnect-success-country" class="reg-success-country"></span>
+            </div>
+        </div>
+
+        <button id="reconnect-success-play-btn">
             <span class="material-symbols-outlined">play_arrow</span>
             C'est parti, je joue !
         </button>

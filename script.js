@@ -715,8 +715,11 @@ reconnectBtn.addEventListener('click', async () => {
 
     reconnectError.style.display = 'none';
     reconnectBtn.disabled = false;
-    showScreen('menu-screen');
     updateMenuUI();
+
+    // Afficher l'écran "Reconnexion réussie" avant le menu
+    fillSuccessScreen('reconnect-success-avatar', 'reconnect-success-name', 'reconnect-success-country', currentAvatarId, currentUser, currentCountry);
+    showScreen('reconnect-success-screen');
 })
 
 // Bouton "Retour" depuis l'écran reconnexion → écran 0
@@ -1150,17 +1153,9 @@ document.getElementById('avatar-confirm-btn').addEventListener('click', async ()
     updateMenuUI(); // ← met à jour avatar + drapeau + nom dans le menu
 
     if (isNew) {
-        // Remplir l'écran de confirmation d'inscription
-        const avatarMap = { '1':'🧑','2':'👩','3':'🧔','4':'👱','5':'🧑‍🦱','6':'👩‍🦱',
-                            '7':'🧑‍🦰','8':'👩‍🦰','9':'🧑‍🦳','10':'👩‍🦳','11':'🧑‍🦲','12':'👩‍🦲',
-                            '13':'🧒','14':'👧','15':'👦','16':'🧓','17':'👴','18':'👵',
-                            '19':'🧑‍💻','20':'👩‍💻','21':'🧑‍🎓','22':'👩‍🎓','23':'🧑‍🏫','24':'🧑‍🔬' };
-        document.getElementById('reg-success-avatar').textContent = avatarMap[currentAvatarId] || '🙂';
-        document.getElementById('reg-success-name').textContent   = currentUser;
-        const flag = currentCountry ? `<img src="https://flagcdn.com/24x18/${currentCountry.code.toLowerCase()}.png" alt="" style="height:14px;border-radius:2px;vertical-align:middle"> ${currentCountry.name}` : '';
-        document.getElementById('reg-success-country').innerHTML  = flag;
+        fillSuccessScreen('reg-success-avatar', 'reg-success-name', 'reg-success-country', currentAvatarId, currentUser, currentCountry);
         const pinDisplay = pin ? pin.split('').join(' ') : '—';
-        document.getElementById('reg-success-pin').textContent    = pinDisplay;
+        document.getElementById('reg-success-pin').textContent = pinDisplay;
         showScreen('register-success-screen');
     } else {
         showScreen('menu-screen');
@@ -1170,6 +1165,37 @@ document.getElementById('avatar-confirm-btn').addEventListener('click', async ()
 document.getElementById('reg-success-play-btn').addEventListener('click', () => {
     showScreen('menu-screen');
 });
+
+document.getElementById('reconnect-success-play-btn').addEventListener('click', () => {
+    showScreen('menu-screen');
+});
+
+// ── Remplit un écran de succès (inscription OU reconnexion) avec le bon avatar ──
+function fillSuccessScreen(avatarElId, nameElId, countryElId, avatarId, userName, country) {
+    // Avatar : <img> avec fallback emoji SVG immédiat, puis vraie photo Wikipedia
+    const avatarEl = document.getElementById(avatarElId);
+    if (avatarEl && avatarId) {
+        avatarEl.innerHTML = '';
+        const img = document.createElement('img');
+        img.src = getAvatarImg(avatarId);          // emoji SVG instantané
+        img.dataset.avatarId = avatarId;           // permet à refreshAllAvatarImgs de le mettre à jour
+        img.alt = '';
+        img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:50%;';
+        avatarEl.appendChild(img);
+        preloadAvatarAndRefresh(avatarId);         // charge la vraie photo en arrière-plan
+    }
+    // Nom
+    const nameEl = document.getElementById(nameElId);
+    if (nameEl) nameEl.textContent = userName || '';
+    // Pays + drapeau
+    const countryEl = document.getElementById(countryElId);
+    if (countryEl) {
+        const flag = country
+            ? `<img src="https://flagcdn.com/24x18/${country.code.toLowerCase()}.png" alt="" style="height:14px;border-radius:2px;vertical-align:middle"> ${country.name}`
+            : '';
+        countryEl.innerHTML = flag;
+    }
+}
 
 /* -------------------------------------------------------------- */
 /* 15. ÉCRAN 2 : DOMAINES                                             */
