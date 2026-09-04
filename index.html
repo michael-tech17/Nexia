@@ -102,7 +102,7 @@
                     <span class="material-symbols-outlined faq-chevron">expand_more</span>
                 </button>
                 <div class="faq-answer">
-                    <p>Le code PIN est un code à <strong>4 chiffres</strong> que vous créez lors de votre première inscription. Il vous permet de vous reconnecter lors de vos prochaines parties sans recréer un profil. Conservez-le précieusement ! Si vous l'oubliez, la fonctionnalité <em>"Mot de passe oublié ?"</em> vous permet de le réinitialiser en vérifiant votre identité via votre nom et un score passé.</p>
+                    <p>Le code PIN est un code à <strong>4 chiffres</strong> que vous créez lors de votre première inscription. Il vous permet de vous reconnecter lors de vos prochaines parties sans recréer un profil. Conservez-le précieusement ! Si vous l'oubliez, la fonctionnalité <em>"Code PIN oublié ?"</em> vous permet de le réinitialiser en vérifiant votre identité via votre nom et un score passé.</p>
                 </div>
             </div>
 
@@ -112,7 +112,7 @@
                     <span class="material-symbols-outlined faq-chevron">expand_more</span>
                 </button>
                 <div class="faq-answer">
-                    <p>Pas de panique ! Depuis l'écran de reconnexion, cliquez sur <em>"Mot de passe oublié ?"</em> en bas de page. Il vous sera demandé de renseigner :</p>
+                    <p>Pas de panique ! Depuis l'écran de reconnexion, cliquez sur <em>"Code PIN oublié ?"</em> en bas de page. Il vous sera demandé de renseigner :</p>
                     <ul>
                         <li>Votre <strong>nom exact</strong> (tel que saisi lors de l'inscription)</li>
                         <li>Un <strong>score obtenu</strong> lors d'une partie précédente (sur 20)</li>
@@ -159,6 +159,25 @@
                 </button>
                 <div class="faq-answer">
                     <p>Oui, le classement est <strong>global et en temps réel</strong>. Il est stocké sur nos serveurs (Firebase) et visible par tous les joueurs qui partagent le même quiz. Cela signifie que vous concurrencez des joueurs du monde entier. Votre drapeau et votre avatar sont visibles dans le classement pour vous identifier.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span class="faq-q-text">Puis-je laisser un avis sur Nexia ?</span>
+                    <span class="material-symbols-outlined faq-chevron">expand_more</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Oui, tout à fait ! Vous pouvez laisser un avis à la fin de chaque partie. Voici comment ça se passe :</p>
+                    <ul>
+                        <li>Une fois votre partie terminée, vous arrivez sur l'<strong>écran des résultats</strong>.</li>
+                        <li>En bas de cet écran, vous trouverez le bouton <em>« Laisser un avis »</em> (icône étoile ⭐).</li>
+                        <li>Cliquez dessus pour accéder au <strong>formulaire d'avis</strong>.</li>
+                        <li>Attribuez une <strong>note de 1 à 5 étoiles</strong> selon votre expérience.</li>
+                        <li>Vous pouvez également laisser un <strong>commentaire</strong> (optionnel, 1000 caractères max) pour partager vos impressions ou suggestions.</li>
+                        <li>Cliquez sur <em>« Envoyer mon avis »</em> pour valider. Votre retour est enregistré instantanément.</li>
+                    </ul>
+                    <p style="margin-top:10px">Vous pouvez soumettre <strong>jusqu'à 3 avis</strong> au total. Au-delà, le formulaire vous informera que votre quota est atteint. Chaque avis compte pour nous et contribue directement à améliorer Nexia !</p>
                 </div>
             </div>
 
@@ -418,6 +437,41 @@
         <button id="avatar-confirm-btn" disabled>
             <span class="material-symbols-outlined">check_circle</span>
             Confirmer mon avatar
+        </button>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- ÉCRAN INSCRIPTION RÉUSSIE (nouveau joueur) -->
+    <!-- ========================================== -->
+    <div id="register-success-screen" class="screen">
+        <div class="reg-success-header">
+            <div class="reg-success-icon-wrap">
+                <span class="material-symbols-outlined reg-success-icon">check_circle</span>
+            </div>
+            <h2>Inscription réussie !</h2>
+            <p>Ton profil a bien été créé. Tu peux maintenant jouer.</p>
+        </div>
+
+        <div class="reg-success-profile">
+            <div id="reg-success-avatar" class="reg-success-avatar"></div>
+            <div class="reg-success-info">
+                <span id="reg-success-name" class="reg-success-name"></span>
+                <span id="reg-success-country" class="reg-success-country"></span>
+            </div>
+        </div>
+
+        <div class="reg-success-pin-reminder">
+            <span class="material-symbols-outlined">key</span>
+            <div>
+                <strong>Ton code PIN :</strong>
+                <span id="reg-success-pin" class="reg-success-pin-value">••••</span>
+            </div>
+            <p class="reg-success-pin-hint">Note-le précieusement, il te sert à te reconnecter !</p>
+        </div>
+
+        <button id="reg-success-play-btn">
+            <span class="material-symbols-outlined">play_arrow</span>
+            C'est parti, je joue !
         </button>
     </div>
 

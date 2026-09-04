@@ -1075,6 +1075,7 @@ document.getElementById('country-confirm-btn').addEventListener('click', () => {
 /* Enregistre ou met à jour le joueur dans Firestore (collection "Joueurs")
    — upsert : si le joueur existe déjà (même nom), on met à jour son doc    */
 async function upsertJoueur(nom, avatarId, country, pin) {
+    let isNewPlayer = false;
     try {
         const now     = new Date();
         const docRef  = doc(db, "Joueurs", nom.toLowerCase().trim());
@@ -1100,6 +1101,7 @@ async function upsertJoueur(nom, avatarId, country, pin) {
             console.log("🔄 Joueur mis à jour dans Firestore :", nom);
         } else {
             // Nouvelle inscription
+            isNewPlayer = true;
             await setDoc(docRef, {
                 name:        nom,
                 avatarId:    avatarId || "",
@@ -1137,15 +1139,36 @@ async function upsertJoueur(nom, avatarId, country, pin) {
     } catch(e) {
         console.warn("Erreur upsert joueur :", e);
     }
+    return isNewPlayer;
 }
 
 document.getElementById('avatar-confirm-btn').addEventListener('click', async () => {
     if (!currentAvatarId) return;
     localStorage.setItem('quiz_avatar_' + currentUser, currentAvatarId);
     const pin = localStorage.getItem('quiz_pin_' + currentUser) || "";
-    await upsertJoueur(currentUser, currentAvatarId, currentCountry, pin);
-    showScreen('menu-screen');
+    const isNew = await upsertJoueur(currentUser, currentAvatarId, currentCountry, pin);
     updateMenuUI(); // ← met à jour avatar + drapeau + nom dans le menu
+
+    if (isNew) {
+        // Remplir l'écran de confirmation d'inscription
+        const avatarMap = { '1':'🧑','2':'👩','3':'🧔','4':'👱','5':'🧑‍🦱','6':'👩‍🦱',
+                            '7':'🧑‍🦰','8':'👩‍🦰','9':'🧑‍🦳','10':'👩‍🦳','11':'🧑‍🦲','12':'👩‍🦲',
+                            '13':'🧒','14':'👧','15':'👦','16':'🧓','17':'👴','18':'👵',
+                            '19':'🧑‍💻','20':'👩‍💻','21':'🧑‍🎓','22':'👩‍🎓','23':'🧑‍🏫','24':'🧑‍🔬' };
+        document.getElementById('reg-success-avatar').textContent = avatarMap[currentAvatarId] || '🙂';
+        document.getElementById('reg-success-name').textContent   = currentUser;
+        const flag = currentCountry ? `<img src="https://flagcdn.com/24x18/${currentCountry.code.toLowerCase()}.png" alt="" style="height:14px;border-radius:2px;vertical-align:middle"> ${currentCountry.name}` : '';
+        document.getElementById('reg-success-country').innerHTML  = flag;
+        const pinDisplay = pin ? pin.split('').join(' ') : '—';
+        document.getElementById('reg-success-pin').textContent    = pinDisplay;
+        showScreen('register-success-screen');
+    } else {
+        showScreen('menu-screen');
+    }
+});
+
+document.getElementById('reg-success-play-btn').addEventListener('click', () => {
+    showScreen('menu-screen');
 });
 
 /* -------------------------------------------------------------- */
@@ -2000,10 +2023,10 @@ let avisNote = 0; // note sélectionnée (1–5)
 
 const starsHintLabels = [
     '',
-    { icon: 'sentiment_very_dissatisfied', text: 'Très mauvais',  color: '#ef4444' },
-    { icon: 'sentiment_dissatisfied',      text: 'Décevant',       color: '#f97316' },
-    { icon: 'sentiment_neutral',           text: 'Correct',        color: '#eab308' },
-    { icon: 'sentiment_satisfied',         text: 'Bien',           color: '#84cc16' },
+    { icon: 'sentiment_very_dissatisfied', text: 'Passable !',  color: '#ef4444' },
+    { icon: 'sentiment_dissatisfied',      text: 'Assez-bien !',       color: '#f97316' },
+    { icon: 'sentiment_neutral',           text: 'Bien !',        color: '#eab308' },
+    { icon: 'sentiment_satisfied',         text: 'Très-bien !',           color: '#84cc16' },
     { icon: 'sentiment_very_satisfied',    text: 'Excellent !',    color: '#16a34a' }
 ];
 

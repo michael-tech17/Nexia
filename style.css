@@ -174,13 +174,13 @@ body {
 
 .pin-input-wrapper input {
     width: 100%;
-    padding: 14px 52px 14px 16px;
+    padding: 12px 48px 12px 14px;
     border-radius: 10px;
     border: 1.5px solid var(--border-color);
     background-color: var(--bg-element);
     color: var(--text-main);
-    font-size: 20px;
-    letter-spacing: 6px;
+    font-size: 16px;
+    letter-spacing: 4px;
     outline: none;
     transition: border-color 0.2s;
     font-family: monospace;
@@ -283,8 +283,8 @@ body {
 
 /* Champ PIN reconnexion — lettre-spacing plus discret */
 #reconnect-pin-input {
-    letter-spacing: 4px;
-    font-size: 18px;
+    letter-spacing: 3px;
+    font-size: 15px;
 }
 
 /* Bouton secondaire (créer nouveau profil) */
@@ -1244,6 +1244,83 @@ h2 {
         font-size: 15px;
     }
 }
+/* ========================================== */
+/* RESPONSIVE — INPUTS PIN & FORMULAIRES      */
+/* ========================================== */
+
+/* Tablette (481px – 768px) : taille intermédiaire */
+@media screen and (min-width: 481px) and (max-width: 768px) {
+    .pin-input-wrapper input {
+        font-size: 15px;
+        letter-spacing: 4px;
+        padding: 12px 46px 12px 14px;
+    }
+
+    #reconnect-name-input,
+    #username-input,
+    #forgot-name-input,
+    #country-search {
+        font-size: 14px;
+        padding: 12px 14px;
+    }
+
+    #newpin-input,
+    #newpin-confirm-input {
+        font-size: 15px;
+        letter-spacing: 4px;
+    }
+
+    /* Placeholder plus petit sur tablette */
+    .pin-input-wrapper input::placeholder {
+        font-size: 12px;
+        letter-spacing: 0;
+    }
+}
+
+/* Mobile (≤ 480px) : compact et lisible */
+@media screen and (max-width: 480px) {
+    .pin-input-wrapper input {
+        font-size: 14px;
+        letter-spacing: 3px;
+        padding: 11px 44px 11px 12px;
+    }
+
+    .pin-input-wrapper input::placeholder {
+        font-size: 11px;
+        letter-spacing: 0;
+    }
+
+    #reconnect-name-input,
+    #username-input,
+    #forgot-name-input,
+    #country-search {
+        font-size: 14px;
+        padding: 11px 12px;
+    }
+
+    #newpin-input,
+    #newpin-confirm-input {
+        font-size: 14px;
+        letter-spacing: 3px;
+    }
+
+    #reconnect-pin-input {
+        font-size: 14px;
+        letter-spacing: 3px;
+    }
+
+    /* Forgot screen : score & domaine côte à côte → colonne sur petit mobile */
+    .forgot-score-row {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    /* Labels de formulaire légèrement réduits */
+    .forgot-label {
+        font-size: 12px;
+    }
+}
+
 /* ========================================== */
 /* 10. DRAPEAU — QUESTIONS AVEC IMAGE         */
 /* ========================================== */
@@ -2259,13 +2336,147 @@ h2 {
         font-size: 14px;
     }
 
+    /* PIN : on laisse les règles du bloc responsive plus haut gérer ça */
     .pin-input-wrapper input {
-        font-size: 17px;
+        font-size: 14px;
+        letter-spacing: 3px;
     }
 
     .forgot-label {
         font-size: 11px;
     }
+}
+
+/* ========================================== */
+/* ÉCRAN INSCRIPTION RÉUSSIE                  */
+/* ========================================== */
+.reg-success-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+}
+
+.reg-success-icon-wrap {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--success-light);
+    border: 2px solid var(--success);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: reg-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes reg-pop {
+    from { transform: scale(0.5); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+}
+
+.reg-success-icon {
+    font-size: 40px;
+    color: var(--success);
+    font-variation-settings: 'FILL' 1;
+}
+
+.reg-success-header h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.reg-success-header p {
+    font-size: 13px;
+    color: var(--text-muted);
+    max-width: 300px;
+}
+
+.reg-success-profile {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--bg-element);
+    border: 1.5px solid var(--border-color);
+    border-radius: 14px;
+    padding: 14px 18px;
+}
+
+.reg-success-avatar {
+    font-size: 36px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.reg-success-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.reg-success-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.reg-success-country {
+    font-size: 13px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.reg-success-pin-reminder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    background: var(--warning-light);
+    border: 1.5px solid #fcd34d;
+    border-radius: 14px;
+    padding: 16px 20px;
+    text-align: center;
+}
+
+.reg-success-pin-reminder > .material-symbols-outlined {
+    font-size: 28px;
+    color: var(--warning);
+}
+
+.reg-success-pin-reminder > div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.reg-success-pin-value {
+    font-family: monospace;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: var(--warning);
+    background: rgba(0,0,0,0.04);
+    padding: 2px 10px;
+    border-radius: 6px;
+}
+
+.reg-success-pin-hint {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+@media screen and (max-width: 480px) {
+    .reg-success-icon-wrap { width: 60px; height: 60px; }
+    .reg-success-icon { font-size: 32px; }
+    .reg-success-header h2 { font-size: 20px; }
+    .reg-success-pin-value { font-size: 18px; }
 }
 
 /* ── BANDEAU JOUEUR (menu-screen) ──────────────────────────────────── */
@@ -2468,7 +2679,7 @@ h2 {
 }
 
 .faq-item.open .faq-answer {
-    max-height: 600px;
+    max-height: 2000px;
     padding: 0 16px 14px;
 }
 
