@@ -1,13 +1,13 @@
 /* ========================================================================== */
-/* DOMAINE 9 : DINOSAURES                                               */
-/* Débutant: 110 | Intermédiaire: 110 | Avancé: 110 — Total: 330 questions     */
+/* DOMAINE 9 : DINOSAURES & PRÉHISTOIRE                                  */
+/* Débutant: 182 | Intermédiaire: 149 | Avancé: 120 — Total: 451 questions     */
 /* ========================================================================== */
 
 const dinosaures = [
 
     /* ------------------------------------------------------------------
-       Dinosaures (330 questions au total)
-       Débutant: 110 | Intermédiaire: 110 | Avancé: 110
+    Dinosaures & Préhistoire (451 questions au total)
+    Débutant: 182 | Intermédiaire: 149 | Avancé: 120
     ------------------------------------------------------------------ */
 
     /* === DÉBUTANT (110 questions) === */
@@ -417,7 +417,7 @@ const dinosaures = [
 
     /* THERIZINOSAURUS — Intermédiaire */
 {question:"Pourquoi les griffes du Therizinosaurus ne suffisent-elles pas à le classer comme carnivore ?",code:"therizinosaurus",niveau:"intermediaire",options:["Son anatomie générale indique un régime principalement végétal","Les griffes étaient dépourvues d'os","Il n'avait pas de dents","Les griffes appartenaient à sa queue"],reponse:0,explication:"Les longues griffes sont impressionnantes mais l'ensemble de sa morphologie indique un régime principalement herbivore."},
-{question:"Quelle fonction les longues griffes du Therizinosaurus pourraient-elles avoir eue ?",code:"therizinosaurus",niveau:"intermediaire",options:["Saisir ou atteindre la végétation","Percer des carapaces métalliques","Nager rapidement","Produire des sons"],reponse:0,explication:"Les griffes pouvaient notamment aider à atteindre ou manipuler la végétation."},
+{question:"Quelle fonction les longues griffes du Therizinosaurus pourraient-elles avoir eue ?",code:"therizinosaurus",niveau:"intermediaire",options:["Saisir ou atteindre la végétation","Percer des carapaces métalliques","Nager rapidement","Produire des sons"],reponse:0,explication:"Les griffes pouvaient notamment aider ou manipuler la végétation."},
 {question:"Quel avantage défensif pouvait offrir le Therizinosaurus ?",code:"therizinosaurus",niveau:"intermediaire",options:["Ses très longues griffes","Une massue caudale","Une collerette osseuse","Des cornes frontales"],reponse:0,explication:"Ses griffes pouvaient constituer une défense impressionnante contre un prédateur."},
 {question:"Quelle caractéristique rend le Therizinosaurus difficile à comparer aux prédateurs classiques ?",code:"therizinosaurus",niveau:"intermediaire",options:["Des bras et griffes énormes associés à un régime végétal","Une absence de membres","Une carapace complète","Un régime exclusivement piscivore"],reponse:0,explication:"Il combine une anatomie de théropode avec une spécialisation végétivore très particulière."},
 {question:"Quel dinosaure est représenté sur cette image ?",code:"therizinosaurus",niveau:"intermediaire",options:["Therizinosaurus","Deinocheirus","Oviraptor","Gallimimus"],reponse:0,explication:"La reconstruction représente Therizinosaurus avec ses immenses griffes."},
@@ -445,7 +445,7 @@ const dinosaures = [
 
     /* DEINOCHEIRUS — Intermédiaire */
 {question:"Pourquoi Deinocheirus ne doit-il pas être classé comme un simple prédateur malgré ses grands bras ?",code:"deinocheirus",niveau:"intermediaire",options:["Sa morphologie indique une alimentation plus diversifiée","Ses bras étaient entièrement inutilisables","Il n'avait aucune dent","Il était un sauropode"],reponse:0,explication:"Deinocheirus est généralement interprété comme un animal omnivore ou opportuniste."},
-{question:"Quelle caractéristique pouvait aider Deinocheirus à atteindre des ressources alimentaires variées ?",code:"deinocheirus",niveau:"intermediaire",options:["Ses grands membres antérieurs et son bec","Ses cornes frontales","Sa massue caudale","Ses plaques dorsales"],reponse:0,explication:"Ses bras et son bec pouvaient intervenir dans la recherche et la manipulation de nourriture."},
+{question:"Quelle caractéristique pouvait aider Deinocheirus des ressources alimentaires variées ?",code:"deinocheirus",niveau:"intermediaire",options:["Ses grands membres antérieurs et son bec","Ses cornes frontales","Sa massue caudale","Ses plaques dorsales"],reponse:0,explication:"Ses bras et son bec pouvaient intervenir dans la recherche et la manipulation de nourriture."},
 {question:"Quel élément distingue Deinocheirus de Gallimimus ?",code:"deinocheirus",niveau:"intermediaire",options:["Un corps beaucoup plus massif","Une carapace complète","Des cornes frontales","Une queue en massue"],reponse:0,explication:"Deinocheirus était beaucoup plus massif que les ornithomimosaures graciles comme Gallimimus."},
 {question:"Quelle caractéristique physique était particulièrement développée chez Deinocheirus ?",code:"deinocheirus",niveau:"intermediaire",options:["Ses membres antérieurs","Ses plaques dorsales","Ses cornes","Sa collerette"],reponse:0,explication:"Ses membres antérieurs étaient exceptionnellement grands."},
 {question:"Quel dinosaure est représenté sur cette image ?",code:"deinocheirus",niveau:"intermediaire",options:["Deinocheirus","Therizinosaurus","Gallimimus","Oviraptor"],reponse:0,explication:"La reconstruction représente Deinocheirus, reconnaissable à son corps massif et ses grands bras."},

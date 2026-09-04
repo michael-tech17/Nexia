@@ -1,13 +1,13 @@
 /* ========================================================================== */
 /* DOMAINE 2 : DROIT                                                          */
-/* Débutant: 115 | Intermédiaire: 115 | Avancé: 115 — Total: 345 questions      */
+/* Débutant: 115 | Intermédiaire: 116 | Avancé: 111 — Total: 342 questions      */
 /* ========================================================================== */
 
 const droit = [
 
     /* ------------------------------------------------------------------
-       Droit (345 questions au total)
-       Débutant: 115 | Intermédiaire: 115 | Avancé: 115
+    Droit (342 questions au total)
+    Débutant: 115 | Intermédiaire: 116 | Avancé: 111
     ------------------------------------------------------------------ */
 
     /* === DÉBUTANT (115 questions) === */

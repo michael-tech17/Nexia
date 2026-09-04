@@ -2341,3 +2341,433 @@ h2 {
     from { transform: rotate(0deg); }
     to   { transform: rotate(360deg); }
 }
+
+/* ========================================== */
+/* BOUTON FAQ SUR WELCOME SCREEN              */
+/* ========================================== */
+.btn-faq-welcome {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px 16px;
+    background: transparent;
+    border: 1.5px solid var(--border-color);
+    border-radius: 12px;
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.btn-faq-welcome:hover {
+    background-color: var(--primary-light);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.btn-faq-welcome .material-symbols-outlined {
+    font-size: 18px;
+}
+
+/* ========================================== */
+/* ÉCRAN FAQ                                  */
+/* ========================================== */
+.faq-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
+    padding-bottom: 4px;
+}
+
+.faq-header-icon {
+    font-size: 44px;
+    color: var(--primary);
+}
+
+.faq-header h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.faq-header p {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.faq-item {
+    border: 1.5px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg-element);
+    transition: border-color 0.2s;
+}
+
+.faq-item.open {
+    border-color: var(--primary);
+}
+
+.faq-question {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 16px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.faq-question:hover {
+    background-color: var(--bg-element-hover);
+}
+
+.faq-q-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-main);
+    flex: 1;
+    line-height: 1.4;
+}
+
+.faq-item.open .faq-q-text {
+    color: var(--primary);
+}
+
+.faq-chevron {
+    font-size: 20px;
+    color: var(--text-muted);
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+}
+
+.faq-item.open .faq-chevron {
+    transform: rotate(180deg);
+    color: var(--primary);
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.2s ease;
+    padding: 0 16px;
+}
+
+.faq-item.open .faq-answer {
+    max-height: 600px;
+    padding: 0 16px 14px;
+}
+
+.faq-answer p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.65;
+}
+
+.faq-answer p strong {
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.faq-answer p em {
+    color: var(--primary);
+    font-style: normal;
+    font-weight: 500;
+}
+
+.faq-answer ul {
+    margin-top: 8px;
+    padding-left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.faq-answer ul li {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    list-style: disc;
+}
+
+/* ========================================== */
+/* BOUTON AVIS SUR SCORE SCREEN               */
+/* ========================================== */
+.btn-avis-score {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 13px 16px;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    transition: opacity 0.2s, transform 0.1s;
+}
+
+.btn-avis-score:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.btn-avis-score .material-symbols-outlined {
+    font-size: 20px;
+}
+
+/* ========================================== */
+/* ÉCRAN AVIS                                 */
+/* ========================================== */
+.avis-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
+    padding-bottom: 4px;
+}
+
+.avis-header-icon {
+    font-size: 44px;
+    color: #f59e0b;
+}
+
+.avis-header h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.avis-header p {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+/* Étoiles */
+.avis-stars-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg-element);
+    border: 1.5px solid var(--border-color);
+    border-radius: 14px;
+    padding: 20px 16px;
+}
+
+.avis-stars-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.avis-stars {
+    display: flex;
+    gap: 8px;
+}
+
+.avis-star {
+    font-size: 40px;
+    color: var(--border-color);
+    cursor: pointer;
+    transition: color 0.15s, transform 0.1s;
+    user-select: none;
+    font-variation-settings: 'FILL' 0;
+}
+
+.avis-star.active {
+    color: #f59e0b;
+    font-variation-settings: 'FILL' 1;
+}
+
+.avis-star:hover {
+    transform: scale(1.15);
+}
+
+.avis-stars-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 28px;
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.avis-hint-icon {
+    font-size: 22px;
+    font-variation-settings: 'FILL' 1;
+    transition: color 0.2s;
+    line-height: 1;
+}
+
+.avis-hint-text {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    transition: color 0.2s;
+}
+
+/* Commentaire */
+.avis-comment-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.avis-comment-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.avis-optionnel {
+    font-weight: 400;
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+.avis-textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--bg-element);
+    color: var(--text-main);
+    font-size: 14px;
+    font-family: 'Space Grotesk', sans-serif;
+    resize: vertical;
+    transition: border-color 0.2s;
+    outline: none;
+    line-height: 1.5;
+}
+
+.avis-textarea:focus {
+    border-color: var(--primary);
+}
+
+.avis-char-count {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: right;
+}
+
+/* Confirmation / déjà soumis */
+.avis-success-box,
+.avis-already-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+    padding: 24px 16px;
+    border-radius: 14px;
+}
+
+.avis-success-box {
+    background: var(--success-light);
+    border: 1.5px solid var(--success);
+}
+
+.avis-already-box {
+    background: var(--primary-light);
+    border: 1.5px solid var(--primary);
+}
+
+.avis-success-icon {
+    font-size: 52px;
+    color: var(--success);
+}
+
+.avis-already-icon {
+    font-size: 52px;
+    color: var(--primary);
+}
+
+.avis-success-box h3,
+.avis-already-box h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.avis-success-box p,
+.avis-already-box p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.55;
+}
+
+/* ========================================== */
+/* LOADING RECONNEXION                        */
+/* ========================================== */
+.reconnect-loading-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: linear-gradient(135deg, var(--primary-light), #e0f2fe);
+    border: 1.5px solid #7dd3fc;
+    border-radius: 12px;
+    padding: 14px 18px;
+    color: var(--primary);
+}
+
+.reconnect-loading-icon {
+    font-size: 22px;
+    animation: spin 0.9s linear infinite;
+    flex-shrink: 0;
+    color: var(--primary);
+}
+
+.reconnect-loading-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary);
+    letter-spacing: 0.01em;
+}
+
+/* ========================================== */
+/* BADGE QUOTA AVIS                           */
+/* ========================================== */
+.avis-quota-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: var(--primary-light);
+    border: 1.5px solid #bae6fd;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.avis-quota-badge strong {
+    color: var(--text-main);
+}

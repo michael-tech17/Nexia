@@ -209,6 +209,10 @@ let aRepondu             = false;
 let currentCountry       = null; // { code, name, flag }
 let quizEnCours          = false; // true dès le début du quiz, false dès la fin ou l'abandon
 
+// ── Suivi création de nouveau profil ───────────────────────────────
+// Mémorise l'ancien profil quand un joueur existant choisit "Créer un nouveau profil"
+let _ancienProfilAvantCreation = null; // { nom, avatarId, countryCode, countryName } ou null
+
 /* -------------------------------------------------------------- */
 /* 7. DONNÉES PAYS — classées par continent                          */
 /* -------------------------------------------------------------- */
@@ -538,7 +542,8 @@ document.getElementById('btn-ancien-joueur').addEventListener('click', () => {
     document.getElementById('reconnect-name-input').value = '';
     document.getElementById('reconnect-pin-input').value  = '';
     document.getElementById('reconnect-btn').disabled     = true;
-    document.getElementById('reconnect-error').style.display = 'none';
+    document.getElementById('reconnect-error').style.display   = 'none';
+    document.getElementById('reconnect-loading').style.display = 'none';
     showScreen('reconnect-screen');
 });
 
@@ -626,41 +631,133 @@ reconnectPinToggle.addEventListener('click', () => {
 });
 
 // Valider la reconnexion
-reconnectBtn.addEventListener('click', () => {
-    const nom    = reconnectNameInput.value.trim();
-    const pin    = reconnectPinInput.value;
-    const pinSaved = localStorage.getItem('quiz_pin_' + nom);
+let _reconnectAttempts = 0;
+let _reconnectLockedUntil = 0;
 
-    if (!pinSaved || pinSaved !== pin) {
+reconnectBtn.addEventListener('click', async () => {
+    // ── Vérification du blocage temporaire ──────────────────────
+    const now = Date.now();
+    if (now < _reconnectLockedUntil) {
+        const secsLeft = Math.ceil((_reconnectLockedUntil - now) / 1000);
         reconnectError.style.display = 'flex';
         document.getElementById('reconnect-error-text').textContent =
-            'Nom ou code PIN incorrect. Veuillez réessayer.';
+            `Trop de tentatives. Réessayez dans ${secsLeft} seconde(s).`;
         return;
     }
 
-    // Connexion réussie — charger le profil
+    const nom = reconnectNameInput.value.trim();
+    const pin = reconnectPinInput.value;
+
+    // ── Désactiver le bouton et afficher le loading ──────────────
+    reconnectBtn.disabled = true;
+    reconnectError.style.display = 'none';
+    const reconnectLoading = document.getElementById('reconnect-loading');
+    reconnectLoading.style.display = 'flex';
+
+    // ── Vérification Firestore en priorité ───────────────────────
+    let pinValide = false;
+    try {
+        const docRef  = doc(db, "Joueurs", nom.toLowerCase().trim());
+        const snap    = await getDoc(docRef);
+        if (snap.exists() && snap.data().pin === pin) {
+            pinValide = true;
+        }
+    } catch(e) {
+        // Firestore indisponible → fallback localStorage
+        const pinSaved = localStorage.getItem('quiz_pin_' + nom);
+        if (pinSaved && pinSaved === pin) pinValide = true;
+    }
+
+    reconnectLoading.style.display = 'none';
+
+    if (!pinValide) {
+        _reconnectAttempts++;
+        if (_reconnectAttempts >= 3) {
+            _reconnectLockedUntil = Date.now() + 30_000; // 30 secondes
+            _reconnectAttempts    = 0;
+            reconnectError.style.display = 'flex';
+            document.getElementById('reconnect-error-text').textContent =
+                'Trop de tentatives échouées. Reconnexion bloquée 30 secondes.';
+            // Compte à rebours visible
+            let secsLeft = 30;
+            const interval = setInterval(() => {
+                secsLeft--;
+                if (secsLeft <= 0) {
+                    clearInterval(interval);
+                    reconnectBtn.disabled = false;
+                    reconnectError.style.display = 'none';
+                } else {
+                    document.getElementById('reconnect-error-text').textContent =
+                        `Trop de tentatives. Réessayez dans ${secsLeft} seconde(s).`;
+                }
+            }, 1000);
+        } else {
+            reconnectError.style.display = 'flex';
+            document.getElementById('reconnect-error-text').textContent =
+                `Nom ou code PIN incorrect. Tentative ${_reconnectAttempts}/3.`;
+            reconnectBtn.disabled = false;
+        }
+        return;
+    }
+
+    // ── Connexion réussie ────────────────────────────────────────
+    _reconnectAttempts = 0;
     currentUser = nom;
     const savedAvatar  = localStorage.getItem('quiz_avatar_' + currentUser);
     const savedCountry = localStorage.getItem('quiz_country_' + currentUser);
     if (savedAvatar)  currentAvatarId = savedAvatar;
-    if (savedCountry) currentCountry  = JSON.parse(savedCountry);
+    if (savedCountry) {
+        try { currentCountry = JSON.parse(savedCountry); } catch(e) {}
+    }
+
+    // Synchroniser le localStorage avec la source Firestore
+    localStorage.setItem('quiz_pin_' + currentUser, pin);
 
     reconnectError.style.display = 'none';
+    reconnectBtn.disabled = false;
     showScreen('menu-screen');
-    updateMenuUI(); // ← met à jour avatar + drapeau + nom dans le menu
-});
+    updateMenuUI();
+})
 
 // Bouton "Retour" depuis l'écran reconnexion → écran 0
 document.getElementById('reconnect-back-btn').addEventListener('click', () => {
     reconnectNameInput.value = '';
     reconnectPinInput.value  = '';
-    reconnectError.style.display = 'none';
+    reconnectError.style.display   = 'none';
+    document.getElementById('reconnect-loading').style.display = 'none';
     reconnectBtn.disabled = true;
     showScreen('welcome-screen');
 });
 
 // Bouton "Créer un nouveau profil" depuis l'écran reconnexion
 document.getElementById('reconnect-create-btn').addEventListener('click', () => {
+    // ── Mémoriser l'ancien profil pour le tracker dans NouveauProfil ──
+    const ancienNom = reconnectNameInput.value.trim();
+    if (ancienNom) {
+        // On essaie de récupérer les infos de l'ancien profil depuis Firestore
+        (async () => {
+            try {
+                const docRef = doc(db, "Joueurs", ancienNom.toLowerCase().trim());
+                const snap   = await getDoc(docRef);
+                if (snap.exists()) {
+                    const d = snap.data();
+                    _ancienProfilAvantCreation = {
+                        nom:         d.name        || ancienNom,
+                        avatarId:    d.avatarId    || null,
+                        countryCode: d.countryCode || "",
+                        countryName: d.countryName || ""
+                    };
+                } else {
+                    _ancienProfilAvantCreation = { nom: ancienNom, avatarId: null, countryCode: "", countryName: "" };
+                }
+            } catch(e) {
+                _ancienProfilAvantCreation = { nom: ancienNom, avatarId: null, countryCode: "", countryName: "" };
+            }
+        })();
+    } else {
+        _ancienProfilAvantCreation = null;
+    }
+
     document.getElementById('username-input').value = '';
     document.getElementById('start-btn').disabled = true;
     showScreen('login-screen');
@@ -825,15 +922,34 @@ document.getElementById('newpin-save-btn').addEventListener('click', async () =>
     // Sauvegarder dans localStorage
     localStorage.setItem('quiz_pin_' + currentUser, p1);
 
-    // Mettre à jour dans Firestore (collection Joueurs)
+    // Mettre à jour dans Firestore (collection Joueurs) + tracer dans ResetPin
     try {
-        const docRef = doc(db, "Joueurs", currentUser.toLowerCase().trim());
-        const snap   = await getDoc(docRef);
+        const docRef  = doc(db, "Joueurs", currentUser.toLowerCase().trim());
+        const snap    = await getDoc(docRef);
+        const ancienPin = snap.exists() ? (snap.data().pin || "") : "";
+
         if (snap.exists()) {
             await setDoc(docRef, { ...snap.data(), pin: p1, tsUpdate: Date.now() });
         }
+
+        // ── Enregistrement dans ResetPin pour le suivi admin ──────────
+        const now = new Date();
+        await addDoc(collection(db, "ResetPin"), {
+            name:        currentUser,
+            ancienPin:   ancienPin,
+            nouveauPin:  p1,
+            raison:      "PIN oublié",
+            countryCode: currentCountry ? currentCountry.code : "",
+            countryName: currentCountry ? currentCountry.name : "",
+            ts:          now.getTime(),
+            dateHeure:   now.toLocaleDateString('fr-FR', {
+                day: '2-digit', month: '2-digit', year: 'numeric'
+            }) + ' à ' + now.toLocaleTimeString('fr-FR', {
+                hour: '2-digit', minute: '2-digit', second: '2-digit'
+            })
+        });
     } catch(e) {
-        console.warn("Erreur mise à jour PIN dans Firestore :", e);
+        console.warn("Erreur mise à jour PIN / ResetPin dans Firestore :", e);
     }
 
     // Rediriger directement vers les domaines
@@ -980,6 +1096,28 @@ async function upsertJoueur(nom, avatarId, country, pin) {
                 dateHeure:   dateHeure
             });
             console.log("✅ Nouveau joueur enregistré dans Firestore :", nom);
+
+            // ── Si le joueur venait de "Créer un nouveau profil" → tracer dans NouveauProfil ──
+            if (_ancienProfilAvantCreation) {
+                try {
+                    await addDoc(collection(db, "NouveauProfil"), {
+                        ancienNom:        _ancienProfilAvantCreation.nom,
+                        ancienAvatarId:   _ancienProfilAvantCreation.avatarId   || "",
+                        ancienCountryCode:_ancienProfilAvantCreation.countryCode || "",
+                        ancienCountryName:_ancienProfilAvantCreation.countryName || "",
+                        nouveauNom:        nom,
+                        nouveauAvatarId:   avatarId || "",
+                        countryCode:       country ? country.code : "",
+                        countryName:       country ? country.name : "",
+                        ts:                now.getTime(),
+                        dateHeure:         dateHeure
+                    });
+                    console.log("📝 NouveauProfil tracé :", _ancienProfilAvantCreation.nom, "→", nom);
+                } catch(e) {
+                    console.warn("Erreur enregistrement NouveauProfil :", e);
+                }
+                _ancienProfilAvantCreation = null; // Réinitialiser après usage
+            }
         }
     } catch(e) {
         console.warn("Erreur upsert joueur :", e);
@@ -1469,7 +1607,7 @@ function mettreAJourTimer() {
 /* -------------------------------------------------------------- */
 /* 23. CHOISIR UNE RÉPONSE                                            */
 /* -------------------------------------------------------------- */
-window.choisirReponse = function(positionChoisie) {
+function choisirReponse(positionChoisie) {
     if (aRepondu) return;
     aRepondu = true;
     clearInterval(timerID);
@@ -1537,15 +1675,24 @@ window.choisirReponse = function(positionChoisie) {
     }
 
     document.getElementById('btn-suivant').className = 'btn-suivant';
-};
+}
 
 /* -------------------------------------------------------------- */
 /* 24. QUESTION SUIVANTE                                               */
 /* -------------------------------------------------------------- */
-window.questionSuivante = function() {
+function questionSuivante() {
     currentQuestionIndex++;
     afficherQuestion();
-};
+}
+
+/* -------------------------------------------------------------- */
+/* 24b. EVENT LISTENERS BOUTONS OPTIONS & SUIVANT                      */
+/* -------------------------------------------------------------- */
+document.querySelectorAll('.option-btn').forEach((btn, index) => {
+    btn.addEventListener('click', () => choisirReponse(index));
+});
+
+document.getElementById('btn-suivant').addEventListener('click', () => questionSuivante());
 
 /* -------------------------------------------------------------- */
 /* 25. AFFICHER LES RÉSULTATS + CLASSEMENT FIRESTORE                  */
@@ -1783,3 +1930,226 @@ document.getElementById('change-profile-btn').addEventListener('click', () => {
 /* 29. DÉMARRAGE                                                       */
 /* -------------------------------------------------------------- */
 showScreen('welcome-screen');
+
+/* -------------------------------------------------------------- */
+/* 30. ÉCRAN FAQ                                                       */
+/* -------------------------------------------------------------- */
+
+// Ouvrir l'écran FAQ depuis le welcome screen
+document.getElementById('btn-faq').addEventListener('click', async () => {
+    showScreen('faq-screen');
+
+    // Enregistrer la consultation dans Firestore (anonyme si pas encore connecté)
+    try {
+        const now = new Date();
+        await addDoc(collection(db, "FAQ"), {
+            name:      currentUser ? currentUser.trim() : "Anonyme",
+            ts:        now.getTime(),
+            dateHeure: now.toLocaleDateString('fr-FR', {
+                day: '2-digit', month: '2-digit', year: 'numeric'
+            }) + ' à ' + now.toLocaleTimeString('fr-FR', {
+                hour: '2-digit', minute: '2-digit', second: '2-digit'
+            })
+        });
+    } catch (e) {
+        console.warn("Erreur enregistrement consultation FAQ :", e);
+    }
+});
+
+// Retour depuis FAQ → welcome screen
+document.getElementById('faq-back-btn').addEventListener('click', () => {
+    showScreen('welcome-screen');
+});
+
+// Accordéon FAQ : clic sur une question ouvre/ferme la réponse
+document.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const item = btn.closest('.faq-item');
+        const isOpen = item.classList.contains('open');
+
+        // Fermer tous les items ouverts
+        document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+
+        // Si cet item était fermé, l'ouvrir
+        if (!isOpen) {
+            item.classList.add('open');
+        }
+    });
+});
+
+/* -------------------------------------------------------------- */
+/* 31. ÉCRAN AVIS                                                       */
+/* -------------------------------------------------------------- */
+
+let avisNote = 0; // note sélectionnée (1–5)
+
+const starsHintLabels = [
+    '',
+    { icon: 'sentiment_very_dissatisfied', text: 'Très mauvais',  color: '#ef4444' },
+    { icon: 'sentiment_dissatisfied',      text: 'Décevant',       color: '#f97316' },
+    { icon: 'sentiment_neutral',           text: 'Correct',        color: '#eab308' },
+    { icon: 'sentiment_satisfied',         text: 'Bien',           color: '#84cc16' },
+    { icon: 'sentiment_very_satisfied',    text: 'Excellent !',    color: '#16a34a' }
+];
+
+// Ouvrir l'écran Avis depuis le score screen
+document.getElementById('btn-avis').addEventListener('click', async () => {
+    const MAX_AVIS = 3;
+
+    // Reset UI
+    avisNote = 0;
+    avisResetStars();
+    document.getElementById('avis-textarea').value = '';
+    document.getElementById('avis-char-count').textContent = '0';
+    document.getElementById('avis-send-btn').disabled = true;
+    document.getElementById('avis-error').style.display = 'none';
+    document.getElementById('avis-loading').style.display = 'none';
+    document.getElementById('avis-form-container').style.display = 'flex';
+    document.getElementById('avis-form-container').style.flexDirection = 'column';
+    document.getElementById('avis-form-container').style.gap = '20px';
+    document.getElementById('avis-success').style.display = 'none';
+    document.getElementById('avis-already').style.display  = 'none';
+    document.getElementById('avis-quota-badge').style.display = 'none';
+
+    showScreen('avis-screen');
+
+    // Compter les avis existants du joueur
+    if (currentUser) {
+        try {
+            const q = query(
+                collection(db, "Avis"),
+                where("joueur", "==", currentUser.trim())
+            );
+            const snap = await getDocs(q);
+            const nbAvis = snap.size;
+            const restants = MAX_AVIS - nbAvis;
+
+            if (nbAvis >= MAX_AVIS) {
+                // Quota atteint → masquer formulaire
+                document.getElementById('avis-form-container').style.display = 'none';
+                document.getElementById('avis-already-title').textContent = 'Quota d\'avis atteint';
+                document.getElementById('avis-already-text').textContent  = `Vous avez déjà soumis ${MAX_AVIS} avis. Merci pour votre participation !`;
+                document.getElementById('avis-already').style.display = 'flex';
+            } else {
+                // Afficher le badge avec les avis restants
+                const badge = document.getElementById('avis-quota-badge');
+                badge.style.display = 'flex';
+                const icon = restants === 1 ? 'warning' : 'chat_bubble';
+                const color = restants === 1 ? '#f59e0b' : 'var(--primary)';
+                badge.innerHTML = `<span class="material-symbols-outlined" style="font-size:16px;color:${color}">${icon}</span><span>Avis <strong>${nbAvis}/${MAX_AVIS}</strong> — il vous reste <strong>${restants}</strong> avis disponible${restants > 1 ? 's' : ''}</span>`;
+            }
+        } catch (e) {
+            console.warn("Vérification avis Firestore :", e);
+        }
+    }
+});
+
+// Retour depuis Avis → score screen
+document.getElementById('avis-back-btn').addEventListener('click', () => {
+    showScreen('score-screen');
+});
+
+// Gestion des étoiles
+function avisResetStars() {
+    document.querySelectorAll('.avis-star').forEach(s => s.classList.remove('active'));
+    const hint = document.getElementById('avis-stars-hint');
+    hint.innerHTML = 'Cliquez sur une étoile pour noter';
+    hint.style.color = '';
+}
+
+function avisSetStars(value) {
+    document.querySelectorAll('.avis-star').forEach(star => {
+        const v = parseInt(star.dataset.value);
+        star.classList.toggle('active', v <= value);
+    });
+    const hint = document.getElementById('avis-stars-hint');
+    const label = starsHintLabels[value];
+    if (label && typeof label === 'object') {
+        hint.innerHTML = `<span class="avis-hint-icon material-symbols-outlined" style="color:${label.color}">${label.icon}</span><span class="avis-hint-text" style="color:${label.color}">${label.text}</span>`;
+    } else {
+        hint.innerHTML = label || '';
+        hint.style.color = '';
+    }
+}
+
+document.querySelectorAll('.avis-star').forEach(star => {
+    star.addEventListener('click', () => {
+        avisNote = parseInt(star.dataset.value);
+        avisSetStars(avisNote);
+        document.getElementById('avis-send-btn').disabled = false;
+        document.getElementById('avis-error').style.display = 'none';
+    });
+
+    // Effet survol
+    star.addEventListener('mouseenter', () => {
+        avisSetStars(parseInt(star.dataset.value));
+    });
+    star.addEventListener('mouseleave', () => {
+        avisSetStars(avisNote);
+        if (avisNote === 0) avisResetStars();
+    });
+});
+
+// Compteur de caractères
+document.getElementById('avis-textarea').addEventListener('input', () => {
+    const len = document.getElementById('avis-textarea').value.length;
+    document.getElementById('avis-char-count').textContent = len;
+});
+
+// Envoi de l'avis
+document.getElementById('avis-send-btn').addEventListener('click', async () => {
+    if (avisNote === 0) {
+        document.getElementById('avis-error-text').textContent = 'Veuillez sélectionner une note avant d\'envoyer.';
+        document.getElementById('avis-error').style.display = 'flex';
+        return;
+    }
+
+    const commentaire = document.getElementById('avis-textarea').value.trim();
+    const nomJoueur   = currentUser ? currentUser.trim() : "Anonyme";
+
+    document.getElementById('avis-send-btn').disabled = true;
+    document.getElementById('avis-loading').style.display = 'block';
+    document.getElementById('avis-error').style.display = 'none';
+
+    try {
+        // Vérifier une dernière fois le quota avant envoi
+        const q = query(
+            collection(db, "Avis"),
+            where("joueur", "==", nomJoueur)
+        );
+        const snap = await getDocs(q);
+
+        if (snap.size >= 3) {
+            document.getElementById('avis-loading').style.display = 'none';
+            document.getElementById('avis-form-container').style.display = 'none';
+            document.getElementById('avis-already-title').textContent = 'Quota d\'avis atteint';
+            document.getElementById('avis-already-text').textContent  = 'Vous avez déjà soumis 3 avis. Merci pour votre participation !';
+            document.getElementById('avis-already').style.display = 'flex';
+            return;
+        }
+
+        const now = new Date();
+        await addDoc(collection(db, "Avis"), {
+            joueur:      nomJoueur,
+            note:        avisNote,
+            date:        now.getTime(),
+            commentaire: commentaire,
+            dateHeure:   now.toLocaleDateString('fr-FR', {
+                day: '2-digit', month: '2-digit', year: 'numeric'
+            }) + ' à ' + now.toLocaleTimeString('fr-FR', {
+                hour: '2-digit', minute: '2-digit', second: '2-digit'
+            })
+        });
+
+        document.getElementById('avis-loading').style.display = 'none';
+        document.getElementById('avis-form-container').style.display = 'none';
+        document.getElementById('avis-success').style.display = 'flex';
+
+    } catch (e) {
+        console.warn("Erreur envoi avis :", e);
+        document.getElementById('avis-loading').style.display = 'none';
+        document.getElementById('avis-error-text').textContent = 'Une erreur est survenue. Veuillez réessayer.';
+        document.getElementById('avis-error').style.display = 'flex';
+        document.getElementById('avis-send-btn').disabled = false;
+    }
+});

@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://*.googleapis.com https://*.gstatic.com https://flagcdn.com https://en.wikipedia.org https://*.firebaseio.com https://*.firebasestorage.app; script-src 'self' https://www.gstatic.com 'unsafe-inline'; img-src * data:;">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexia - Quiz</title>
 
@@ -44,6 +45,129 @@
                 <strong>Ancien joueur :</strong> joueur ayant déjà joué une ou plusieurs parties.
             </p>
         </div>
+
+        <button id="btn-faq" class="btn-faq-welcome">
+            <span class="material-symbols-outlined">help_outline</span>
+            Comment fonctionne Nexia ?
+        </button>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- ÉCRAN FAQ                                  -->
+    <!-- ========================================== -->
+    <div id="faq-screen" class="screen">
+        <div class="faq-header">
+            <span class="material-symbols-outlined faq-header-icon">quiz</span>
+            <h2>FAQ — Comment jouer ?</h2>
+            <p>Tout ce que vous devez savoir sur Nexia</p>
+        </div>
+
+        <div class="faq-list">
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span class="faq-q-text">Comment fonctionne le quiz ?</span>
+                    <span class="material-symbols-outlined faq-chevron">expand_more</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Nexia est un quiz à choix multiples. Chaque partie comporte <strong>20 questions</strong> tirées aléatoirement dans le domaine et le niveau que vous choisissez. Pour chaque question, vous avez <strong>20 secondes</strong> pour sélectionner la bonne réponse parmi 4 options (A, B, C, D). Une explication apparaît après chaque réponse pour vous aider à progresser.</p>
+                    <p style="margin-top:10px">Le jeu propose actuellement <strong>9 domaines</strong> :</p>
+                    <ul>
+                        <li><strong>Informatique</strong> — Développement Web &amp; Mobile, Réseaux, Sécurité, Systèmes</li>
+                        <li><strong>Droit</strong> — Droit civil, Public, Contrats, Pénal, Affaires</li>
+                        <li><strong>Médecine</strong> — Anatomie, Pathologies, Pharmacologie</li>
+                        <li><strong>Capitales &amp; Pays du monde</strong> — Drapeaux, Capitales, Géographie mondiale</li>
+                        <li><strong>Culture générale</strong> — Histoire, Arts, Sciences, Sport, Société</li>
+                        <li><strong>Langues &amp; Linguistique</strong> — Français &amp; Anglais (Grammaire, Orthographe, Conjugaison)</li>
+                        <li><strong>Psychologie &amp; Comportement</strong> — Biais cognitifs, Expériences célèbres, Théories, Personnalité</li>
+                        <li><strong>Astronomie &amp; Espace</strong> — Système solaire, Étoiles, Galaxies, Exploration spatiale</li>
+                        <li><strong>Dinosaures &amp; Préhistoire</strong> — Espèces, Ères géologiques, Paléontologie</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span class="faq-q-text">Comment est calculé mon score ?</span>
+                    <span class="material-symbols-outlined faq-chevron">expand_more</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Votre score correspond au <strong>nombre de bonnes réponses sur 20</strong>. Il est affiché en temps réel pendant la partie. À la fin, vous voyez votre pourcentage de réussite ainsi que le détail de vos bonnes et mauvaises réponses. Si le temps s'écoule sans réponse, la question est comptée comme incorrecte.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span class="faq-q-text">Qu'est-ce que le code PIN ?</span>
+                    <span class="material-symbols-outlined faq-chevron">expand_more</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Le code PIN est un code à <strong>4 chiffres</strong> que vous créez lors de votre première inscription. Il vous permet de vous reconnecter lors de vos prochaines parties sans recréer un profil. Conservez-le précieusement ! Si vous l'oubliez, la fonctionnalité <em>"Mot de passe oublié ?"</em> vous permet de le réinitialiser en vérifiant votre identité via votre nom et un score passé.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span class="faq-q-text">J'ai oublié mon code PIN, que faire ?</span>
+                    <span class="material-symbols-outlined faq-chevron">expand_more</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Pas de panique ! Depuis l'écran de reconnexion, cliquez sur <em>"Mot de passe oublié ?"</em> en bas de page. Il vous sera demandé de renseigner :</p>
+                    <ul>
+                        <li>Votre <strong>nom exact</strong> (tel que saisi lors de l'inscription)</li>
+                        <li>Un <strong>score obtenu</strong> lors d'une partie précédente (sur 20)</li>
+                        <li>Le <strong>domaine</strong> correspondant à ce score</li>
+                    </ul>
+                    <p style="margin-top:8px">Si les informations correspondent, vous pourrez <strong>définir un nouveau code PIN</strong>. Si vous n'avez aucun score enregistré, la seule solution est de créer un nouveau profil avec un nom différent.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span class="faq-q-text">Puis-je changer mon avatar ou mon pays ?</span>
+                    <span class="material-symbols-outlined faq-chevron">expand_more</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Non. L'avatar et le pays sont choisis <strong>une seule fois</strong>, lors de la création de votre profil. Une fois votre profil créé, ils sont définitifs. La seule façon de les changer est de <strong>créer un nouveau profil</strong> avec un nom différent.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span class="faq-q-text">Pourquoi certaines questions ont des images ?</span>
+                    <span class="material-symbols-outlined faq-chevron">expand_more</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Les domaines <strong>Drapeaux du monde</strong> et <strong>Dinosaures & Préhistoire</strong> incluent des questions visuelles : vous devez identifier un pays à partir de son drapeau, ou reconnaître une espèce à partir d'une illustration. Ces images sont chargées dynamiquement et nécessitent une connexion internet active.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span class="faq-q-text">Comment apparaître dans le classement ?</span>
+                    <span class="material-symbols-outlined faq-chevron">expand_more</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Votre score est automatiquement enregistré dans le classement à la fin de chaque partie terminée. Le classement affiche les <strong>10 meilleurs scores</strong> par domaine, filtrables par niveau (Débutant, Intermédiaire, Avancé, Aléatoire). Chaque partie jouée génère une nouvelle entrée — plusieurs scores peuvent donc vous appartenir.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span class="faq-q-text">Le classement est-il partagé entre tous les joueurs ?</span>
+                    <span class="material-symbols-outlined faq-chevron">expand_more</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Oui, le classement est <strong>global et en temps réel</strong>. Il est stocké sur nos serveurs (Firebase) et visible par tous les joueurs qui partagent le même quiz. Cela signifie que vous concurrencez des joueurs du monde entier. Votre drapeau et votre avatar sont visibles dans le classement pour vous identifier.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <button id="faq-back-btn" class="btn-secondary">
+            <span class="material-symbols-outlined">arrow_back</span>
+            Retour à l'accueil
+        </button>
     </div>
 
     <!-- ========================================== -->
@@ -94,6 +218,10 @@
         <div id="reconnect-error" class="pin-error-msg" style="display:none;">
             <span class="material-symbols-outlined">error</span>
             <span id="reconnect-error-text">Nom ou code PIN incorrect. Veuillez réessayer.</span>
+        </div>
+        <div id="reconnect-loading" class="reconnect-loading-box" style="display:none;">
+            <span class="material-symbols-outlined reconnect-loading-icon">sync</span>
+            <span class="reconnect-loading-text">Vérification en cours…</span>
         </div>
         <button id="reconnect-btn" disabled>
             <span class="material-symbols-outlined">login</span>
@@ -606,22 +734,22 @@
 
         <div id="options-container" class="options-grid">
 
-            <button class="option-btn" id="opt0" onclick="choisirReponse(0)">
+            <button class="option-btn" id="opt0">
                 <span class="lettre">A</span>
                 <span id="texte-opt0">Option A</span>
             </button>
 
-            <button class="option-btn" id="opt1" onclick="choisirReponse(1)">
+            <button class="option-btn" id="opt1">
                 <span class="lettre">B</span>
                 <span id="texte-opt1">Option B</span>
             </button>
 
-            <button class="option-btn" id="opt2" onclick="choisirReponse(2)">
+            <button class="option-btn" id="opt2">
                 <span class="lettre">C</span>
                 <span id="texte-opt2">Option C</span>
             </button>
 
-            <button class="option-btn" id="opt3" onclick="choisirReponse(3)">
+            <button class="option-btn" id="opt3">
                 <span class="lettre">D</span>
                 <span id="texte-opt3">Option D</span>
             </button>
@@ -630,7 +758,7 @@
 
         <div id="feedback" class="feedback cache"></div>
 
-        <button id="btn-suivant" class="btn-suivant cache" onclick="questionSuivante()">
+        <button id="btn-suivant" class="btn-suivant cache">
             Question suivante →
         </button>
 
@@ -698,9 +826,82 @@
                     <span class="material-symbols-outlined">manage_accounts</span>
                     Changer de profil
                 </button>
+                <button id="btn-avis" class="btn-avis-score">
+                    <span class="material-symbols-outlined">star</span>
+                    Laisser un avis
+                </button>
             </div>
 
         </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- ÉCRAN AVIS                                 -->
+    <!-- ========================================== -->
+    <div id="avis-screen" class="screen">
+        <div class="avis-header">
+            <span class="material-symbols-outlined avis-header-icon">rate_review</span>
+            <h2>Votre avis sur Nexia</h2>
+            <p>Votre retour nous aide à améliorer le jeu !</p>
+            <div id="avis-quota-badge" class="avis-quota-badge" style="display:none;"></div>
+        </div>
+
+        <!-- État : formulaire -->
+        <div id="avis-form-container">
+            <div class="avis-stars-section">
+                <p class="avis-stars-label">Note globale</p>
+                <div class="avis-stars" id="avis-stars">
+                    <span class="avis-star material-symbols-outlined" data-value="1">star</span>
+                    <span class="avis-star material-symbols-outlined" data-value="2">star</span>
+                    <span class="avis-star material-symbols-outlined" data-value="3">star</span>
+                    <span class="avis-star material-symbols-outlined" data-value="4">star</span>
+                    <span class="avis-star material-symbols-outlined" data-value="5">star</span>
+                </div>
+                <p class="avis-stars-hint" id="avis-stars-hint">Cliquez sur une étoile pour noter</p>
+            </div>
+
+            <div class="avis-comment-section">
+                <label class="avis-comment-label" for="avis-textarea">
+                    Commentaire <span class="avis-optionnel">(optionnel)</span>
+                </label>
+                <textarea id="avis-textarea" class="avis-textarea" maxlength="1000" placeholder="Partagez votre expérience, vos suggestions…"></textarea>
+                <span class="avis-char-count"><span id="avis-char-count">0</span> / 1000</span>
+            </div>
+
+            <div id="avis-error" class="pin-error-msg" style="display:none;">
+                <span class="material-symbols-outlined">error</span>
+                <span id="avis-error-text">Veuillez sélectionner une note avant d'envoyer.</span>
+            </div>
+
+            <div id="avis-loading" style="display:none;text-align:center;color:var(--primary);font-size:14px;padding:6px 0">
+                <span class="material-symbols-outlined" style="animation:spin 1s linear infinite;vertical-align:middle">autorenew</span>
+                Envoi en cours…
+            </div>
+
+            <button id="avis-send-btn" disabled>
+                <span class="material-symbols-outlined">send</span>
+                Envoyer mon avis
+            </button>
+        </div>
+
+        <!-- État : confirmation après envoi -->
+        <div id="avis-success" style="display:none;" class="avis-success-box">
+            <span class="material-symbols-outlined avis-success-icon">check_circle</span>
+            <h3>Merci pour ton avis !</h3>
+            <p>Ton retour a bien été enregistré. Il nous aide à rendre Nexia encore meilleur.</p>
+        </div>
+
+        <!-- État : déjà soumis / quota atteint -->
+        <div id="avis-already" style="display:none;" class="avis-already-box">
+            <span class="material-symbols-outlined avis-already-icon">info</span>
+            <h3 id="avis-already-title">Quota d'avis atteint</h3>
+            <p id="avis-already-text">Vous avez déjà soumis 3 avis. Merci pour votre participation !</p>
+        </div>
+
+        <button id="avis-back-btn" class="btn-secondary">
+            <span class="material-symbols-outlined">arrow_back</span>
+            Retour aux résultats
+        </button>
     </div>
 
 </div><!-- /container -->
