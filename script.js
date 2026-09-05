@@ -55,20 +55,28 @@ const CloudScore = {
     },
 
     async load(domain, sub) {
+        const niveaux = ['débutant', 'intermédiaire', 'avancé', 'aléatoire'];
         try {
-            const q = query(
-                collection(db, "Score"),
-                where("domain", "==", domain),
-                where("sub",    "==", sub || ""),
-                orderBy("score", "desc"),
-                orderBy("ts",    "asc"),
-                limit(50)
+            const requetes = niveaux.map(niv =>
+                getDocs(query(
+                    collection(db, "Score"),
+                    where("domain", "==", domain),
+                    where("sub",    "==", sub || ""),
+                    where("niveau", "==", niv),
+                    orderBy("score", "desc"),
+                    orderBy("ts",    "asc"),
+                    limit(30)
+                ))
             );
-            const snap = await getDocs(q);
-            return snap.docs.map(d => d.data());
+            const snaps = await Promise.all(requetes);
+            const parNiveau = {};
+            niveaux.forEach((niv, i) => {
+                parNiveau[niv] = snaps[i].docs.map(d => d.data());
+            });
+            return parNiveau;
         } catch (e) {
             console.warn("Erreur lecture Firestore :", e);
-            return [];
+            return { 'débutant': [], 'intermédiaire': [], 'avancé': [], 'aléatoire': [] };
         }
     },
 
@@ -1768,7 +1776,7 @@ document.getElementById('btn-suivant').addEventListener('click', () => questionS
 /* -------------------------------------------------------------- */
 /* 25. AFFICHER LES RÉSULTATS + CLASSEMENT FIRESTORE                  */
 /* -------------------------------------------------------------- */
-let scoreboardData  = [];
+let scoreboardData  = { 'débutant': [], 'intermédiaire': [], 'avancé': [], 'aléatoire': [] };
 let tsJoueurGlobal  = 0;
 
 async function afficherResultats() {
@@ -1844,7 +1852,8 @@ async function afficherResultats() {
     scoreboardData = tousLesScores;
     tsJoueurGlobal = tsJoueur;
 
-    if (scoreboardData.length === 0) {
+    const totalEntrees = Object.values(scoreboardData).reduce((acc, arr) => acc + arr.length, 0);
+    if (totalEntrees === 0) {
         list.innerHTML = `<li style="justify-content:center;color:var(--text-muted);border:none;background:none;">
             <span>Aucun score enregistré pour l'instant.</span>
         </li>`;
@@ -1867,12 +1876,13 @@ function afficherOngletClassement(filtre) {
 
     let donnees;
     if (filtre === 'tous') {
-        donnees = scoreboardData;
+        // Fusionner les 4 niveaux (max 120) et trier par score décroissant, puis ts croissant
+        donnees = Object.values(scoreboardData)
+            .flat()
+            .sort((a, b) => b.score !== a.score ? b.score - a.score : a.ts - b.ts);
     } else {
-        donnees = scoreboardData.filter(e => (e.niveau || '') === filtre);
+        donnees = scoreboardData[filtre] || [];
     }
-
-    donnees = donnees.slice(0, 10);
 
     if (donnees.length === 0) {
         list.innerHTML = `<li style="justify-content:center;color:var(--text-muted);border:none;background:none;">
